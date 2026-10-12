@@ -4,12 +4,14 @@
 - Carpeta del proyecto: /tienda (dentro del repositorio Tienda-Dropshipping)
 - Tema base: Dawn (rama main, commit del 2026-08-10)
 - Fase completada: 0 (entorno: Node 22 + Shopify CLI 4.9.3) y 2 (tema base descargado)
-- Pendiente: fase 1 (conexión + lectura del producto). Bloqueado: la red del
-  entorno en la nube no permite acceder a *.shopify.com / *.myshopify.com y el
-  conector de Shopify necesita volver a iniciar sesión.
+- Fase 1: conectado vía conector de Shopify (tienda "Mi tienda 2", plan Basic,
+  EUR, España). La red del entorno sigue bloqueando *.shopify.com y
+  *.myshopify.com, así que aún no se puede subir el tema con el CLI.
+- Pendiente: brief (fase 3, rama B: sin producto).
 
 ## Producto leído
-(pendiente)
+Ninguno: la tienda tiene 0 productos (12/10/2026). Cuando cree uno, asignarle
+la plantilla `mt` y escribir título/descripción.
 
 ## Secciones creadas
 (ninguna todavía)
