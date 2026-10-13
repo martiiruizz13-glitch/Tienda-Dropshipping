@@ -1,0 +1,333 @@
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.color_fondo }};
+  }
+  #shopify-section-{{ section.id }} .tc-ad__text { text-align: {{ section.settings.alineacion }}; }
+  #shopify-section-{{ section.id }} .tc-h2 { font-size: clamp(32px, 4.4vw, {{ section.settings.titulo_size }}px); }
+  #shopify-section-{{ section.id }} .tc-body { font-size: {{ section.settings.texto_size }}px; }
+  #shopify-section-{{ section.id }} .tc-ad__grid { {% if section.settings.imagen_izquierda %}direction: rtl;{% endif %} }
+  #shopify-section-{{ section.id }} .tc-ad__grid > * { direction: ltr; }
+{% endstyle %}
+
+<section class="tc-ad tc-section">
+  <div class="tc-container">
+    <div class="tc-ad__grid">
+      <div class="tc-ad__text">
+        {%- if section.settings.eyebrow != blank -%}<p class="tc-eyebrow tc-reveal">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="tc-h2" data-tc-split>{{ section.settings.titulo }}</h2>
+        {%- if section.settings.texto != blank -%}<p class="tc-body tc-reveal" style="--d:2">{{ section.settings.texto | newline_to_br }}</p>{%- endif -%}
+
+        <div class="tc-ad__legend tc-reveal" style="--d:3" data-tc-ad-legend="{{ section.id }}">
+          <button type="button" class="tc-ad__legend-item tc-ad__legend-item--frio" data-tc-ad-go="100" aria-label="{{ section.settings.estado_antes | escape }}">
+            <span class="tc-ad__dot"></span>
+            <span class="tc-ad__legend-copy">
+              <small>{{ section.settings.etiqueta_antes }}</small>
+              <strong>{{ section.settings.estado_antes }}</strong>
+              <span>{{ section.settings.texto_antes }}</span>
+            </span>
+          </button>
+          <span class="tc-ad__legend-arrow" aria-hidden="true">{% render 'tc-icon', name: 'flecha' %}</span>
+          <button type="button" class="tc-ad__legend-item tc-ad__legend-item--calor" data-tc-ad-go="0" aria-label="{{ section.settings.estado_despues | escape }}">
+            <span class="tc-ad__dot"></span>
+            <span class="tc-ad__legend-copy">
+              <small>{{ section.settings.etiqueta_despues }}</small>
+              <strong>{{ section.settings.estado_despues }}</strong>
+              <span>{{ section.settings.texto_despues }}</span>
+            </span>
+          </button>
+        </div>
+
+        {%- if section.settings.boton_texto != blank -%}
+          <a class="tc-btn tc-reveal" style="--d:4; margin-top: 30px" href="{{ section.settings.boton_url | default: '#comprar' }}">{{ section.settings.boton_texto }}{% render 'tc-icon', name: 'flecha' %}</a>
+        {%- endif -%}
+        {%- if section.settings.nota != blank -%}<p class="tc-ad__note tc-reveal" style="--d:5">{{ section.settings.nota }}</p>{%- endif -%}
+      </div>
+
+      <div class="tc-ad__slider tc-reveal-img" data-tc-ad2 data-section="{{ section.id }}" data-start="{{ section.settings.posicion }}"
+        data-t-antes="{{ section.settings.temp_antes }}" data-t-despues="{{ section.settings.temp_despues }}"
+        data-nivel-alto="{{ section.settings.nivel_alto | escape }}" data-nivel-medio="{{ section.settings.nivel_medio | escape }}" data-nivel-bajo="{{ section.settings.nivel_bajo | escape }}"
+        style="--pos: {{ section.settings.posicion }}%; --heat: .5">
+        <div class="tc-ad__layer tc-ad__layer--despues">
+          {%- if section.settings.imagen_despues != blank -%}
+            <img src="{{ section.settings.imagen_despues | image_url: width: 1400 }}" alt="{{ section.settings.imagen_despues.alt | escape }}" loading="lazy" draggable="false">
+          {%- else -%}
+            <img src="{{ 'tc-despues.jpg' | asset_url }}" alt="Almohadilla TermoCalm encendida, ambiente cálido" loading="lazy" draggable="false">
+          {%- endif -%}
+          <div class="tc-ad__glow" aria-hidden="true"></div>
+          <svg class="tc-ad__waves" viewBox="0 0 120 60" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M20 55c-8-9 8-17 0-26s8-17 0-26"/><path d="M60 55c-8-9 8-17 0-26s8-17 0-26"/><path d="M100 55c-8-9 8-17 0-26s8-17 0-26"/></svg>
+        </div>
+        <div class="tc-ad__layer tc-ad__layer--antes">
+          {%- if section.settings.imagen_antes != blank -%}
+            <img src="{{ section.settings.imagen_antes | image_url: width: 1400 }}" alt="{{ section.settings.imagen_antes.alt | escape }}" loading="lazy" draggable="false">
+          {%- else -%}
+            <img src="{{ 'tc-antes.jpg' | asset_url }}" alt="Almohadilla TermoCalm apagada, ambiente frío" loading="lazy" draggable="false">
+          {%- endif -%}
+          <div class="tc-ad__frost" aria-hidden="true"></div>
+        </div>
+        <div class="tc-ad__vignette" aria-hidden="true"></div>
+
+        <span class="tc-ad__tag tc-ad__tag--antes">{{ section.settings.etiqueta_antes }}</span>
+        <span class="tc-ad__tag tc-ad__tag--despues">{{ section.settings.etiqueta_despues }}</span>
+
+        <div class="tc-ad__state" aria-hidden="true">
+          <span class="tc-ad__state-word tc-ad__state-word--antes">{{ section.settings.estado_antes }}</span>
+          <span class="tc-ad__state-word tc-ad__state-word--despues">{{ section.settings.estado_despues }}</span>
+        </div>
+
+        {%- if section.settings.mostrar_panel -%}
+          <div class="tc-ad__panel" aria-hidden="true">
+            <svg class="tc-ad__body" viewBox="0 0 120 120" fill="none">
+              <path class="tc-ad__silhouette" d="M60 10c9.5 0 15 7.4 15 17 0 7-3 12.6-7.4 15.4l.4 6.6c0 2.4 1.6 4.4 3.9 5.1l18.2 5.6c9.6 3 15.9 11.9 15.9 21.9V120H14V81.6c0-10 6.3-18.9 15.9-21.9l18.2-5.6c2.3-.7 3.9-2.7 3.9-5.1l.4-6.6C48 39.6 45 34 45 27c0-9.6 5.5-17 15-17Z"/>
+              <path class="tc-ad__spine" d="M60 56v58" stroke-dasharray="2 5"/>
+              <g class="tc-ad__knots">
+                <circle class="tc-ad__knot" cx="60" cy="50" r="5" style="--k:0"/>
+                <circle class="tc-ad__knot" cx="38" cy="64" r="5.5" style="--k:1"/>
+                <circle class="tc-ad__knot" cx="82" cy="64" r="5.5" style="--k:2"/>
+                <circle class="tc-ad__knot" cx="60" cy="96" r="6" style="--k:3"/>
+              </g>
+            </svg>
+            <div class="tc-ad__meter">
+              <div class="tc-ad__meter-head">
+                <span>{{ section.settings.medidor_titulo }}</span>
+                <strong data-tc-ad-nivel>{{ section.settings.nivel_medio }}</strong>
+              </div>
+              <div class="tc-ad__meter-bar"><span></span></div>
+              {%- if section.settings.mostrar_temp -%}
+                <div class="tc-ad__meter-temp"><span data-tc-ad-temp>{{ section.settings.temp_despues }}</span>°C</div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="tc-ad__handle" aria-hidden="true">
+          <span class="tc-ad__knob">{% render 'tc-icon', name: 'flecha-izq' %}{% render 'tc-icon', name: 'flecha' %}</span>
+          <span class="tc-ad__hint">{{ section.settings.pista }}</span>
+        </div>
+        <input class="tc-ad__range" type="range" min="0" max="100" step="0.1" value="{{ section.settings.posicion }}" aria-label="{{ section.settings.estado_antes | escape }} / {{ section.settings.estado_despues | escape }}">
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Estilos y comportamiento propios del deslizador (v2). {%- endcomment -%}
+<style>
+.tc-ad { overflow-x: clip; }
+.tc-ad__grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+
+/* Leyenda: dos tarjetas clicables que llevan el deslizador a cada extremo */
+.tc-ad__legend { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: stretch; margin-top: 32px; }
+.tc-ad__legend-item { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 20px; background: var(--tc-blanco); border: 1px solid rgba(43, 38, 34, .06); box-shadow: 0 14px 30px -24px rgba(43, 38, 34, .5); text-align: left; transition: transform .5s var(--tc-ease), box-shadow .5s var(--tc-ease), border-color .4s, background .4s; }
+.tc-ad__legend-item:hover { transform: translateY(-3px); box-shadow: 0 22px 40px -26px rgba(43, 38, 34, .55); }
+.tc-ad__legend-item:focus-visible { outline: 2px solid var(--tc-terracota); outline-offset: 3px; }
+.tc-ad__legend-item.is-active.tc-ad__legend-item--frio { border-color: rgba(111, 134, 184, .45); background: linear-gradient(160deg, #F3F6FD, var(--tc-blanco) 70%); }
+.tc-ad__legend-item.is-active.tc-ad__legend-item--calor { border-color: rgba(194, 96, 58, .4); background: linear-gradient(160deg, #FFF1E6, var(--tc-blanco) 70%); }
+.tc-ad__legend-copy { display: grid; gap: 4px; }
+.tc-ad__legend-copy small { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--tc-gris); }
+.tc-ad__legend-item--frio small { color: #5D74A8; }
+.tc-ad__legend-item--calor small { color: var(--tc-terracota); }
+.tc-ad__legend-copy strong { font-family: var(--tc-serif); font-weight: 400; font-size: 22px; line-height: 1.1; letter-spacing: -0.01em; color: var(--tc-carbon); }
+.tc-ad__legend-copy span { font-size: 14px; line-height: 1.5; color: var(--tc-gris); }
+.tc-ad__legend-arrow { display: flex; align-items: center; color: var(--tc-terracota); opacity: .7; }
+.tc-ad__legend-arrow svg { width: 18px; height: 18px; }
+.tc-ad__dot { width: 14px; height: 14px; border-radius: 50%; flex: none; }
+.tc-ad__legend-item--frio .tc-ad__dot { background: linear-gradient(135deg, #B9C7E6, #6F86B8); box-shadow: 0 0 0 5px rgba(111, 134, 184, .15); }
+.tc-ad__legend-item--calor .tc-ad__dot { background: linear-gradient(135deg, var(--tc-ambar), var(--tc-terracota)); box-shadow: 0 0 0 5px rgba(194, 96, 58, .18); animation: tc-pulse 2.2s ease-in-out infinite; }
+@keyframes tc-pulse { 50% { box-shadow: 0 0 0 9px rgba(194, 96, 58, .05); } }
+.tc-ad__note { margin: 18px 0 0; font-size: 12px; line-height: 1.5; color: var(--tc-gris); opacity: .8; }
+
+/* Deslizador */
+.tc-ad__slider { position: relative; aspect-ratio: 4 / 5; border-radius: var(--tc-radio); overflow: hidden; box-shadow: var(--tc-sombra); user-select: none; -webkit-user-select: none; touch-action: pan-y; background: var(--tc-arena); isolation: isolate; }
+.tc-ad__layer { position: absolute; inset: 0; }
+.tc-ad__layer img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.tc-ad__layer--despues img { transform: scale(calc(1.04 - var(--heat) * .04)); transition: transform .2s linear; }
+.tc-ad__layer--antes { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+.tc-ad__layer--antes img { filter: saturate(.75) contrast(1.04); }
+.tc-ad__frost { position: absolute; inset: 0; background: radial-gradient(80% 60% at 30% 20%, rgba(220, 232, 255, .35), transparent 70%); mix-blend-mode: screen; pointer-events: none; }
+.tc-ad__glow { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; opacity: calc(.4 + var(--heat) * .6); background: radial-gradient(45% 40% at 66% 66%, #ff8a3d, rgba(255, 120, 50, .3) 55%, transparent 80%); animation: tc-ad-glow 4s ease-in-out infinite; }
+@keyframes tc-ad-glow { 0%, 100% { filter: brightness(.9); } 50% { filter: brightness(1.15); } }
+.tc-ad__waves { position: absolute; left: 52%; top: 26%; width: 30%; color: #fff; opacity: calc(var(--heat) * .85); pointer-events: none; }
+.tc-ad__waves path { stroke-dasharray: 6 10; animation: tc-wave 1.6s linear infinite; }
+.tc-ad__vignette { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(20, 16, 14, .28), transparent 26%, transparent 62%, rgba(20, 16, 14, .38)); }
+
+.tc-ad__tag { position: absolute; top: 18px; z-index: 3; padding: 8px 14px; border-radius: 99px; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: opacity .3s; pointer-events: none; }
+.tc-ad__tag--antes { left: 18px; background: rgba(235, 241, 255, .85); color: #4A5F8F; }
+.tc-ad__tag--despues { right: 18px; background: rgba(255, 252, 248, .88); color: var(--tc-terracota); }
+
+/* Palabra grande que cambia de "Rígida" a "Aliviada" */
+.tc-ad__state { position: absolute; left: 0; right: 0; top: 64px; z-index: 3; display: grid; justify-items: center; pointer-events: none; }
+.tc-ad__state-word { grid-area: 1 / 1; padding: 0 20px; font-family: var(--tc-serif); font-style: italic; font-size: clamp(26px, 3.2vw, 40px); line-height: 1.1; letter-spacing: -0.02em; color: #fff; text-align: center; text-shadow: 0 6px 30px rgba(20, 16, 14, .45); transition: opacity .45s var(--tc-ease), transform .6s var(--tc-ease), filter .45s; }
+.tc-ad__state-word--antes { opacity: calc(1 - var(--heat) * 2); transform: translateY(calc(var(--heat) * -10px)); filter: blur(calc(var(--heat) * 6px)); }
+.tc-ad__state-word--despues { opacity: calc(var(--heat) * 2 - 1); transform: translateY(calc((1 - var(--heat)) * 10px)); filter: blur(calc((1 - var(--heat)) * 6px)); }
+
+/* Panel de tensión */
+.tc-ad__panel { position: absolute; left: 18px; bottom: 18px; z-index: 5; display: flex; align-items: center; gap: 14px; width: min(320px, calc(100% - 36px)); padding: 14px 16px 14px 12px; border-radius: 20px; background: rgba(255, 252, 248, .84); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); box-shadow: 0 16px 34px -18px rgba(43, 38, 34, .55); pointer-events: none; }
+.tc-ad__body { width: 64px; height: 64px; flex: none; overflow: visible; }
+.tc-ad__silhouette { fill: color-mix(in srgb, #F2D9C4 calc(var(--heat) * 100%), #D9E1F2); stroke: color-mix(in srgb, var(--tc-terracota) calc(var(--heat) * 100%), #6F86B8); stroke-width: 2; transition: fill .3s, stroke .3s; }
+.tc-ad__spine { stroke: color-mix(in srgb, var(--tc-terracota) calc(var(--heat) * 100%), #6F86B8); stroke-width: 1.5; stroke-linecap: round; opacity: .5; }
+.tc-ad__knot { transform-box: fill-box; transform-origin: center; fill: color-mix(in srgb, var(--tc-ambar) calc(var(--heat) * 100%), #D9473A); opacity: calc(1 - var(--heat) * .55); transform: scale(calc(1.15 - var(--heat) * .55)); filter: drop-shadow(0 0 calc(2px + var(--heat) * 6px) color-mix(in srgb, var(--tc-ambar) calc(var(--heat) * 100%), #D9473A)); transition: fill .3s; }
+.tc-ad__slider:not(.is-calm) .tc-ad__knot { animation: tc-ad-knot 1.4s ease-in-out infinite; animation-delay: calc(var(--k) * .18s); }
+@keyframes tc-ad-knot { 50% { stroke: rgba(217, 71, 58, .35); stroke-width: 6; } }
+.tc-ad__meter { flex: 1; min-width: 0; }
+.tc-ad__meter-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; white-space: nowrap; text-transform: uppercase; color: var(--tc-gris); }
+.tc-ad__meter-head strong { font-size: 13px; letter-spacing: .02em; text-transform: none; color: color-mix(in srgb, var(--tc-terracota) calc(var(--heat) * 100%), #C2413A); white-space: nowrap; }
+.tc-ad__meter-bar { position: relative; height: 6px; margin: 9px 0 8px; border-radius: 99px; background: rgba(43, 38, 34, .1); overflow: hidden; }
+.tc-ad__meter-bar span { position: absolute; inset: 0 auto 0 0; width: calc((1 - var(--heat)) * 88% + 12%); border-radius: inherit; background: linear-gradient(90deg, var(--tc-ambar), color-mix(in srgb, var(--tc-terracota) calc(var(--heat) * 100%), #D9473A)); }
+.tc-ad__meter-temp { font-family: var(--tc-serif); font-size: 26px; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: color-mix(in srgb, var(--tc-terracota) calc(var(--heat) * 100%), #5D74A8); }
+
+/* Control */
+.tc-ad__handle { position: absolute; top: 0; bottom: 0; left: var(--pos); z-index: 4; width: 0; pointer-events: none; }
+.tc-ad__handle::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1px; width: 2px; background: linear-gradient(180deg, transparent, rgba(255, 252, 248, .95) 12%, rgba(255, 252, 248, .95) 88%, transparent); box-shadow: 0 0 18px rgba(255, 200, 150, .8); }
+.tc-ad__knob { position: absolute; top: 50%; left: 0; display: flex; align-items: center; justify-content: center; gap: 2px; width: 62px; height: 62px; border-radius: 50%; transform: translate(-50%, -50%); background: var(--tc-blanco); color: var(--tc-carbon); box-shadow: 0 0 0 8px rgba(255, 252, 248, .3), 0 14px 30px rgba(43, 38, 34, .35); transition: transform .4s var(--tc-ease), box-shadow .4s; }
+.tc-ad__knob::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1.5px solid rgba(255, 252, 248, .7); animation: tc-ad-ping 2.4s var(--tc-ease) infinite; }
+.tc-ad__slider.is-touched .tc-ad__knob::after { animation: none; opacity: 0; }
+@keyframes tc-ad-ping { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(1.5); opacity: 0; } }
+.tc-ad__knob svg { width: 16px; height: 16px; }
+.tc-ad__hint { position: absolute; top: calc(50% + 46px); left: 0; transform: translateX(-50%); padding: 4px 10px; border-radius: 99px; background: rgba(20, 16, 14, .4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; transition: opacity .4s; }
+.tc-ad__hint:empty, .tc-ad__slider.is-touched .tc-ad__hint { opacity: 0; }
+.tc-ad__slider:hover .tc-ad__knob, .tc-ad__slider.is-dragging .tc-ad__knob { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 0 12px rgba(255, 252, 248, .35), 0 18px 36px rgba(43, 38, 34, .4); }
+.tc-ad__range { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none; touch-action: pan-y; }
+.tc-ad__range::-webkit-slider-thumb { -webkit-appearance: none; width: 62px; height: 100vh; }
+.tc-ad__range::-moz-range-thumb { width: 62px; height: 100vh; border: 0; }
+@media (max-width: 989px) {
+  .tc-ad__grid { grid-template-columns: 1fr; }
+  .tc-ad__slider { max-width: 560px; width: 100%; margin: 0 auto; }
+}
+@media (max-width: 599px) {
+  .tc-ad__legend { grid-template-columns: 1fr; }
+  .tc-ad__legend-arrow { justify-content: center; transform: rotate(90deg); }
+  .tc-ad__legend-item { flex-direction: row; align-items: flex-start; }
+  .tc-ad__dot { margin-top: 4px; }
+  .tc-ad__state { top: 58px; }
+  .tc-ad__panel { gap: 10px; padding: 10px 12px 10px 8px; }
+  .tc-ad__body { width: 48px; height: 48px; }
+  .tc-ad__meter-temp { font-size: 22px; }
+}
+.tc-ad__slider:focus-within .tc-ad__knob { outline: none; }
+.tc-ad__range:focus-visible ~ .tc-ad__handle .tc-ad__knob { outline: 2px solid var(--tc-terracota); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .tc-ad *, .tc-ad *::before, .tc-ad *::after { animation: none !important; } }
+</style>
+<script>
+(function () {
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function init() {
+    document.querySelectorAll('[data-tc-ad2]').forEach(function (s) {
+      if (s.dataset.tcReady) return;
+      s.dataset.tcReady = '1';
+      var range = s.querySelector('.tc-ad__range');
+      var tempEl = s.querySelector('[data-tc-ad-temp]');
+      var nivelEl = s.querySelector('[data-tc-ad-nivel]');
+      var tA = parseFloat(s.dataset.tAntes), tD = parseFloat(s.dataset.tDespues);
+      if (isNaN(tA)) tA = 18;
+      if (isNaN(tD)) tD = 45;
+      var tagA = s.querySelector('.tc-ad__tag--antes'), tagD = s.querySelector('.tc-ad__tag--despues');
+      var legend = document.querySelector('[data-tc-ad-legend="' + s.dataset.section + '"]');
+      var itemA = legend && legend.querySelector('.tc-ad__legend-item--frio');
+      var itemD = legend && legend.querySelector('.tc-ad__legend-item--calor');
+      var raf;
+      function set(pos) {
+        pos = Math.max(0, Math.min(100, pos));
+        s.style.setProperty('--pos', pos + '%');
+        var heat = 1 - pos / 100;
+        s.style.setProperty('--heat', heat.toFixed(3));
+        if (tempEl) tempEl.textContent = Math.round(tA + (tD - tA) * heat);
+        if (nivelEl) nivelEl.textContent = heat < 0.34 ? s.dataset.nivelAlto : heat < 0.67 ? s.dataset.nivelMedio : s.dataset.nivelBajo;
+        s.classList.toggle('is-calm', heat >= 0.67);
+        if (tagA) tagA.style.opacity = pos < 14 ? 0 : 1;
+        if (tagD) tagD.style.opacity = pos > 86 ? 0 : 1;
+        if (itemA) itemA.classList.toggle('is-active', heat < 0.5);
+        if (itemD) itemD.classList.toggle('is-active', heat >= 0.5);
+        if (range && parseFloat(range.value) !== pos) range.value = pos;
+      }
+      function animateTo(to, dur, cb) {
+        cancelAnimationFrame(raf);
+        if (reduce) { set(to); if (cb) cb(); return; }
+        var from = parseFloat(range.value), start = null;
+        function step(t) {
+          if (!start) start = t;
+          var p = Math.min((t - start) / dur, 1);
+          var e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+          set(from + (to - from) * e);
+          if (p < 1) raf = requestAnimationFrame(step); else if (cb) cb();
+        }
+        raf = requestAnimationFrame(step);
+      }
+      function touched() { s.classList.add('is-touched'); }
+      var startPos = parseFloat(s.dataset.start) || 50;
+      set(startPos);
+      range.addEventListener('input', function () { cancelAnimationFrame(raf); touched(); set(parseFloat(range.value)); });
+      range.addEventListener('pointerdown', function () { s.classList.add('is-dragging'); cancelAnimationFrame(raf); touched(); });
+      window.addEventListener('pointerup', function () { s.classList.remove('is-dragging'); });
+      s.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse' || !s.classList.contains('is-dragging')) return;
+        var r = s.getBoundingClientRect();
+        set(((e.clientX - r.left) / r.width) * 100);
+      });
+      [itemA, itemD].forEach(function (btn) {
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          touched();
+          var go = parseFloat(btn.dataset.tcAdGo);
+          animateTo(go === 0 ? 4 : 96, 900);
+        });
+      });
+      function intro() {
+        if (reduce) return;
+        animateTo(90, 1000, function () { animateTo(12, 1400, function () { animateTo(startPos, 900); }); });
+      }
+      if (s.classList.contains('tc-visible')) intro();
+      else s.addEventListener('tc:visible', intro, { once: true });
+    });
+  }
+  init();
+  document.addEventListener('shopify:section:load', init);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "TC – Antes y después",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Imágenes" },
+    { "type": "image_picker", "id": "imagen_antes", "label": "Imagen 'antes'", "info": "Ideal: una persona con la espalda o el cuello tensos. Usa dos fotos con el mismo encuadre." },
+    { "type": "image_picker", "id": "imagen_despues", "label": "Imagen 'después'", "info": "Ideal: la misma persona relajada, con la almohadilla puesta." },
+    { "type": "range", "id": "posicion", "label": "Posición inicial del deslizador (%)", "min": 10, "max": 90, "step": 1, "default": 55 },
+    { "type": "checkbox", "id": "imagen_izquierda", "label": "Deslizador a la izquierda", "default": true },
+    { "type": "text", "id": "pista", "label": "Texto bajo el control", "default": "Desliza" },
+    { "type": "header", "content": "Textos" },
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Desliza y siente la diferencia" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "De la rigidez <em>al alivio</em>" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "A un lado, el cuello cargado y los hombros encogidos después de horas de pantalla. Al otro, el calor envolvente de TermoCalm deshaciendo cada nudo hasta que el cuerpo, por fin, se suelta." },
+    { "type": "text", "id": "etiqueta_antes", "label": "Etiqueta 'antes'", "default": "Antes" },
+    { "type": "text", "id": "estado_antes", "label": "Estado 'antes'", "default": "Rígida y cargada" },
+    { "type": "text", "id": "texto_antes", "label": "Texto 'antes'", "default": "Cuello tenso, hombros encogidos y una espalda que pide un respiro." },
+    { "type": "text", "id": "etiqueta_despues", "label": "Etiqueta 'después'", "default": "Después" },
+    { "type": "text", "id": "estado_despues", "label": "Estado 'después'", "default": "Suelta y aliviada" },
+    { "type": "text", "id": "texto_despues", "label": "Texto 'después'", "default": "Calor profundo que relaja la musculatura y te devuelve la calma en minutos." },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Quiero sentir ese alivio" },
+    { "type": "url", "id": "boton_url", "label": "Enlace del botón" },
+    { "type": "text", "id": "nota", "label": "Nota pequeña al pie", "default": "Sensación orientativa. No sustituye el consejo de un profesional sanitario." },
+    { "type": "header", "content": "Panel de tensión" },
+    { "type": "checkbox", "id": "mostrar_panel", "label": "Mostrar panel de tensión sobre la imagen", "default": true },
+    { "type": "text", "id": "medidor_titulo", "label": "Título del medidor", "default": "Tensión muscular" },
+    { "type": "text", "id": "nivel_alto", "label": "Nivel alto", "default": "Alta" },
+    { "type": "text", "id": "nivel_medio", "label": "Nivel medio", "default": "Bajando" },
+    { "type": "text", "id": "nivel_bajo", "label": "Nivel bajo", "default": "Relajada" },
+    { "type": "checkbox", "id": "mostrar_temp", "label": "Mostrar temperatura", "default": true },
+    { "type": "number", "id": "temp_antes", "label": "Temperatura mostrada en 'antes' (°C)", "default": 18 },
+    { "type": "number", "id": "temp_despues", "label": "Temperatura mostrada en 'después' (°C)", "default": 45 },
+    { "type": "header", "content": "Diseño" },
+    { "type": "select", "id": "alineacion", "label": "Alineación del texto", "options": [ { "value": "left", "label": "Izquierda" }, { "value": "center", "label": "Centro" } ], "default": "left" },
+    { "type": "range", "id": "titulo_size", "label": "Tamaño del título (px)", "min": 24, "max": 80, "step": 2, "default": 56 },
+    { "type": "range", "id": "texto_size", "label": "Tamaño del texto (px)", "min": 13, "max": 24, "step": 1, "default": 17 },
+    { "type": "color", "id": "color_fondo", "label": "Color de fondo", "default": "#F6EFE6" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 112 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 112 }
+  ],
+  "presets": [ { "name": "TC – Antes y después" } ]
+}
+{% endschema %}

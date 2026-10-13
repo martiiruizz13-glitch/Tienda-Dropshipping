@@ -18,3 +18,18 @@ la plantilla `mt` y escribir título/descripción.
 
 ## Decisiones de diseño
 (pendiente del brief)
+
+## 13/10/2026 — Tema "TermoCalm (Claude)" (id 201680290175, NO publicado)
+- La tienda ya tiene producto: "TermoCalm · Almohadilla Térmica 30x60 cm"
+  (54,99 €, sin precio tachado), con la plantilla `product.30-60cm-electric-heating`.
+- El diseño real de la tienda es el tema TermoCalm (secciones `tc-*`), no la
+  carpeta Dawn de `/tienda`. Las copias de lo que se edita van a `/termocalm`.
+- Se sube con el conector de Shopify (themeFilesUpsert solo funciona en temas
+  no publicados), porque la red de este entorno bloquea el CLI.
+- `tc-antes-despues` rehecho: "De la rigidez al alivio", estados
+  Rígida y cargada → Suelta y aliviada, panel de tensión muscular con silueta
+  y puntos de tensión, tarjetas clicables, pista "Desliza", nota sanitaria.
+  Estilos y JS van dentro de la propia sección (atributo `data-tc-ad2`), así
+  que no depende de `tc-styles.css` ni de `tc-scripts.js`.
+- Precio tachado falso: NO aplicado (ilegal en España/UE si no hubo precio
+  anterior real). Pendiente de que el usuario elija una alternativa honesta.
