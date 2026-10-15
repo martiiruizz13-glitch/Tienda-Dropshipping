@@ -57,3 +57,12 @@ la plantilla `mt` y escribir título/descripción.
   y tarjeta de confianza. Las 8 fotos del proveedor se borraron.
 - Canva: créditos de IA agotados y sin plan Pro (no hay quitar fondo). Faltan fotos de
   estilo de vida (pies sobre la alfombrilla, bajo el escritorio, detalle del mando).
+
+## 15/10/2026 (noche) — Nombre definitivo: **Pulsia** · todo en BORRADOR
+- El usuario NO quiere vender todavía: todo lo que se cree va en borrador.
+  TermoCalm y Pulsia están en DRAFT. El tema TermoCalm sigue sin publicar.
+- Producto: "Pulsia · Masajeador de Pies EMS con Mando a Distancia", handle
+  `pulsia-masajeador-de-pies-ems`, vendor "Pulsia", 35,99 €. Descripción en /pulsia/.
+- Fotos (diseño de Canva DAHYGNBIf2I, ahora "Pulsia · Fotos tienda"): principal,
+  características y confianza, ya con el nombre PULSIA.
+- Nombres descartados por el usuario: Pisalma, Soléa / Soléa Pulse.
