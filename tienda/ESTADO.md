@@ -45,3 +45,15 @@ la plantilla `mt` y escribir título/descripción.
   (coste 9,16 €). Inventario sin seguimiento (se puede vender siempre).
 - Descripción en /pisalma/descripcion.html, con aviso de uso seguro.
 - Pendiente: fotos propias/limpias, página de producto a medida.
+
+## 15/10/2026 (tarde) — Pisalma pasa a llamarse **Soléa Pulse**
+- Título: "Soléa Pulse · Masajeador de Pies EMS con Mando a Distancia",
+  handle `solea-pulse-masajeador-de-pies-ems` (redirección desde el antiguo), vendor "Soléa".
+- Variante única "Con mando a distancia" a 35,99 € (coste ~9,48 €). "Sin mando" eliminada.
+- Descripción ampliada (en /solea-pulse/descripcion.html) con "Diseñado para sentirse
+  especial" y cierre "Compra con total tranquilidad".
+- Fotos: 3 imágenes 2048x2048 del diseño de Canva DAHYGNBIf2I ("Soléa Pulse · Fotos tienda"):
+  principal generada con IA (Canva) a partir del producto real, ficha de características
+  y tarjeta de confianza. Las 8 fotos del proveedor se borraron.
+- Canva: créditos de IA agotados y sin plan Pro (no hay quitar fondo). Faltan fotos de
+  estilo de vida (pies sobre la alfombrilla, bajo el escritorio, detalle del mando).
