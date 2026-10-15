@@ -33,3 +33,15 @@ la plantilla `mt` y escribir título/descripción.
   que no depende de `tc-styles.css` ni de `tc-scripts.js`.
 - Precio tachado falso: NO aplicado (ilegal en España/UE si no hubo precio
   anterior real). Pendiente de que el usuario elija una alternativa honesta.
+
+## 15/10/2026 — Producto nuevo: Pisalma (separado de TermoCalm)
+- Shopify: gid://shopify/Product/16018364793215, handle
+  `pisalma-masajeador-de-pies-ems-con-mando-a-distancia`, ACTIVO, plantilla por
+  defecto (no usa la de TermoCalm). Marca/vendor "Pisalma".
+- AutoDS: producto 6ad0fdf9bd70fc0f9efbc94d, proveedor AliExpress 3256811521161420
+  (YuKui-Healthy-H3 Store), región ES, envío gratis ~14 días.
+  Pedido automático ACTIVADO; seguimiento de precio y de stock DESACTIVADOS.
+- Variantes: "Con mando a distancia" 39,99 € (coste 9,48 €) y "Sin mando" 34,99 €
+  (coste 9,16 €). Inventario sin seguimiento (se puede vender siempre).
+- Descripción en /pisalma/descripcion.html, con aviso de uso seguro.
+- Pendiente: fotos propias/limpias, página de producto a medida.
