@@ -34,7 +34,14 @@ Las plantillas se regeneran con `python3 vortix-theme/tools/build_templates.py`.
 - vx-reviews: nota media, reparto de estrellas, filtros, ver más, "útil", formulario de reseña (llega por email)
 - vx-faq, vx-cta, vx-footer
 
+## Hecho en la Admin API
+- Precio de las 6 variantes: 39,95 € (sin precio tachado)
+- Producto pasado a ACTIVO y publicado en "Tienda online"; plantilla `vortix` asignada
+
+## Revisión visual
+- Render local aproximado + capturas con Playwright (escritorio 1440 y móvil 390). La tienda real no es accesible desde el contenedor.
+
 ## Pendiente
-- Fotos de personas usando el vaso (IA o reales) → subirlas en "VX – Momentos" / "Imagen expansiva" / "Llamada final"
+- Fotos de personas usando el vaso (IA o reales). Canva sin créditos de IA el 16/10; falta clave de OpenAI → subirlas en "VX – Momentos" / "Imagen expansiva" / "Llamada final"
 - Sustituir reseñas de ejemplo por reseñas reales (o instalar Judge.me) y desactivar la etiqueta "Ejemplo"
 - Rellenar políticas en Configuración → Políticas
