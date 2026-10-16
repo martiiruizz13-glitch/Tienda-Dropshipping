@@ -74,6 +74,6 @@ la plantilla `mt` y escribir título/descripción.
   Pedido automático activado; seguimiento de precio y stock desactivados.
   OJO: AutoDS muestra envío 0 € / 999 días y stock 0 (no cargó los datos de envío de CJ).
   Envío real CJ a España ≈ 6,2–6,8 € (12–25 días).
-- 6 variantes a 29,99 €, sin inventario: Classic (Negro 5,34 · Blanco 3,77 · Crema 3,19 €)
-  y Slim (Blanco · Rosa · Verde, 5,09 €). Costes sin envío.
+- 6 variantes a 29,99 €, sin inventario: Clásico (Negro 5,34 · Blanco 3,77 · Crema 3,19 €)
+  y Estilizado (Blanco · Rosa · Verde, 5,09 €). Costes sin envío. Todo en español; handle `vortix-vaso-mezclador-electrico-proteinas`.
 - Fotos: 7 del proveedor sin texto en inglés (se borraron 5 con textos en inglés).
