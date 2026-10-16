@@ -1,0 +1,47 @@
+{%- style -%}
+  :root {
+    --vx-accent: {{ section.settings.acento }};
+    --vx-bg: {{ section.settings.fondo }};
+  }
+{%- endstyle -%}
+<header class="vx-nav" data-vx-nav>
+  <a class="vx-nav__logo" href="{{ routes.root_url }}">{% render 'vx-icon', name: 'logo' %}{{ section.settings.marca }}</a>
+  <nav aria-label="Secciones">
+    <ul class="vx-nav__links">
+      {%- for block in section.blocks -%}
+        <li {{ block.shopify_attributes }}><a href="{{ block.settings.ancla }}">{{ block.settings.texto }}</a></li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+  <div class="vx-nav__right">
+    {%- if section.settings.boton_texto != blank -%}
+      <a class="vx-btn" href="#comprar" data-vx-magnetic><span class="vx-btn__label">{{ section.settings.boton_texto }}</span></a>
+    {%- endif -%}
+    <a class="vx-nav__cart" href="{{ routes.cart_url }}" aria-label="Carrito ({{ cart.item_count }})">
+      {% render 'vx-icon', name: 'bolsa' %}
+      <span class="vx-nav__count" data-vx-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+    </a>
+  </div>
+</header>
+{% schema %}
+{
+  "name": "VX – Menú superior",
+  "settings": [
+    { "type": "text", "id": "marca", "label": "Nombre de la marca", "default": "Vortix" },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Comprar" },
+    { "type": "color", "id": "acento", "label": "Color de acento (toda la página)", "default": "#D4FF3F" },
+    { "type": "color", "id": "fondo", "label": "Color de fondo oscuro (toda la página)", "default": "#0A0B0D" }
+  ],
+  "blocks": [
+    { "type": "enlace", "name": "Enlace", "settings": [
+      { "type": "text", "id": "texto", "label": "Texto", "default": "Cómo funciona" },
+      { "type": "text", "id": "ancla", "label": "Destino", "default": "#como-funciona", "info": "Usa #comprar, #como-funciona, #colores, #opiniones o #preguntas" }
+    ] }
+  ],
+  "default": { "blocks": [
+    { "type": "enlace", "settings": { "texto": "Cómo funciona", "ancla": "#como-funciona" } },
+    { "type": "enlace", "settings": { "texto": "Colores", "ancla": "#colores" } },
+    { "type": "enlace", "settings": { "texto": "Preguntas", "ancla": "#preguntas" } }
+  ] }
+}
+{% endschema %}

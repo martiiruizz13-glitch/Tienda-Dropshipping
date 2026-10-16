@@ -1,0 +1,36 @@
+{%- liquid
+  assign idx = section.settings.indice | minus: 1
+  assign img = section.settings.imagen | default: product.media[idx] | default: product.featured_media
+-%}
+<section class="vx-section vx-expand" data-vx-expand aria-labelledby="vx-x-{{ section.id }}">
+  <div class="vx-wrap vx-expand__head">
+    {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow" data-vx-reveal>{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h2 class="vx-h2" id="vx-x-{{ section.id }}" data-vx-reveal>{{ section.settings.titulo }}</h2>
+  </div>
+  <div class="vx-expand__stage" data-vx-expand-stage>
+    <div class="vx-expand__media" data-vx-expand-media>
+      {%- render 'vx-img', image: img, sizes: '100vw' -%}
+      <div class="vx-expand__shade"></div>
+      <div class="vx-expand__caption" data-vx-expand-caption>
+        <p class="vx-h2">{{ section.settings.frase }}</p>
+        <div class="vx-expand__badges">
+          {%- for block in section.blocks -%}<span class="vx-chip" {{ block.shopify_attributes }}>{{ block.settings.texto }}</span>{%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "VX – Imagen expansiva",
+  "settings": [
+    { "type": "image_picker", "id": "imagen", "label": "Imagen", "info": "Ideal: foto horizontal de alguien preparando o bebiendo su batido." },
+    { "type": "range", "id": "indice", "label": "Si no hay imagen, usar la foto nº del producto", "min": 1, "max": 10, "step": 1, "default": 2 },
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "Tecnología vórtice" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Pulsa una vez. <em>El remolino hace el resto.</em>" },
+    { "type": "text", "id": "frase", "label": "Frase sobre la imagen", "default": "Cremoso. Uniforme. En segundos." }
+  ],
+  "blocks": [ { "type": "etiqueta", "name": "Etiqueta", "settings": [ { "type": "text", "id": "texto", "label": "Texto", "default": "7000 rpm" } ] } ],
+  "presets": [ { "name": "VX – Imagen expansiva" } ]
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign opt = product.options_with_values.first
+-%}
+<section class="vx-section vx-section--paper vx-buy" id="comprar" data-vx-buy aria-labelledby="vx-b-{{ section.id }}">
+  <div class="vx-wrap vx-buy__grid">
+    <div class="vx-buy__gallery">
+      <div class="vx-buy__main" data-vx-main>
+        {%- assign main_img = v.featured_media | default: product.featured_media -%}
+        {%- render 'vx-img', image: main_img, sizes: '(min-width: 900px) 55vw, 100vw' -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="vx-buy__thumbs" role="group" aria-label="Fotos del producto">
+          {%- for media in product.media -%}
+            {%- if media.media_type == 'image' -%}
+              <button type="button" class="vx-buy__thumb" data-vx-thumb data-src="{{ media.preview_image | image_url: width: 1400 }}" data-media="{{ media.id }}" aria-label="Ver foto {{ forloop.index }}"{% if media.id == v.featured_media.id %} aria-current="true"{% endif %}>
+                {{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="vx-buy__info">
+      {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow" style="margin:0">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="vx-buy__title" id="vx-b-{{ section.id }}">{{ section.settings.titulo | default: product.title }}</h2>
+      <div class="vx-buy__price"><span data-vx-price>{{ v.price | money }}</span><small>{{ section.settings.nota_precio }}</small></div>
+      {%- if section.blocks.size > 0 -%}
+        <ul class="vx-buy__bullets">
+          {%- for block in section.blocks -%}<li {{ block.shopify_attributes }}>{% render 'vx-icon', name: 'check' %}<span>{{ block.settings.texto }}</span></li>{%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      <div data-vx-form data-product-handle="{{ product.handle }}">
+        <script type="application/json" data-vx-variants>
+          [{%- for variant in product.variants -%}{"id":{{ variant.id }},"title":{{ variant.title | json }},"available":{{ variant.available | json }},"price":{{ variant.price }},"media":{% if variant.featured_media %}{"id":{{ variant.featured_media.id }},"src":{{ variant.featured_media.preview_image | image_url: width: 1400 | json }},"thumb":{{ variant.featured_media.preview_image | image_url: width: 120 | json }}}{% else %}null{% endif %}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+        </script>
+        {%- form 'product', product, class: 'vx-buy__form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ v.id }}" data-vx-id>
+          {%- unless product.has_only_default_variant -%}
+            <fieldset class="vx-pills">
+              <legend>{{ opt.name }}: <b data-vx-variant-name>{{ v.title }}</b></legend>
+              <div class="vx-pills__list">
+                {%- for variant in product.variants -%}
+                  {%- liquid
+                    assign t = variant.title | downcase
+                    assign sw = '#e8e6e1'
+                    if t contains 'negro'
+                      assign sw = '#16171a'
+                    elsif t contains 'crema'
+                      assign sw = '#efe6d2'
+                    elsif t contains 'rosa'
+                      assign sw = '#f2b8c6'
+                    elsif t contains 'verde'
+                      assign sw = '#b9dcb4'
+                    elsif t contains 'blanco'
+                      assign sw = '#ffffff'
+                    endif
+                  -%}
+                  <label class="vx-pill">
+                    <input type="radio" name="vx-variant-{{ section.id }}" value="{{ variant.id }}" {% if variant.id == v.id %}checked{% endif %} {% unless variant.available %}disabled{% endunless %} data-vx-pill>
+                    <span><i style="--sw: {{ sw }}"></i>{{ variant.title }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+          {%- endunless -%}
+          <div class="vx-buy__row" style="margin-top: 24px">
+            <div class="vx-qty">
+              <button type="button" data-vx-step="-1" aria-label="Quitar una unidad">−</button>
+              <input type="number" name="quantity" value="1" min="1" max="10" inputmode="numeric" aria-label="Cantidad" data-vx-qty>
+              <button type="button" data-vx-step="1" aria-label="Añadir una unidad">+</button>
+            </div>
+            <button type="submit" name="add" class="vx-btn vx-btn--dark" data-vx-add data-label="{{ section.settings.boton_texto | escape }}" {% unless v.available %}disabled{% endunless %}>
+              <span class="vx-btn__label">{% if v.available %}{{ section.settings.boton_texto }}{% else %}Agotado{% endif %}{% render 'vx-icon', name: 'flecha' %}</span>
+            </button>
+          </div>
+        {%- endform -%}
+      </div>
+
+      <div class="vx-trust">
+        <div>{% render 'vx-icon', name: 'camion' %}<b>{{ section.settings.t1_titulo }}</b><span class="vx-muted">{{ section.settings.t1_texto }}</span></div>
+        <div>{% render 'vx-icon', name: 'volver' %}<b>{{ section.settings.t2_titulo }}</b><span class="vx-muted">{{ section.settings.t2_texto }}</span></div>
+        <div>{% render 'vx-icon', name: 'escudo' %}<b>{{ section.settings.t3_titulo }}</b><span class="vx-muted">{{ section.settings.t3_texto }}</span></div>
+      </div>
+      {%- if section.settings.nota != blank -%}<p class="vx-buy__note">{{ section.settings.nota }}</p>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.barra_fija -%}
+  <div class="vx-sticky" data-vx-sticky aria-hidden="true">
+    {%- assign sticky_img = v.featured_media | default: product.featured_media -%}
+    {%- if sticky_img -%}<img src="{{ sticky_img.preview_image | image_url: width: 120 }}" alt="" width="44" height="44" data-vx-sticky-img>{%- endif -%}
+    <div class="vx-sticky__txt"><b>{{ section.settings.titulo | default: product.title }}</b><span><span data-vx-price>{{ v.price | money }}</span> · <span data-vx-variant-name>{{ v.title }}</span></span></div>
+    <button type="button" class="vx-btn" data-vx-sticky-add tabindex="-1"><span class="vx-btn__label">{{ section.settings.boton_texto }}</span></button>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "VX – Comprar",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "Elige el tuyo" },
+    { "type": "text", "id": "titulo", "label": "Título (vacío = nombre del producto)" },
+    { "type": "text", "id": "nota_precio", "label": "Nota junto al precio", "default": "IVA incluido · Envío gratis" },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Añadir a la cesta" },
+    { "type": "checkbox", "id": "barra_fija", "label": "Mostrar barra de compra fija al bajar", "default": true },
+    { "type": "header", "content": "Garantías" },
+    { "type": "text", "id": "t1_titulo", "label": "Garantía 1 · título", "default": "Envío gratis" },
+    { "type": "text", "id": "t1_texto", "label": "Garantía 1 · texto", "default": "Con seguimiento a toda España" },
+    { "type": "text", "id": "t2_titulo", "label": "Garantía 2 · título", "default": "14 días" },
+    { "type": "text", "id": "t2_texto", "label": "Garantía 2 · texto", "default": "Para cambiar de opinión" },
+    { "type": "text", "id": "t3_titulo", "label": "Garantía 3 · título", "default": "3 años" },
+    { "type": "text", "id": "t3_texto", "label": "Garantía 3 · texto", "default": "De garantía legal" },
+    { "type": "text", "id": "nota", "label": "Nota al pie", "default": "Pago 100 % seguro y cifrado." }
+  ],
+  "blocks": [ { "type": "ventaja", "name": "Ventaja", "settings": [ { "type": "text", "id": "texto", "label": "Texto", "default": "Mezcla a 7000 rpm, sin grumos" } ] } ]
+}
+{% endschema %}

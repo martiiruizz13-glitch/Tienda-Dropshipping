@@ -1,0 +1,36 @@
+<section class="vx-section vx-moments" aria-labelledby="vx-m-{{ section.id }}">
+  <div class="vx-wrap">
+    <div class="vx-moments__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow" data-vx-reveal>{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="vx-h2" id="vx-m-{{ section.id }}" data-vx-reveal>{{ section.settings.titulo }}</h2>
+    </div>
+    <div class="vx-moments__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign idx = block.settings.indice | minus: 1
+          assign img = block.settings.imagen | default: product.media[idx] | default: product.featured_media
+        -%}
+        <figure class="vx-moment" data-vx-reveal {{ block.shopify_attributes }} style="margin:0">
+          <div data-vx-parallax="0.12" style="position:absolute;inset:0">{%- render 'vx-img', image: img, sizes: '(min-width: 760px) 58vw, 100vw', alt: block.settings.titulo -%}</div>
+          <figcaption class="vx-moment__cap"><b>{{ block.settings.titulo }}</b><span>{{ block.settings.texto }}</span></figcaption>
+        </figure>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "VX – Momentos de uso",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "Tu día, con Vortix" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Del gimnasio a la oficina, <em>siempre listo.</em>" }
+  ],
+  "blocks": [ { "type": "momento", "name": "Momento", "settings": [
+    { "type": "image_picker", "id": "imagen", "label": "Foto", "info": "Ideal: personas usando el vaso (gimnasio, cocina, oficina, viaje)." },
+    { "type": "range", "id": "indice", "label": "Si no hay foto, usar la foto nº del producto", "min": 1, "max": 10, "step": 1, "default": 1 },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Después de entrenar" },
+    { "type": "text", "id": "texto", "label": "Texto", "default": "Tu batido de recuperación en segundos." }
+  ] } ],
+  "presets": [ { "name": "VX – Momentos de uso" } ]
+}
+{% endschema %}

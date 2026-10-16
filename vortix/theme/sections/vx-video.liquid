@@ -1,0 +1,42 @@
+{%- liquid
+  assign idx = section.settings.indice | minus: 1
+  assign poster = section.settings.portada | default: product.media[idx] | default: product.featured_media
+-%}
+<section class="vx-section vx-video" data-vx-video-section aria-label="{{ section.settings.titulo | strip_html | escape }}">
+  <div class="vx-wrap">
+    <div class="vx-video__frame" data-vx-video-frame>
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: autoplay: false, loop: true, muted: true, playsinline: true, controls: false, preload: 'none', image_size: '1600x' }}
+      {%- elsif section.settings.video_url != blank -%}
+        {%- if section.settings.video_url.type == 'youtube' -%}
+          <iframe src="https://www.youtube-nocookie.com/embed/{{ section.settings.video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ section.settings.video_url.id }}&controls=0&playsinline=1&rel=0" title="{{ section.settings.titulo | strip_html | escape }}" allow="autoplay; encrypted-media; picture-in-picture" loading="lazy"></iframe>
+        {%- else -%}
+          <iframe src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?background=1&autoplay=1&loop=1&muted=1" title="{{ section.settings.titulo | strip_html | escape }}" allow="autoplay; picture-in-picture" loading="lazy"></iframe>
+        {%- endif -%}
+      {%- else -%}
+        <div data-vx-parallax="0.1" style="position:absolute;inset:-8% 0">{%- render 'vx-img', image: poster, sizes: '100vw', alt: '' -%}</div>
+      {%- endif -%}
+      <div class="vx-video__overlay">
+        {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="vx-h2">{{ section.settings.titulo }}</h2>
+      </div>
+      {%- if section.settings.video != blank -%}
+        <button type="button" class="vx-video__toggle" data-vx-video-toggle aria-pressed="true" aria-label="Pausar o reproducir el vídeo">{% render 'vx-icon', name: 'pause' %}{% render 'vx-icon', name: 'play' %}</button>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "VX – Vídeo",
+  "settings": [
+    { "type": "video", "id": "video", "label": "Vídeo subido a Shopify", "info": "Vídeo corto en bucle (5–15 s), sin sonido. Se reproduce solo al llegar a esta zona." },
+    { "type": "video_url", "id": "video_url", "label": "…o enlace de YouTube / Vimeo", "accept": ["youtube", "vimeo"] },
+    { "type": "image_picker", "id": "portada", "label": "Imagen si no hay vídeo" },
+    { "type": "range", "id": "indice", "label": "Si no hay imagen, usar la foto nº del producto", "min": 1, "max": 10, "step": 1, "default": 2 },
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "Míralo en acción" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Diez segundos. <em>Ni un grumo.</em>" }
+  ],
+  "presets": [ { "name": "VX – Vídeo" } ]
+}
+{% endschema %}

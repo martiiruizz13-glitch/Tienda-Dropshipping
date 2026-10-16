@@ -1,0 +1,105 @@
+{%- liquid
+  assign hero_img = section.settings.imagen | default: product.featured_media
+  assign v = product.selected_or_first_available_variant
+-%}
+{%- if section.settings.mostrar_intro and section.settings.intro_texto != blank -%}
+  <div class="vx-loader" data-vx-loader aria-hidden="true">
+    <div class="vx-loader__word">{%- assign chars = section.settings.intro_texto | split: '' -%}{%- for c in chars -%}<span>{{ c }}</span>{%- endfor -%}</div>
+    <div class="vx-loader__bar"><i></i></div>
+  </div>
+{%- endif -%}
+
+<section class="vx-hero" data-vx-hero aria-labelledby="vx-hero-title-{{ section.id }}">
+  <div class="vx-hero__bigword" aria-hidden="true"><span data-vx-bigword>{{ section.settings.palabra_fondo }}</span></div>
+
+  <div class="vx-hero__stage">
+    <div class="vx-hero__product" data-vx-product data-hero-in>
+      <div class="vx-hero__glow"></div>
+      <svg class="vx-hero__rings" viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="r1" cx="100" cy="100" r="96"/>
+        <circle class="r2" cx="100" cy="100" r="84"/>
+        <circle class="r3" cx="100" cy="100" r="72"/>
+      </svg>
+      {%- render 'vx-img', image: hero_img, eager: true, sizes: '(min-width: 760px) 420px, 80vw', alt: product.title -%}
+      {%- if section.settings.dato1_valor != blank -%}
+        <div class="vx-hero__float vx-hero__float--a" data-hero-in data-vx-float="-1">
+          <i>{% render 'vx-icon', name: 'rayo' %}</i><span><b>{{ section.settings.dato1_valor }}</b>{{ section.settings.dato1_texto }}</span>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.dato2_valor != blank -%}
+        <div class="vx-hero__float vx-hero__float--b" data-hero-in data-vx-float="1">
+          <i>{% render 'vx-icon', name: 'bateria' %}</i><span><b>{{ section.settings.dato2_valor }}</b>{{ section.settings.dato2_texto }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="vx-hero__foot">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow" data-hero-in>{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h1 class="vx-display vx-hero__title" id="vx-hero-title-{{ section.id }}">
+        <span class="vx-line"><span>{{ section.settings.titulo_1 }}</span></span>
+        <span class="vx-line"><span>{{ section.settings.titulo_2 }}</span></span>
+      </h1>
+      {%- if section.settings.texto != blank -%}<p class="vx-lead vx-hero__sub" data-hero-in>{{ section.settings.texto }}</p>{%- endif -%}
+    </div>
+    <div class="vx-hero__buy">
+      <div class="vx-hero__price" data-hero-in>
+        <span data-vx-price>{{ v.price | money }}</span>
+        {%- if section.settings.nota_precio != blank -%}<small>{{ section.settings.nota_precio }}</small>{%- endif -%}
+      </div>
+      <div class="vx-hero__ctas" data-hero-in>
+        <a class="vx-btn" href="#comprar" data-vx-magnetic><span class="vx-btn__label">{{ section.settings.boton_texto }}{% render 'vx-icon', name: 'flecha' %}</span></a>
+        {%- if section.settings.boton2_texto != blank -%}
+          <a class="vx-btn vx-btn--ghost" href="#como-funciona"><span class="vx-btn__label">{{ section.settings.boton2_texto }}</span></a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  <span class="vx-hero__scroll" aria-hidden="true"></span>
+</section>
+
+{%- if section.blocks.size > 0 -%}
+  <div class="vx-marquee{% if section.settings.cinta_acento %} vx-marquee--accent{% endif %}" aria-label="Ventajas">
+    <div class="vx-marquee__track">
+      {%- for i in (1..2) -%}
+        <div class="vx-marquee__group"{% if forloop.last %} aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}<span class="vx-marquee__item" {{ block.shopify_attributes }}>{{ block.settings.texto }}</span>{%- endfor -%}
+          {%- for block in section.blocks -%}<span class="vx-marquee__item" aria-hidden="true">{{ block.settings.texto }}</span>{%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "VX – Portada",
+  "settings": [
+    { "type": "header", "content": "Pantalla de entrada" },
+    { "type": "checkbox", "id": "mostrar_intro", "label": "Mostrar animación de entrada", "default": true, "info": "Solo se ve la primera vez que se abre la página en cada visita." },
+    { "type": "text", "id": "intro_texto", "label": "Palabra de la entrada", "default": "VORTIX" },
+    { "type": "header", "content": "Imagen" },
+    { "type": "image_picker", "id": "imagen", "label": "Imagen del producto", "info": "Si la dejas vacía se usa la foto principal del producto. Ideal: fondo transparente o blanco." },
+    { "type": "text", "id": "palabra_fondo", "label": "Palabra gigante de fondo", "default": "VORTIX" },
+    { "type": "header", "content": "Textos" },
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Vaso mezclador eléctrico · 400 ml" },
+    { "type": "text", "id": "titulo_1", "label": "Título · línea 1", "default": "Batidos perfectos." },
+    { "type": "text", "id": "titulo_2", "label": "Título · línea 2", "default": "Cero grumos." },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Un remolino de 7000 rpm que mezcla tu proteína en segundos. Recargable, portátil y listo para ir contigo a todas partes." },
+    { "type": "text", "id": "nota_precio", "label": "Nota bajo el precio", "default": "Envío gratis · IVA incluido" },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón principal", "default": "Lo quiero" },
+    { "type": "text", "id": "boton2_texto", "label": "Texto del botón secundario", "default": "Cómo funciona" },
+    { "type": "header", "content": "Datos flotantes" },
+    { "type": "text", "id": "dato1_valor", "label": "Dato 1 · valor", "default": "7000 rpm" },
+    { "type": "text", "id": "dato1_texto", "label": "Dato 1 · texto", "default": "Mezcla en segundos" },
+    { "type": "text", "id": "dato2_valor", "label": "Dato 2 · valor", "default": "USB" },
+    { "type": "text", "id": "dato2_texto", "label": "Dato 2 · texto", "default": "Recargable, sin cables" },
+    { "type": "header", "content": "Cinta en movimiento" },
+    { "type": "checkbox", "id": "cinta_acento", "label": "Cinta en color de acento", "default": true }
+  ],
+  "blocks": [
+    { "type": "frase", "name": "Frase de la cinta", "settings": [ { "type": "text", "id": "texto", "label": "Texto", "default": "Sin grumos" } ] }
+  ]
+}
+{% endschema %}

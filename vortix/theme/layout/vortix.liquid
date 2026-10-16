@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0b0d">
+  <title>{{ page_title }}{% unless page_title contains shop.name %} · {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;650;700;800&family=Inter:wght@400;500;600&display=swap">
+  {{ 'vx.css' | asset_url | stylesheet_tag }}
+  <script>
+    (function (d) {
+      var h = d.documentElement;
+      h.className = h.className.replace('no-js', 'vx-js');
+      try { if (sessionStorage.getItem('vx-seen')) h.classList.add('vx-seen'); } catch (e) {}
+      setTimeout(function () { if (!window.__vxReady) h.classList.add('vx-fallback'); }, 3000);
+    })(document);
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="{{ 'vx.js' | asset_url }}" defer></script>
+  {{ content_for_header }}
+</head>
+<body class="vx-body" data-money="{{ shop.money_format | escape }}" data-root="{{ routes.root_url }}">
+  <a class="vx-skip" href="#vx-main">Saltar al contenido</a>
+  {% section 'vx-nav' %}
+  <main id="vx-main">
+    {{ content_for_layout }}
+  </main>
+  {% section 'vx-footer' %}
+  <div class="vx-toast" role="status" aria-live="polite"></div>
+</body>
+</html>

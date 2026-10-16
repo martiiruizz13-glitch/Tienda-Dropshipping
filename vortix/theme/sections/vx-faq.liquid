@@ -1,0 +1,32 @@
+<section class="vx-section vx-section--paper vx-faq" id="preguntas" aria-labelledby="vx-f-{{ section.id }}">
+  <div class="vx-wrap vx-faq__grid">
+    <div class="vx-faq__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="vx-h2" id="vx-f-{{ section.id }}">{{ section.settings.titulo }}</h2>
+      {%- if section.settings.texto != blank -%}<p class="vx-lead">{{ section.settings.texto }}</p>{%- endif -%}
+    </div>
+    <div>
+      {%- for block in section.blocks -%}
+        <details class="vx-acc" {{ block.shopify_attributes }}{% if forloop.first %} open{% endif %}>
+          <summary>{{ block.settings.pregunta }}<span class="vx-acc__icon" aria-hidden="true"></span></summary>
+          <div class="vx-acc__body"><div><p>{{ block.settings.respuesta }}</p></div></div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "VX – Preguntas frecuentes",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "Preguntas" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Todo lo que <em>quieres saber.</em>" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "¿Te queda alguna duda? Escríbenos y te respondemos personalmente." }
+  ],
+  "blocks": [ { "type": "pregunta", "name": "Pregunta", "settings": [
+    { "type": "text", "id": "pregunta", "label": "Pregunta", "default": "¿Cómo se carga?" },
+    { "type": "textarea", "id": "respuesta", "label": "Respuesta", "default": "Con el cable USB incluido." }
+  ] } ],
+  "presets": [ { "name": "VX – Preguntas frecuentes" } ]
+}
+{% endschema %}

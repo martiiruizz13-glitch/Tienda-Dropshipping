@@ -1,0 +1,51 @@
+<section class="vx-section vx-story" id="como-funciona" data-vx-story aria-labelledby="vx-s-{{ section.id }}">
+  <div class="vx-wrap">
+    <div class="vx-story__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow" data-vx-reveal>{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="vx-h2" id="vx-s-{{ section.id }}" data-vx-reveal>{{ section.settings.titulo }}</h2>
+    </div>
+    <div class="vx-story__grid">
+      <div class="vx-story__visual" aria-hidden="true">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign idx = block.settings.indice | minus: 1
+            assign img = block.settings.imagen | default: product.media[idx] | default: product.featured_media
+          -%}
+          {%- capture cls -%}{% if forloop.first %}is-active{% endif %}{%- endcapture -%}
+          {%- render 'vx-img', image: img, class: cls, sizes: '(min-width: 900px) 50vw, 100vw', alt: '' -%}
+        {%- endfor -%}
+        <span class="vx-story__counter"><span data-vx-story-now>01</span> / {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</span>
+      </div>
+      <div class="vx-story__steps">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign idx = block.settings.indice | minus: 1
+            assign img = block.settings.imagen | default: product.media[idx] | default: product.featured_media
+          -%}
+          <article class="vx-step{% if forloop.first %} is-active{% endif %}" data-vx-step {{ block.shopify_attributes }}>
+            <span class="vx-step__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            <h3 class="vx-h3">{{ block.settings.titulo }}</h3>
+            <p class="vx-lead">{{ block.settings.texto }}</p>
+            <div class="vx-step__img">{%- render 'vx-img', image: img, sizes: '100vw', alt: '' -%}</div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "VX – Cómo funciona",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "Cómo funciona" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Cuatro pasos. <em>Diez segundos.</em>" }
+  ],
+  "blocks": [ { "type": "paso", "name": "Paso", "settings": [
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Añade el líquido" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Agua, leche o bebida vegetal." },
+    { "type": "image_picker", "id": "imagen", "label": "Imagen" },
+    { "type": "range", "id": "indice", "label": "Si no hay imagen, usar la foto nº del producto", "min": 1, "max": 10, "step": 1, "default": 1 }
+  ] } ],
+  "presets": [ { "name": "VX – Cómo funciona" } ]
+}
+{% endschema %}

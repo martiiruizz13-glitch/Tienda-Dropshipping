@@ -77,3 +77,19 @@ la plantilla `mt` y escribir título/descripción.
 - 6 variantes a 29,99 €, sin inventario: Clásico (Negro 5,34 · Blanco 3,77 · Crema 3,19 €)
   y Estilizado (Blanco · Rosa · Verde, 5,09 €). Costes sin envío. Todo en español; handle `vortix-vaso-mezclador-electrico-proteinas`.
 - Fotos: 7 del proveedor sin texto en inglés (se borraron 5 con textos en inglés).
+
+## 16/10/2026 — Landing premium de Vortix (GSAP + ScrollTrigger) · NADA PUBLICADO
+- Tema "TermoCalm (Claude)" (NO publicado). Archivos propios con prefijo vx-:
+  layout/vortix.liquid (página independiente, sin cabecera de TermoCalm),
+  assets/vx.css + vx.js (se suben minificados desde /vortix/dist; fuente legible en /vortix/theme),
+  sections/vx-*.liquid (14), snippets/vx-icon + vx-img, templates/product.vortix.json.
+- Producto Vortix con plantilla `vortix` asignada, sigue en BORRADOR.
+- Secciones: entrada animada, portada con producto 3D, cinta, imagen que se expande
+  (clip-path con scroll), compra (sin recargar, barra fija), cómo funciona (columna fija),
+  cifras con barras y contadores, colores en scroll horizontal, momentos de uso (parallax),
+  vídeo (hueco para subirlo), comparativa, opiniones (solo reales; oculta sin bloques),
+  preguntas, llamada final.
+- Accesibilidad/rendimiento: respeta "reducir movimiento", sin JS se ve todo, solo
+  transform/opacity/clip-path, vídeo solo se reproduce visible.
+- Pendiente: fotos/vídeo de personas usándolo (no había créditos de IA), reseñas reales.
+- Prueba local: /vortix/README de pruebas en el scratchpad (liquidjs + playwright).

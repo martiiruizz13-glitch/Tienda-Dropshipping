@@ -1,0 +1,22 @@
+<section class="vx-section vx-cta" data-vx-cta aria-labelledby="vx-ct-{{ section.id }}">
+  <div class="vx-wrap">
+    <p class="vx-cta__word" aria-hidden="true" data-vx-cta-word>{%- assign chars = section.settings.palabra | split: '' -%}{%- for c in chars -%}<span>{{ c }}</span>{%- endfor -%}</p>
+    <div class="vx-cta__body">
+      <h2 class="vx-h2" id="vx-ct-{{ section.id }}" data-vx-reveal>{{ section.settings.titulo }}</h2>
+      {%- if section.settings.texto != blank -%}<p class="vx-lead" data-vx-reveal>{{ section.settings.texto }}</p>{%- endif -%}
+      <a class="vx-btn" href="#comprar" data-vx-magnetic data-vx-reveal><span class="vx-btn__label">{{ section.settings.boton_texto }} · <span data-vx-price>{{ product.selected_or_first_available_variant.price | money }}</span>{% render 'vx-icon', name: 'flecha' %}</span></a>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "VX – Llamada final",
+  "settings": [
+    { "type": "text", "id": "palabra", "label": "Palabra gigante", "default": "VORTIX" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Menos agitar. <em>Más disfrutar.</em>" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Envío gratis, pago seguro y 14 días para cambiar de opinión." },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Quiero mi Vortix" }
+  ],
+  "presets": [ { "name": "VX – Llamada final" } ]
+}
+{% endschema %}

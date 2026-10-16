@@ -1,0 +1,91 @@
+{%- comment -%}
+  Reseñas: SOLO muestra las reseñas reales que se añadan como bloques.
+  Sin bloques, la sección no se ve en la tienda (solo un aviso en el editor).
+{%- endcomment -%}
+{%- liquid
+  assign total = 0
+  for block in section.blocks
+    assign total = total | plus: block.settings.estrellas
+  endfor
+  if section.blocks.size > 0
+    assign media_val = total | times: 1.0 | divided_by: section.blocks.size | round: 1
+    assign media_int = media_val | round
+  endif
+  assign half = section.blocks.size | divided_by: 2
+-%}
+{%- if section.blocks.size > 0 or request.design_mode -%}
+<section class="vx-section vx-reviews" id="opiniones" aria-labelledby="vx-r-{{ section.id }}">
+  <div class="vx-wrap vx-reviews__head">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow" data-vx-reveal>{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="vx-h2" id="vx-r-{{ section.id }}" data-vx-reveal>{{ section.settings.titulo }}</h2>
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <div class="vx-reviews__score" data-vx-reveal>
+        <strong>{{ media_val | replace: '.', ',' }}</strong>
+        <div><span class="vx-stars" aria-label="{{ media_val }} de 5">{%- for i in (1..media_int) -%}{% render 'vx-icon', name: 'estrella' %}{%- endfor -%}</span><br><span>{{ section.blocks.size }} {% if section.blocks.size == 1 %}opinión{% else %}opiniones{% endif %}</span></div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size == 0 -%}
+    <div class="vx-wrap"><p class="vx-reviews__empty">Esta sección solo se ve en la tienda cuando añades reseñas reales de clientes (botón «Añadir reseña» en el editor). Para recogerlas automáticamente puedes instalar una app de reseñas verificadas como Judge.me.</p></div>
+  {%- else -%}
+    <div class="vx-reviews__rows">
+      {%- for row in (1..2) -%}
+        {%- if row == 2 and section.blocks.size < 4 -%}{%- break -%}{%- endif -%}
+        <div class="vx-marquee" style="border:0;background:none">
+          <div class="vx-marquee__track{% if row == 2 %} vx-marquee__track--rev{% endif %}">
+            {%- for copy in (1..2) -%}
+              <div class="vx-marquee__group"{% if copy == 2 %} aria-hidden="true"{% endif %}>
+                {%- for block in section.blocks -%}
+                  {%- liquid
+                    assign pos = forloop.index0
+                    assign show = true
+                    if section.blocks.size >= 4
+                      if row == 1 and pos >= half
+                        assign show = false
+                      elsif row == 2 and pos < half
+                        assign show = false
+                      endif
+                    endif
+                  -%}
+                  {%- if show -%}
+                    <figure class="vx-review" {% if copy == 1 %}{{ block.shopify_attributes }}{% endif %} style="margin:0">
+                      <span class="vx-stars" aria-label="{{ block.settings.estrellas }} de 5 estrellas">{%- for i in (1..block.settings.estrellas) -%}{% render 'vx-icon', name: 'estrella' %}{%- endfor -%}</span>
+                      <blockquote style="margin:0"><p>{{ block.settings.texto }}</p></blockquote>
+                      <figcaption class="vx-review__who">
+                        {%- if block.settings.foto != blank -%}{{ block.settings.foto | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}<span class="vx-review__avatar" aria-hidden="true">{{ block.settings.nombre | slice: 0 }}</span>{%- endif -%}
+                        <span><b>{{ block.settings.nombre }}</b><span>{{ block.settings.ciudad }}{% if block.settings.verificada %} · <span class="vx-review__ok">Compra verificada</span>{% endif %}</span></span>
+                      </figcaption>
+                    </figure>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "VX – Opiniones",
+  "settings": [
+    { "type": "paragraph", "content": "Añade solo opiniones reales de clientes. Inventarlas es ilegal y puede costarte multas y el cierre de anuncios." },
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "Opiniones" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Lo que dicen <em>quienes ya lo usan.</em>" }
+  ],
+  "blocks": [ { "type": "resena", "name": "Reseña", "settings": [
+    { "type": "text", "id": "nombre", "label": "Nombre del cliente" },
+    { "type": "text", "id": "ciudad", "label": "Ciudad" },
+    { "type": "range", "id": "estrellas", "label": "Estrellas", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "texto", "label": "Opinión" },
+    { "type": "image_picker", "id": "foto", "label": "Foto (opcional)" },
+    { "type": "checkbox", "id": "verificada", "label": "Compra verificada", "default": false }
+  ] } ],
+  "presets": [ { "name": "VX – Opiniones" } ]
+}
+{% endschema %}

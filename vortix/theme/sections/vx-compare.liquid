@@ -1,0 +1,50 @@
+<section class="vx-section vx-section--paper vx-compare" aria-labelledby="vx-cp-{{ section.id }}">
+  <div class="vx-wrap">
+    <div class="vx-compare__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow" data-vx-reveal>{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="vx-h2" id="vx-cp-{{ section.id }}" data-vx-reveal>{{ section.settings.titulo }}</h2>
+    </div>
+    <table class="vx-table" data-vx-reveal>
+      <thead>
+        <tr>
+          <th scope="col"><span class="vx-sr">Característica</span></th>
+          <th scope="col" class="is-us">{{ section.settings.col1 }}</th>
+          <th scope="col">{{ section.settings.col2 }}</th>
+          <th scope="col">{{ section.settings.col3 }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for block in section.blocks -%}
+          <tr {{ block.shopify_attributes }}>
+            <th scope="row">{{ block.settings.texto }}</th>
+            {%- assign vals = block.settings.nosotros | append: ',' | append: block.settings.otro1 | append: ',' | append: block.settings.otro2 | split: ',' -%}
+            {%- for val in vals -%}
+              <td{% if forloop.first %} class="is-us"{% endif %}>
+                {%- if val == 'true' -%}<span class="vx-yes">{% render 'vx-icon', name: 'check' %}<span class="vx-sr">Sí</span></span>{%- else -%}<span class="vx-no">{% render 'vx-icon', name: 'x' %}<span class="vx-sr">No</span></span>{%- endif -%}
+              </td>
+            {%- endfor -%}
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "VX – Comparativa",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "La diferencia" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Agitar a mano es <em>cosa del pasado.</em>" },
+    { "type": "text", "id": "col1", "label": "Columna 1 (tu producto)", "default": "Vortix" },
+    { "type": "text", "id": "col2", "label": "Columna 2", "default": "Botella normal" },
+    { "type": "text", "id": "col3", "label": "Columna 3", "default": "Batidora" }
+  ],
+  "blocks": [ { "type": "fila", "name": "Fila", "settings": [
+    { "type": "text", "id": "texto", "label": "Característica", "default": "Sin grumos" },
+    { "type": "checkbox", "id": "nosotros", "label": "Columna 1 sí", "default": true },
+    { "type": "checkbox", "id": "otro1", "label": "Columna 2 sí", "default": false },
+    { "type": "checkbox", "id": "otro2", "label": "Columna 3 sí", "default": true }
+  ] } ],
+  "presets": [ { "name": "VX – Comparativa" } ]
+}
+{% endschema %}

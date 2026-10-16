@@ -1,0 +1,418 @@
+{
+  "layout": "vortix",
+  "sections": {
+    "hero": {
+      "type": "vx-hero",
+      "settings": {},
+      "blocks": {
+        "m1": {
+          "type": "frase",
+          "settings": {
+            "texto": "Sin grumos"
+          }
+        },
+        "m2": {
+          "type": "frase",
+          "settings": {
+            "texto": "7000 rpm"
+          }
+        },
+        "m3": {
+          "type": "frase",
+          "settings": {
+            "texto": "Recargable por USB"
+          }
+        },
+        "m4": {
+          "type": "frase",
+          "settings": {
+            "texto": "400 ml"
+          }
+        },
+        "m5": {
+          "type": "frase",
+          "settings": {
+            "texto": "Listo en segundos"
+          }
+        },
+        "m6": {
+          "type": "frase",
+          "settings": {
+            "texto": "Envío gratis"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6"
+      ]
+    },
+    "expand": {
+      "type": "vx-expand",
+      "settings": {
+        "indice": 2
+      },
+      "blocks": {
+        "e1": {
+          "type": "etiqueta",
+          "settings": {
+            "texto": "7000 rpm"
+          }
+        },
+        "e2": {
+          "type": "etiqueta",
+          "settings": {
+            "texto": "Recargable por USB"
+          }
+        },
+        "e3": {
+          "type": "etiqueta",
+          "settings": {
+            "texto": "400 ml"
+          }
+        }
+      },
+      "block_order": [
+        "e1",
+        "e2",
+        "e3"
+      ]
+    },
+    "buy": {
+      "type": "vx-buy",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "ventaja",
+          "settings": {
+            "texto": "Mezcla a 7000 rpm, sin grumos"
+          }
+        },
+        "b2": {
+          "type": "ventaja",
+          "settings": {
+            "texto": "Recargable por USB · batería de 1200 mAh"
+          }
+        },
+        "b3": {
+          "type": "ventaja",
+          "settings": {
+            "texto": "400 ml con escala de medida"
+          }
+        },
+        "b4": {
+          "type": "ventaja",
+          "settings": {
+            "texto": "Tapa con apertura en un clic"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "story": {
+      "type": "vx-story",
+      "settings": {},
+      "blocks": {
+        "s1": {
+          "type": "paso",
+          "settings": {
+            "titulo": "Añade el líquido",
+            "texto": "Agua, leche o bebida vegetal. Usa la escala del vaso para acertar a la primera.",
+            "indice": 1
+          }
+        },
+        "s2": {
+          "type": "paso",
+          "settings": {
+            "titulo": "Echa tu proteína",
+            "texto": "Proteína, cacao, café soluble o avena. Primero el líquido, después el polvo.",
+            "indice": 3
+          }
+        },
+        "s3": {
+          "type": "paso",
+          "settings": {
+            "titulo": "Pulsa una vez",
+            "texto": "El motor crea un remolino a 7000 rpm que deshace cada grumo en segundos.",
+            "indice": 2
+          }
+        },
+        "s4": {
+          "type": "paso",
+          "settings": {
+            "titulo": "Bebe donde quieras",
+            "texto": "Abre la tapa con un clic y disfruta. Sin coctelera, sin enchufes, sin manchas.",
+            "indice": 4
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ]
+    },
+    "stats": {
+      "type": "vx-stats",
+      "settings": {},
+      "blocks": {
+        "n1": {
+          "type": "cifra",
+          "settings": {
+            "valor": 7000,
+            "unidad": "rpm",
+            "titulo": "Velocidad",
+            "texto": "Remolino que deshace los grumos",
+            "barra": 95
+          }
+        },
+        "n2": {
+          "type": "cifra",
+          "settings": {
+            "valor": 1200,
+            "unidad": "mAh",
+            "titulo": "Batería",
+            "texto": "Recargable por USB, sin cables al usarlo",
+            "barra": 75
+          }
+        },
+        "n3": {
+          "type": "cifra",
+          "settings": {
+            "valor": 400,
+            "unidad": "ml",
+            "titulo": "Capacidad",
+            "texto": "Tu batido completo de una vez",
+            "barra": 60
+          }
+        },
+        "n4": {
+          "type": "cifra",
+          "settings": {
+            "valor": 1,
+            "unidad": "clic",
+            "titulo": "Para mezclar",
+            "texto": "Un botón. Nada más que aprender",
+            "barra": 100
+          }
+        }
+      },
+      "block_order": [
+        "n1",
+        "n2",
+        "n3",
+        "n4"
+      ]
+    },
+    "colors": {
+      "type": "vx-colors",
+      "settings": {}
+    },
+    "moments": {
+      "type": "vx-moments",
+      "settings": {},
+      "blocks": {
+        "o1": {
+          "type": "momento",
+          "settings": {
+            "indice": 4,
+            "titulo": "Después de entrenar",
+            "texto": "Tu batido de recuperación listo en segundos."
+          }
+        },
+        "o2": {
+          "type": "momento",
+          "settings": {
+            "indice": 5,
+            "titulo": "En la oficina",
+            "texto": "Tu tentempié saludable, sin manchar ni hacer ruido."
+          }
+        },
+        "o3": {
+          "type": "momento",
+          "settings": {
+            "indice": 6,
+            "titulo": "Por la mañana",
+            "texto": "Café con leche o cacao batidos antes de salir."
+          }
+        },
+        "o4": {
+          "type": "momento",
+          "settings": {
+            "indice": 7,
+            "titulo": "De viaje",
+            "texto": "Sin enchufes: va contigo a donde vayas."
+          }
+        }
+      },
+      "block_order": [
+        "o1",
+        "o2",
+        "o3",
+        "o4"
+      ]
+    },
+    "video": {
+      "type": "vx-video",
+      "settings": {
+        "indice": 2
+      }
+    },
+    "compare": {
+      "type": "vx-compare",
+      "settings": {},
+      "blocks": {
+        "c1": {
+          "type": "fila",
+          "settings": {
+            "texto": "Sin grumos",
+            "nosotros": true,
+            "otro1": false,
+            "otro2": true
+          }
+        },
+        "c2": {
+          "type": "fila",
+          "settings": {
+            "texto": "Cabe en la mochila",
+            "nosotros": true,
+            "otro1": true,
+            "otro2": false
+          }
+        },
+        "c3": {
+          "type": "fila",
+          "settings": {
+            "texto": "Sin enchufe al usarlo",
+            "nosotros": true,
+            "otro1": true,
+            "otro2": false
+          }
+        },
+        "c4": {
+          "type": "fila",
+          "settings": {
+            "texto": "Bebes en el mismo vaso",
+            "nosotros": true,
+            "otro1": true,
+            "otro2": false
+          }
+        },
+        "c5": {
+          "type": "fila",
+          "settings": {
+            "texto": "Sin esfuerzo",
+            "nosotros": true,
+            "otro1": false,
+            "otro2": true
+          }
+        },
+        "c6": {
+          "type": "fila",
+          "settings": {
+            "texto": "Fácil de limpiar",
+            "nosotros": true,
+            "otro1": true,
+            "otro2": false
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6"
+      ]
+    },
+    "reviews": {
+      "type": "vx-reviews",
+      "settings": {}
+    },
+    "faq": {
+      "type": "vx-faq",
+      "settings": {},
+      "blocks": {
+        "f1": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cómo se carga?",
+            "respuesta": "Con el cable USB incluido, desde cualquier cargador de móvil, ordenador o batería externa. Cárgalo antes del primer uso."
+          }
+        },
+        "f2": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Puedo mezclar bebidas calientes?",
+            "respuesta": "Frías o templadas, sí. Hirviendo no, para cuidar el motor y evitar quemaduras."
+          }
+        },
+        "f3": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cómo se limpia?",
+            "respuesta": "Lava el vaso con agua y un poco de jabón. La base lleva el motor y la batería: no la sumerjas ni la metas en el lavavajillas."
+          }
+        },
+        "f4": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Qué diferencia hay entre Clásico y Estilizado?",
+            "respuesta": "El Clásico tiene tapa con asa y boquilla abatible. El Estilizado tiene una silueta más fina y botón frontal. Los dos se usan igual."
+          }
+        },
+        "f5": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cuánto tarda en llegar?",
+            "respuesta": "Enviamos gratis a toda España con número de seguimiento. El plazo habitual es de 12 a 25 días."
+          }
+        },
+        "f6": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Y si no me convence?",
+            "respuesta": "Tienes 14 días desde que lo recibes para cambiar de opinión, y 3 años de garantía legal frente a defectos de fabricación."
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ]
+    },
+    "cta": {
+      "type": "vx-cta",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "expand",
+    "buy",
+    "story",
+    "stats",
+    "colors",
+    "moments",
+    "video",
+    "compare",
+    "reviews",
+    "faq",
+    "cta"
+  ]
+}

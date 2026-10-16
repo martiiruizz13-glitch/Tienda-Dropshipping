@@ -1,0 +1,18 @@
+{%- comment -%}
+  Imagen adaptable. Parámetros: image (imagen o media), sizes, eager (true/false), class, alt
+{%- endcomment -%}
+{%- liquid
+  assign src = image
+  if image.preview_image
+    assign src = image.preview_image
+  endif
+  assign alt_text = alt | default: src.alt | default: product.title | escape
+  assign sz = sizes | default: '100vw'
+-%}
+{%- if src != blank -%}
+  {%- if eager -%}
+    {{ src | image_url: width: 2000 | image_tag: widths: '480, 720, 1000, 1400, 2000', sizes: sz, loading: 'eager', fetchpriority: 'high', class: class, alt: alt_text }}
+  {%- else -%}
+    {{ src | image_url: width: 2000 | image_tag: widths: '480, 720, 1000, 1400, 2000', sizes: sz, loading: 'lazy', class: class, alt: alt_text }}
+  {%- endif -%}
+{%- endif -%}

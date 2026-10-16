@@ -1,0 +1,42 @@
+<section class="vx-section vx-colors" id="colores" data-vx-colors aria-labelledby="vx-c-{{ section.id }}">
+  <div class="vx-wrap vx-colors__head">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow" data-vx-reveal>{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="vx-h2" id="vx-c-{{ section.id }}" data-vx-reveal>{{ section.settings.titulo }}</h2>
+    </div>
+    {%- if section.settings.texto != blank -%}<p class="vx-lead" data-vx-reveal>{{ section.settings.texto }}</p>{%- endif -%}
+  </div>
+  <div class="vx-colors__viewport" data-vx-colors-viewport>
+    <div class="vx-colors__track" data-vx-colors-track>
+      {%- for variant in product.variants -%}
+        {%- if variant.featured_media -%}
+          {%- assign parts = variant.title | split: ' · ' -%}
+          <article class="vx-color">
+            <div class="vx-color__media">
+              {%- if parts.size > 1 -%}<span class="vx-color__tag">{{ parts.first }}</span>{%- endif -%}
+              {%- render 'vx-img', image: variant.featured_media, sizes: '(min-width: 760px) 30vw, 78vw', alt: variant.title -%}
+            </div>
+            <div class="vx-color__row">
+              <h3 class="vx-h3">{{ parts.last }}</h3>
+              <button type="button" class="vx-btn vx-btn--ghost" data-vx-pick="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %} aria-label="Elegir {{ variant.title | escape }}">
+                <span class="vx-btn__label">{{ section.settings.boton_texto }}{% render 'vx-icon', name: 'flecha' %}</span>
+              </button>
+            </div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "VX – Colores",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "Modelos y colores" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Elige tu <em>estilo.</em>" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Clásico, con asa y boquilla abatible. Estilizado, de silueta más fina. Seis acabados, la misma potencia." },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Elegir" }
+  ],
+  "presets": [ { "name": "VX – Colores" } ]
+}
+{% endschema %}

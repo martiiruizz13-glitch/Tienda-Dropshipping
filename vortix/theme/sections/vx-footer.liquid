@@ -1,0 +1,21 @@
+<footer class="vx-foot">
+  <div class="vx-wrap vx-foot__grid">
+    <a class="vx-nav__logo" href="{{ routes.root_url }}">{% render 'vx-icon', name: 'logo' %}{{ section.settings.marca }}</a>
+    <ul>
+      {%- for policy in shop.policies -%}
+        <li><a href="{{ policy.url }}">{{ policy.title }}</a></li>
+      {%- endfor -%}
+      <li><a href="{{ routes.cart_url }}">Carrito</a></li>
+    </ul>
+    <small>© {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.texto }}</small>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "VX – Pie de página",
+  "settings": [
+    { "type": "text", "id": "marca", "label": "Nombre de la marca", "default": "Vortix" },
+    { "type": "text", "id": "texto", "label": "Texto final", "default": "Pago seguro · Envío con seguimiento." }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,38 @@
+<section class="vx-section vx-stats" data-vx-stats aria-labelledby="vx-st-{{ section.id }}">
+  <div class="vx-wrap">
+    <div class="vx-stats__head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<p class="vx-eyebrow" data-vx-reveal>{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="vx-h2" id="vx-st-{{ section.id }}" data-vx-reveal>{{ section.settings.titulo }}</h2>
+      </div>
+      {%- if section.settings.texto != blank -%}<p class="vx-lead" data-vx-reveal>{{ section.settings.texto }}</p>{%- endif -%}
+    </div>
+    <div class="vx-stats__grid">
+      {%- for block in section.blocks -%}
+        <div class="vx-stat" data-vx-reveal {{ block.shopify_attributes }}>
+          <div class="vx-stat__value"><span data-vx-count-to="{{ block.settings.valor }}">{{ block.settings.valor }}</span><small>{{ block.settings.unidad }}</small></div>
+          <div class="vx-stat__label"><b>{{ block.settings.titulo }}</b>{{ block.settings.texto }}</div>
+          <div class="vx-bar" aria-hidden="true"><i style="--v: {{ block.settings.barra | divided_by: 100.0 }}"></i></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "VX – Cifras con barras",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño", "default": "En cifras" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Pequeño por fuera. <em>Potente por dentro.</em>" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Todo lo que necesitas para un batido perfecto, en un vaso que cabe en la mochila." }
+  ],
+  "blocks": [ { "type": "cifra", "name": "Cifra", "settings": [
+    { "type": "number", "id": "valor", "label": "Número", "default": 7000 },
+    { "type": "text", "id": "unidad", "label": "Unidad", "default": "rpm" },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Velocidad" },
+    { "type": "text", "id": "texto", "label": "Texto", "default": "Remolino que deshace los grumos" },
+    { "type": "range", "id": "barra", "label": "Llenado de la barra (%)", "min": 5, "max": 100, "step": 5, "default": 90 }
+  ] } ],
+  "presets": [ { "name": "VX – Cifras con barras" } ]
+}
+{% endschema %}
