@@ -10,7 +10,7 @@
   #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
   #shopify-section-{{ section.id }} .vx-expand { background: {{ section.settings.bg }}; }
   #shopify-section-{{ section.id }} .vx-expand__title .vx-h2 { font-size: clamp(2.6rem, 1.4rem + 5vw, {{ section.settings.title_size }}px); }
-  #shopify-section-{{ section.id }} .vx-expand__title { text-align: {{ section.settings.align }}; {% if section.settings.align == 'center' %}margin-inline:auto; left:0; right:0; max-width:none;{% endif %} }
+  #shopify-section-{{ section.id }} .vx-expand__title { text-align: {{ section.settings.align }}; {% if section.settings.align == 'center' %}left:0; right:0;{% endif %} }
   #shopify-section-{{ section.id }} .vx-expand__media { background: {{ section.settings.media_bg }}; }
   {%- if section.settings.contain -%}
   #shopify-section-{{ section.id }} .vx-expand__media img { object-fit: contain; padding: 6% 10%; }
@@ -53,7 +53,7 @@
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "El efecto vórtice" },
     { "type": "text", "id": "title", "label": "Título final", "default": "Un remolino perfecto en cada trago." },
     { "type": "select", "id": "align", "label": "Alineación", "options": [ { "value": "left", "label": "Izquierda" }, { "value": "center", "label": "Centro" } ], "default": "left" },
-    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 40, "max": 160, "step": 4, "default": 120 },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 40, "max": 160, "step": 4, "default": 104 },
     { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#faf7f2" },
     { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "como-funciona" },
     { "type": "header", "content": "Espaciado" },

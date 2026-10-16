@@ -10,7 +10,7 @@
 -%}
 {% style %}
   #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {{ section.settings.bg }}; }
-  #shopify-section-{{ section.id }} .vx-hero { background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-hero, #shopify-section-{{ section.id }} .vx-hero__stage { background: {{ section.settings.bg }}; }
   #shopify-section-{{ section.id }} .vx-hero__vortex { background: radial-gradient(closest-side, {{ section.settings.bg }} 52%, transparent 53%), conic-gradient(from 0deg, var(--vx-accent), var(--vx-accent-2), #ffd3bd, var(--vx-sand), var(--vx-accent)); }
   #shopify-section-{{ section.id }} .vx-hero__title { font-size: clamp(3.2rem, 1.6rem + 7vw, {{ section.settings.title_size }}px); text-align: {{ section.settings.align }}; }
   #shopify-section-{{ section.id }} .vx-hero__copy { text-align: {{ section.settings.align }}; }
@@ -25,7 +25,7 @@
     <i style="--s:8px; left:46%; top:12%; --c:#ffb08a"></i>
     <i style="--s:22px; left:92%; top:70%; --c:var(--vx-ink)"></i>
     <i style="--s:10px; left:58%; top:86%"></i>
-    <i style="--s:6px; left:30%; top:78%; --c:var(--vx-ink)"></i>
+    <i style="--s:6px; left:47%; top:94%; --c:var(--vx-ink)"></i>
     <i style="--s:12px; left:78%; top:16%; --c:#c99a6b"></i>
     <i style="--s:9px; left:4%; top:62%; --c:#c99a6b"></i>
   </div>
@@ -69,7 +69,8 @@
         {%- if section.settings.image != blank -%}
           {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 990px) 46vw, 90vw', widths: '500,800,1100,1400' }}
         {%- elsif p.featured_media -%}
-          {{ p.featured_media.preview_image | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 990px) 46vw, 90vw', widths: '500,800,1200', alt: p.title }}
+          {%- assign hi = section.settings.fallback_index | minus: 1 -%}{%- assign hm = p.media[hi] | default: p.featured_media -%}
+          {{ hm.preview_image | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 990px) 46vw, 90vw', widths: '500,800,1200', alt: p.title }}
         {%- endif -%}
       </div>
       <div class="vx-hero__badge vx-hero__badge--a" data-hero-badge><strong data-count="{{ section.settings.badge_a_num }}">{{ section.settings.badge_a_num }}</strong>{{ section.settings.badge_a_text }}</div>
@@ -86,7 +87,8 @@
   "tag": "div",
   "settings": [
     { "type": "product", "id": "product", "label": "Producto" },
-    { "type": "image_picker", "id": "image", "label": "Imagen principal (opcional, por defecto la del producto)" },
+    { "type": "image_picker", "id": "image", "label": "Imagen principal (opcional)" },
+    { "type": "range", "id": "fallback_index", "label": "Si no hay imagen: nº de foto del producto", "min": 1, "max": 10, "step": 1, "default": 4 },
     { "type": "header", "content": "Textos" },
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Nuevo · Vaso mezclador eléctrico" },
     { "type": "text", "id": "title_1", "label": "Título línea 1", "default": "Pulsa." },
@@ -107,7 +109,7 @@
     { "type": "text", "id": "badge_b_text", "label": "Etiqueta 2 – texto", "default": "batido sin grumos" },
     { "type": "header", "content": "Diseño" },
     { "type": "select", "id": "align", "label": "Alineación del texto", "options": [ { "value": "left", "label": "Izquierda" }, { "value": "center", "label": "Centro" }, { "value": "right", "label": "Derecha" } ], "default": "left" },
-    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 60, "max": 200, "step": 4, "default": 160 },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 60, "max": 200, "step": 4, "default": 132 },
     { "type": "range", "id": "sub_size", "label": "Tamaño del subtítulo (px)", "min": 14, "max": 28, "step": 1, "default": 20 },
     { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#f1ece4" },
     { "type": "range", "id": "vortex_speed", "label": "Velocidad del remolino (segundos por vuelta)", "min": 4, "max": 40, "step": 1, "default": 14 },

@@ -204,13 +204,12 @@
 
       var mm = gsap.matchMedia();
       mm.add({ desk: '(min-width: 750px)', mob: '(max-width: 749px)' }, function (ctx) {
-        var startInset = ctx.conditions.desk ? '22% 30% 22% 30%' : '26% 12% 26% 12%';
-        gsap.set(media, { clipPath: 'inset(' + startInset + ' round 28px)' });
+        gsap.set(media, { '--vx-ex-y': ctx.conditions.desk ? '22%' : '24%', '--vx-ex-x': ctx.conditions.desk ? '30%' : '10%', '--vx-ex-r': '28px' });
         gsap.set(title, { autoAlpha: 0, y: 60 });
         var tl = gsap.timeline({
           scrollTrigger: { trigger: sec, start: 'top top', end: '+=140%', scrub: 0.8, pin: pin, anticipatePin: 1 }
         });
-        tl.to(media, { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'power2.inOut', duration: 1 }, 0)
+        tl.to(media, { '--vx-ex-y': '0%', '--vx-ex-x': '0%', '--vx-ex-r': '0px', ease: 'power2.inOut', duration: 1 }, 0)
           .to(img, { scale: 1, ease: 'power2.inOut', duration: 1 }, 0)
           .to(sides[0], { xPercent: -60, autoAlpha: 0, ease: 'power2.in', duration: 0.6 }, 0)
           .to(sides[1], { xPercent: 60, autoAlpha: 0, ease: 'power2.in', duration: 0.6 }, 0)
@@ -263,7 +262,7 @@
       gsap.set(lid, { y: -70, autoAlpha: 0 });
       gsap.set(swirl, { autoAlpha: 0 });
       gsap.set(lumps, { autoAlpha: 0, scale: 1, transformOrigin: '50% 50%' });
-      gsap.set(powder, { autoAlpha: 0 });
+      gsap.set([powder, ripple], { autoAlpha: 0 });
       gsap.set(caps, { autoAlpha: 0, y: 30 });
       gsap.to(wave, { x: -80, duration: 1.4, repeat: -1, ease: 'none' });
       var spin = gsap.to(ellipses, { rotate: 360, svgOrigin: '100 200', duration: 0.5, repeat: -1, ease: 'none', paused: true });
@@ -277,7 +276,7 @@
       tl.fromTo(cup, { scale: 0.92, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.7, ease: EASE }, 0);
       // 1 · polvo
       cap(0, 0.2, 1.6);
-      tl.fromTo(powder, { y: 0, autoAlpha: 1 }, { y: 230, duration: 1.1, stagger: 0.07, ease: 'power2.in' }, 0.4)
+      tl.fromTo(powder, { y: 0, autoAlpha: 1 }, { y: 230, duration: 1.1, stagger: 0.07, ease: 'power2.in', immediateRender: false }, 0.4)
         .to(powder, { autoAlpha: 0, duration: 0.1, stagger: 0.07 }, 1.4)
         .to(lumps, { autoAlpha: 1, duration: 0.3, stagger: 0.05 }, 1.3)
         .to(liquid, { y: 236, duration: 0.6 }, 1.3);
@@ -290,7 +289,7 @@
       cap(2, 4.3, 1.2);
       tl.to(button, { scale: 0.8, transformOrigin: '50% 50%', svgOrigin: '100 287', duration: 0.12, ease: 'power2.in' }, 4.9)
         .to(button, { scale: 1, svgOrigin: '100 287', duration: 0.3, ease: 'back.out(3)' }, 5.02)
-        .fromTo(ripple, { scale: 1, autoAlpha: 0.9, svgOrigin: '100 287' }, { scale: 3.2, autoAlpha: 0, svgOrigin: '100 287', duration: 0.8, ease: 'power2.out' }, 4.95)
+        .fromTo(ripple, { scale: 1, autoAlpha: 0.9, svgOrigin: '100 287' }, { scale: 3.2, autoAlpha: 0, svgOrigin: '100 287', duration: 0.8, ease: 'power2.out', immediateRender: false }, 4.95)
         .to(glow, { autoAlpha: 1, duration: 0.4 }, 5);
       // 4 · 7000 rpm
       cap(3, 5.7, 1.8);
@@ -564,6 +563,8 @@
         if (sec.closest('.template-product')) { url.searchParams.set('variant', v.id); history.replaceState(null, '', url.toString()); }
       };
       $$('input[data-option]', form).forEach(function (r) { r.addEventListener('change', function () { render(current()); }); });
+      var initV = current();
+      if (initV && initV.featured_media && initV.featured_media.position) show(initV.featured_media.position - 1);
 
       /* cantidad */
       $$('[data-qty]', form).forEach(function (b) {
@@ -701,14 +702,14 @@
       var esc = function (s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; };
       items.innerHTML = cart.items.map(function (it) {
         var img = it.image ? it.image.replace(/(\.[a-z]+)(\?|$)/i, '_200x$1$2') : '';
-        var variant = it.variant_title && it.variant_title !== 'Default Title' ? '<div class="vx-line__variant">' + esc(it.variant_title) + '</div>' : '<div class="vx-line__variant"></div>';
-        return '<div class="vx-line">' +
+        var variant = it.variant_title && it.variant_title !== 'Default Title' ? '<div class="vx-cline__variant">' + esc(it.variant_title) + '</div>' : '<div class="vx-cline__variant"></div>';
+        return '<div class="vx-cline">' +
           (img ? '<img src="' + esc(img) + '" alt="" width="76" height="76" loading="lazy">' : '<span></span>') +
-          '<div><div class="vx-line__title">' + esc(it.product_title) + '</div>' + variant +
+          '<div><div class="vx-cline__title">' + esc(it.product_title) + '</div>' + variant +
           '<div class="vx-qty"><button type="button" aria-label="Quitar una unidad" data-key="' + esc(it.key) + '" data-line-qty="' + (it.quantity - 1) + '">−</button>' +
           '<input type="text" readonly value="' + it.quantity + '" aria-label="Cantidad">' +
           '<button type="button" aria-label="Añadir una unidad" data-key="' + esc(it.key) + '" data-line-qty="' + (it.quantity + 1) + '">+</button></div></div>' +
-          '<div><div class="vx-line__price">' + money(it.final_line_price) + '</div><button type="button" class="vx-line__remove" data-key="' + esc(it.key) + '" data-line-remove>Eliminar</button></div>' +
+          '<div><div class="vx-cline__price">' + money(it.final_line_price) + '</div><button type="button" class="vx-cline__remove" data-key="' + esc(it.key) + '" data-line-remove>Eliminar</button></div>' +
           '</div>';
       }).join('');
     }
