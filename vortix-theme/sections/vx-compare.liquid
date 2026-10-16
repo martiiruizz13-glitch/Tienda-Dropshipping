@@ -1,0 +1,68 @@
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-h2 { font-size: clamp(2.4rem, 1.4rem + 4vw, {{ section.settings.title_size }}px); text-align: {{ section.settings.align }}; }
+  #shopify-section-{{ section.id }} .vx-compare__head { text-align: {{ section.settings.align }}; }
+{% endstyle %}
+<section class="vx-compare vx-section" id="{{ section.settings.anchor }}">
+  <div class="vx-wrap" style="max-width:1040px">
+    <div class="vx-compare__head">
+      <span class="vx-eyebrow" data-reveal>{{ section.settings.eyebrow }}</span>
+      <h2 class="vx-h2" style="margin-top:1rem" data-reveal>{{ section.settings.title }}</h2>
+    </div>
+    <table class="vx-compare__table" data-reveal>
+      <caption class="vx-sr">{{ section.settings.title }}</caption>
+      <thead>
+        <tr>
+          <th scope="col"><span class="vx-sr">Característica</span></th>
+          <th scope="col" class="is-us">{{ section.settings.col_us }}</th>
+          <th scope="col">{{ section.settings.col_a }}</th>
+          <th scope="col">{{ section.settings.col_b }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for block in section.blocks -%}
+          <tr {{ block.shopify_attributes }}>
+            <th scope="row" style="font-weight:500">{{ block.settings.label }}</th>
+            {%- assign vals = block.settings.us | append: ',' | append: block.settings.a | append: ',' | append: block.settings.b | split: ',' -%}
+            {%- for v in vals -%}
+              <td{% if forloop.first %} class="is-us"{% endif %}>
+                {%- if v == 'true' -%}<span class="vx-check">{% render 'vx-icon', name: 'check' %}</span><span class="vx-sr">Sí</span>
+                {%- else -%}<span class="vx-cross">{% render 'vx-icon', name: 'cross' %}</span><span class="vx-sr">No</span>{%- endif -%}
+              </td>
+            {%- endfor -%}
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VX – Comparativa",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Compáralo" },
+    { "type": "text", "id": "title", "label": "Título", "default": "No es otro shaker más." },
+    { "type": "text", "id": "col_us", "label": "Columna 1 (tu producto)", "default": "Vortix" },
+    { "type": "text", "id": "col_a", "label": "Columna 2", "default": "Shaker normal" },
+    { "type": "text", "id": "col_b", "label": "Columna 3", "default": "Batidora" },
+    { "type": "select", "id": "align", "label": "Alineación del título", "options": [ { "value": "left", "label": "Izquierda" }, { "value": "center", "label": "Centro" } ], "default": "center" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 40, "max": 120, "step": 4, "default": 80 },
+    { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#f1ece4" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "comparativa" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 120 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 120 }
+  ],
+  "blocks": [
+    { "type": "row", "name": "Fila", "settings": [
+      { "type": "text", "id": "label", "label": "Característica", "default": "Sin grumos" },
+      { "type": "checkbox", "id": "us", "label": "Columna 1 lo tiene", "default": true },
+      { "type": "checkbox", "id": "a", "label": "Columna 2 lo tiene", "default": false },
+      { "type": "checkbox", "id": "b", "label": "Columna 3 lo tiene", "default": true }
+    ] }
+  ],
+  "presets": [ { "name": "VX – Comparativa", "blocks": [ { "type": "row" } ] } ]
+}
+{% endschema %}

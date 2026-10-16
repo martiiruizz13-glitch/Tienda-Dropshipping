@@ -1,0 +1,75 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = all_products['vortix-vaso-mezclador-electrico-proteinas']
+  endif
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-h2 { font-size: clamp(2.4rem, 1.4rem + 4vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+<section class="vx-people vx-section" id="{{ section.settings.anchor }}" data-people>
+  <div data-people-pin>
+    <div class="vx-wrap vx-people__head" style="padding-top:{{ section.settings.inner_top }}px">
+      <div>
+        <span class="vx-eyebrow" data-reveal>{{ section.settings.eyebrow }}</span>
+        <h2 class="vx-h2" style="margin-top:1rem; max-width:14ch" data-reveal>{{ section.settings.title }}</h2>
+      </div>
+      <p class="vx-lead" data-reveal>{{ section.settings.text | newline_to_br }}</p>
+    </div>
+    <div class="vx-people__scroller">
+      <div class="vx-people__track" data-people-track>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign img = block.settings.image
+            assign is_product = false
+            if img == blank
+              assign i = block.settings.fallback_index | minus: 1
+              assign img = p.media[i].preview_image | default: p.featured_media.preview_image
+              assign is_product = true
+            endif
+          -%}
+          <article class="vx-person{% if is_product %} vx-person--product{% endif %}" style="--card-bg: {{ block.settings.card_bg }}" {{ block.shopify_attributes }}>
+            {%- if img -%}{{ img | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 28vw, 78vw', widths: '400,600,900', alt: block.settings.name }}{%- endif -%}
+            {%- if block.settings.tag != blank -%}<span class="vx-person__tag">{{ block.settings.tag }}</span>{%- endif -%}
+            <div class="vx-person__body">
+              <p class="vx-person__quote">{{ block.settings.quote }}</p>
+              <div class="vx-person__meta"><strong>{{ block.settings.name }}</strong><span aria-hidden="true">·</span><span>{{ block.settings.role }}</span></div>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VX – Momentos (galería)",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Tu momento Vortix" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Del gym a la oficina. Sin cambiar de vaso." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Desliza y mira cómo encaja en tu día. Sube tus propias fotos desde el editor en cada tarjeta." },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 40, "max": 120, "step": 4, "default": 84 },
+    { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#faf7f2" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "momentos" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "inner_top", "label": "Espacio sobre el título (px)", "min": 0, "max": 160, "step": 8, "default": 96 },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 96 }
+  ],
+  "blocks": [
+    { "type": "card", "name": "Tarjeta", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Foto (persona usando el vaso)" },
+      { "type": "range", "id": "fallback_index", "label": "Si no hay foto: nº de foto del producto", "min": 1, "max": 10, "step": 1, "default": 1 },
+      { "type": "color", "id": "card_bg", "label": "Color de fondo de la tarjeta", "default": "#e6ddcf" },
+      { "type": "text", "id": "tag", "label": "Etiqueta", "default": "Post-entreno" },
+      { "type": "text", "id": "quote", "label": "Frase", "default": "Mi batido listo antes de salir del vestuario." },
+      { "type": "text", "id": "name", "label": "Nombre", "default": "Momento gym" },
+      { "type": "text", "id": "role", "label": "Detalle", "default": "Clásico · Negro" }
+    ] }
+  ],
+  "presets": [ { "name": "VX – Momentos (galería)", "blocks": [ { "type": "card" }, { "type": "card" }, { "type": "card" } ] } ]
+}
+{% endschema %}

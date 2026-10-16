@@ -1,0 +1,82 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = all_products['vortix-vaso-mezclador-electrico-proteinas']
+  endif
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-feat__item .vx-h3 { font-size: clamp(1.8rem, 1.2rem + 2.4vw, {{ section.settings.title_size }}px); }
+  #shopify-section-{{ section.id }} .vx-feat__visual { background: {{ section.settings.visual_bg }}; }
+{% endstyle %}
+<section class="vx-features vx-section" id="{{ section.settings.anchor }}" data-features>
+  <div class="vx-wrap">
+    <span class="vx-eyebrow" data-reveal>{{ section.settings.eyebrow }}</span>
+    <div class="vx-feat">
+      <div class="vx-feat__visual" aria-hidden="true">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign img = block.settings.image
+            assign contain = false
+            if img == blank
+              assign i = block.settings.fallback_index | minus: 1
+              assign img = p.media[i].preview_image | default: p.featured_media.preview_image
+              assign contain = true
+            endif
+          -%}
+          <div class="vx-feat__img{% if contain %} vx-feat__img--contain{% endif %}{% if forloop.first %} is-active{% endif %}" data-feat-img="{{ forloop.index0 }}">
+            {%- if img -%}{{ img | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '50vw', widths: '600,900,1200', alt: '' }}{%- endif -%}
+          </div>
+        {%- endfor -%}
+        <div class="vx-feat__index"><b data-feat-current>01</b><span>/ {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</span></div>
+      </div>
+      <div class="vx-feat__list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign img = block.settings.image
+            assign contain = false
+            if img == blank
+              assign i = block.settings.fallback_index | minus: 1
+              assign img = p.media[i].preview_image | default: p.featured_media.preview_image
+              assign contain = true
+            endif
+          -%}
+          <div class="vx-feat__item{% if forloop.first %} is-active{% endif %}" data-feat-item="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <div class="vx-feat__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+            <h3 class="vx-h3">{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text | newline_to_br }}</p>
+            <div class="vx-feat__mobile-img{% if contain %} vx-contain{% endif %}">
+              {%- if img -%}{{ img | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '90vw', widths: '450,900', alt: block.settings.title }}{%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VX – Características",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Por qué Vortix" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo de los títulos (px)", "min": 24, "max": 80, "step": 2, "default": 56 },
+    { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#faf7f2" },
+    { "type": "color", "id": "visual_bg", "label": "Fondo de la imagen", "default": "#ffffff" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "por-que" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 120 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 40 }
+  ],
+  "blocks": [
+    { "type": "feature", "name": "Característica", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Imagen" },
+      { "type": "range", "id": "fallback_index", "label": "Si no hay imagen: nº de foto del producto", "min": 1, "max": 10, "step": 1, "default": 1 },
+      { "type": "text", "id": "title", "label": "Título", "default": "Efecto vórtice" },
+      { "type": "textarea", "id": "text", "label": "Texto", "default": "Describe aquí la característica." }
+    ] }
+  ],
+  "presets": [ { "name": "VX – Características", "blocks": [ { "type": "feature" }, { "type": "feature" } ] } ]
+}
+{% endschema %}

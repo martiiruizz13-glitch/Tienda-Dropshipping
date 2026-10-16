@@ -1,0 +1,188 @@
+{%- liquid
+  assign p = section.settings.product
+  if template.name == 'product'
+    assign p = product
+  endif
+  if p == blank
+    assign p = all_products['vortix-vaso-mezclador-electrico-proteinas']
+  endif
+  assign v = p.selected_or_first_available_variant
+  assign bullets = section.settings.bullets | newline_to_br | split: '<br />'
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-buybox__title { font-size: clamp(2rem, 1.4rem + 2.4vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+
+{%- if p != blank -%}
+<section class="vx-buy-section vx-section" id="{{ section.settings.anchor }}" data-buy data-product-url="{{ p.url }}">
+  <div class="vx-wrap vx-buy">
+    <div class="vx-gallery" data-gallery>
+      <div class="vx-gallery__main">
+        {%- if section.settings.badge != blank -%}<span class="vx-gallery__badge">{{ section.settings.badge }}</span>{%- endif -%}
+        {%- for m in p.media -%}
+          {{ m.preview_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 55vw, 100vw', widths: '500,800,1100,1400', alt: m.alt, class: 'vx-gallery__img' }}
+        {%- endfor -%}
+        {%- if p.media.size > 1 -%}
+          <div class="vx-gallery__nav">
+            <button type="button" aria-label="Foto anterior" data-gallery-prev>{% render 'vx-icon', name: 'left' %}</button>
+            <button type="button" aria-label="Foto siguiente" data-gallery-next>{% render 'vx-icon', name: 'right' %}</button>
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if p.media.size > 1 -%}
+        <div class="vx-gallery__thumbs">
+          {%- for m in p.media -%}
+            <button type="button" aria-label="Ver foto {{ forloop.index }}" data-thumb="{{ forloop.index0 }}"{% if forloop.first %} aria-current="true"{% endif %}>
+              {{ m.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="vx-buybox">
+      <a class="vx-buybox__rating" href="#{{ section.settings.reviews_anchor }}">{% render 'vx-stars', rating: 5 %}<span><strong>{{ section.settings.rating }}</strong> · {{ section.settings.rating_text }}</span></a>
+      {%- if template.name == 'product' -%}<h1 class="vx-buybox__title">{{ p.title }}</h1>{%- else -%}<h2 class="vx-buybox__title">{{ p.title }}</h2>{%- endif -%}
+
+      <div class="vx-buybox__price" aria-live="polite">
+        <b data-price>{{ v.price | money }}</b>
+        <s data-compare{% unless v.compare_at_price > v.price %} hidden{% endunless %}>{{ v.compare_at_price | money }}</s>
+        <span class="vx-buybox__save" data-save{% unless v.compare_at_price > v.price %} hidden{% endunless %}>
+          {%- if v.compare_at_price > v.price -%}-{{ v.compare_at_price | minus: v.price | times: 100 | divided_by: v.compare_at_price }} %{%- endif -%}
+        </span>
+        <span class="vx-buybox__tax">{{ section.settings.tax_note }}</span>
+      </div>
+
+      {%- if section.settings.bullets != blank -%}
+        <ul class="vx-buybox__bullets">
+          {%- for b in bullets -%}{%- assign t = b | strip -%}{%- if t != blank -%}<li>{% render 'vx-icon', name: 'check' %}<span>{{ t }}</span></li>{%- endif -%}{%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- form 'product', p, data-buy-form: '', novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ v.id }}" data-variant-id>
+        {%- unless p.has_only_default_variant -%}
+          {%- for option in p.options_with_values -%}
+            {%- assign opos = forloop.index0 -%}
+            <fieldset class="vx-opt" data-option-index="{{ opos }}">
+              <legend>{{ option.name }}: <span data-option-label="{{ opos }}">{{ option.selected_value }}</span></legend>
+              <div class="vx-swatches">
+                {%- for value in option.values -%}
+                  {%- liquid
+                    assign sw_img = blank
+                    for var in p.variants
+                      if var.options[opos] == value and var.featured_media
+                        assign sw_img = var.featured_media.preview_image
+                        break
+                      endif
+                    endfor
+                    assign vid = section.id | append: '-' | append: opos | append: '-' | append: forloop.index
+                  -%}
+                  <div class="vx-swatch">
+                    <input type="radio" id="vx-o-{{ vid }}" name="vx-option-{{ opos }}-{{ section.id }}" value="{{ value | escape }}" data-option="{{ opos }}"{% if option.selected_value == value %} checked{% endif %}>
+                    <label for="vx-o-{{ vid }}">
+                      <span class="vx-swatch__dot">{%- if sw_img -%}{{ sw_img | image_url: width: 90 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>
+                      {{ value }}
+                    </label>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <div class="vx-qty-row">
+          <div class="vx-qty">
+            <button type="button" aria-label="Quitar una unidad" data-qty="-1">−</button>
+            <label class="vx-sr" for="vx-qty-{{ section.id }}">Cantidad</label>
+            <input id="vx-qty-{{ section.id }}" type="number" name="quantity" value="1" min="1" max="10" inputmode="numeric" data-qty-input>
+            <button type="button" aria-label="Añadir una unidad" data-qty="1">+</button>
+          </div>
+          <button class="vx-btn vx-btn--accent vx-btn--block" type="submit" name="add" data-add{% unless v.available %} disabled{% endunless %}>
+            <span data-add-label>{% if v.available %}{{ section.settings.add_label }}{% else %}Agotado{% endif %}</span>
+          </button>
+        </div>
+        {%- if section.settings.show_buy_now -%}
+          <button class="vx-btn vx-btn--block" type="button" data-buy-now{% unless v.available %} disabled{% endunless %}>{{ section.settings.buy_now_label }}{% render 'vx-icon', name: 'arrow' %}</button>
+        {%- endif -%}
+        <p class="vx-buybox__msg" role="alert" data-buy-msg></p>
+        <script type="application/json" data-variants>{{ p.variants | json }}</script>
+      {%- endform -%}
+
+      {%- if section.settings.show_eta -%}
+        <div class="vx-buybox__eta" data-eta data-min="{{ section.settings.eta_min }}" data-max="{{ section.settings.eta_max }}">
+          {% render 'vx-icon', name: 'calendar' %}
+          <span>{{ section.settings.eta_text }} <strong data-eta-range>{{ section.settings.eta_min }}–{{ section.settings.eta_max }} días laborables</strong></span>
+        </div>
+      {%- endif -%}
+
+      <div class="vx-trust">
+        <div>{% render 'vx-icon', name: 'truck' %}<span>{{ section.settings.trust_1 }}</span></div>
+        <div>{% render 'vx-icon', name: 'return' %}<span>{{ section.settings.trust_2 }}</span></div>
+        <div>{% render 'vx-icon', name: 'shield' %}<span>{{ section.settings.trust_3 }}</span></div>
+        <div>{% render 'vx-icon', name: 'lock' %}<span>{{ section.settings.trust_4 }}</span></div>
+      </div>
+      <div class="vx-pay" aria-label="Métodos de pago">{%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}</div>
+
+      {%- if section.settings.show_description and p.description != blank -%}
+        <div class="vx-buybox__desc">
+          <details class="vx-faq__item">
+            <summary>Descripción completa<span class="vx-faq__icon" aria-hidden="true">{% render 'vx-icon', name: 'plus' %}</span></summary>
+            <div class="vx-faq__body"><div class="rte">{{ p.description }}</div></div>
+          </details>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.sticky -%}
+  <div class="vx-sticky" data-sticky aria-hidden="true">
+    {%- if p.featured_media -%}{{ p.featured_media.preview_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+    <div class="vx-sticky__info"><b>{{ p.title }}</b><span data-sticky-price>{{ v.price | money }}</span></div>
+    <a class="vx-btn vx-btn--accent" href="#{{ section.settings.anchor }}" tabindex="-1" data-sticky-btn>{{ section.settings.sticky_label }}</a>
+  </div>
+{%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "VX – Comprar",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (en la página de producto se usa el propio)" },
+    { "type": "text", "id": "badge", "label": "Etiqueta sobre la foto", "default": "Envío gratis" },
+    { "type": "text", "id": "rating", "label": "Valoración", "default": "4,9/5" },
+    { "type": "text", "id": "rating_text", "label": "Texto de valoración", "default": "ver reseñas" },
+    { "type": "text", "id": "reviews_anchor", "label": "Ancla de reseñas", "default": "resenas" },
+    { "type": "text", "id": "tax_note", "label": "Nota de impuestos", "default": "IVA incluido · Envío gratis" },
+    { "type": "textarea", "id": "bullets", "label": "Ventajas (una por línea)", "default": "Mezcla a 7000 rpm: adiós grumos\nRecargable por USB, sin enchufes\n400 ml con escala de medida\nTapa de apertura en un clic" },
+    { "type": "text", "id": "add_label", "label": "Texto de añadir al carrito", "default": "Añadir al carrito" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Mostrar «Comprar ahora»", "default": true },
+    { "type": "text", "id": "buy_now_label", "label": "Texto de «Comprar ahora»", "default": "Comprar ahora" },
+    { "type": "header", "content": "Plazo de entrega" },
+    { "type": "checkbox", "id": "show_eta", "label": "Mostrar fechas estimadas de entrega", "default": true },
+    { "type": "text", "id": "eta_text", "label": "Texto", "default": "Pídelo hoy y recíbelo entre el" },
+    { "type": "range", "id": "eta_min", "label": "Días laborables mínimos", "min": 1, "max": 30, "step": 1, "default": 8 },
+    { "type": "range", "id": "eta_max", "label": "Días laborables máximos", "min": 2, "max": 40, "step": 1, "default": 15 },
+    { "type": "header", "content": "Garantías" },
+    { "type": "text", "id": "trust_1", "label": "Garantía 1", "default": "Envío gratis con seguimiento" },
+    { "type": "text", "id": "trust_2", "label": "Garantía 2", "default": "14 días para devolverlo" },
+    { "type": "text", "id": "trust_3", "label": "Garantía 3", "default": "Garantía legal de 3 años" },
+    { "type": "text", "id": "trust_4", "label": "Garantía 4", "default": "Pago 100 % seguro" },
+    { "type": "checkbox", "id": "show_description", "label": "Mostrar descripción del catálogo", "default": true },
+    { "type": "header", "content": "Barra flotante de compra" },
+    { "type": "checkbox", "id": "sticky", "label": "Mostrar barra flotante", "default": true },
+    { "type": "text", "id": "sticky_label", "label": "Texto del botón", "default": "Comprar" },
+    { "type": "header", "content": "Diseño" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 28, "max": 80, "step": 2, "default": 52 },
+    { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#faf7f2" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "comprar" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 96 }
+  ],
+  "presets": [ { "name": "VX – Comprar" } ]
+}
+{% endschema %}

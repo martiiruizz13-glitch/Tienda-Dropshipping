@@ -1,0 +1,47 @@
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-h2 { font-size: clamp(2.4rem, 1.4rem + 4vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+<section class="vx-faq-section vx-section" id="{{ section.settings.anchor }}">
+  <div class="vx-wrap vx-faq">
+    <div>
+      <span class="vx-eyebrow" data-reveal>{{ section.settings.eyebrow }}</span>
+      <h2 class="vx-h2" style="margin:1rem 0 1.25rem" data-reveal>{{ section.settings.title }}</h2>
+      <p class="vx-lead" data-reveal>{{ section.settings.text | newline_to_br }}</p>
+    </div>
+    <div>
+      {%- for block in section.blocks -%}
+        <details class="vx-faq__item" {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first %} open{% endif %}>
+          <summary>{{ block.settings.q }}<span class="vx-faq__icon" aria-hidden="true">{% render 'vx-icon', name: 'plus' %}</span></summary>
+          <div class="vx-faq__body"><div><p>{{ block.settings.a | newline_to_br }}</p></div></div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VX – Preguntas frecuentes",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Dudas" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Preguntas frecuentes" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "¿No encuentras tu respuesta? Escríbenos y te contestamos personalmente." },
+    { "type": "checkbox", "id": "open_first", "label": "Primera pregunta abierta", "default": true },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 40, "max": 120, "step": 4, "default": 72 },
+    { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#f1ece4" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "preguntas" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 120 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 120 }
+  ],
+  "blocks": [
+    { "type": "qa", "name": "Pregunta", "settings": [
+      { "type": "text", "id": "q", "label": "Pregunta", "default": "¿Pregunta?" },
+      { "type": "textarea", "id": "a", "label": "Respuesta", "default": "Respuesta." }
+    ] }
+  ],
+  "presets": [ { "name": "VX – Preguntas frecuentes", "blocks": [ { "type": "qa" } ] } ]
+}
+{% endschema %}

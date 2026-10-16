@@ -1,0 +1,143 @@
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-h2 { font-size: clamp(2.4rem, 1.4rem + 4vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+{%- liquid
+  assign with_photo = 0
+  for block in section.blocks
+    if block.settings.image != blank
+      assign with_photo = with_photo | plus: 1
+    endif
+  endfor
+  assign dist = section.settings.dist | split: ','
+-%}
+<section class="vx-reviews vx-section" id="{{ section.settings.anchor }}" data-reviews data-initial="{{ section.settings.initial }}">
+  <div class="vx-wrap">
+    <div class="vx-rev__top">
+      <div>
+        <span class="vx-eyebrow" data-reveal>{{ section.settings.eyebrow }}</span>
+        <h2 class="vx-h2" style="margin-top:1rem" data-reveal>{{ section.settings.title }}</h2>
+        <div class="vx-rev__score" data-reveal>
+          <b>{{ section.settings.score }}</b>
+          <div>{% render 'vx-stars', rating: 5 %}<div class="vx-muted" style="font-size:.9375rem;margin-top:.3rem">{{ section.settings.count_text }}</div></div>
+        </div>
+      </div>
+      <div class="vx-rev__dist" data-bars>
+        {%- for d in dist limit: 5 -%}
+          {%- assign pct = d | strip | plus: 0 -%}
+          {%- assign stars = 6 | minus: forloop.index -%}
+          <div class="vx-rev__row">
+            <span>{{ stars }} ★</span>
+            <span class="vx-bar__track"><span class="vx-bar__fill" style="--v: {{ pct | divided_by: 100.0 }}" data-bar="{{ pct | divided_by: 100.0 }}"></span></span>
+            <span class="vx-muted">{{ pct }} %</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="vx-rev__tools">
+      <div class="vx-chips" role="group" aria-label="Filtrar reseñas">
+        <button class="vx-chip" type="button" aria-pressed="true" data-filter="all">Todas ({{ section.blocks.size }})</button>
+        <button class="vx-chip" type="button" aria-pressed="false" data-filter="5">5 estrellas</button>
+        {%- if with_photo > 0 -%}<button class="vx-chip" type="button" aria-pressed="false" data-filter="photo">Con foto ({{ with_photo }})</button>{%- endif -%}
+      </div>
+      {%- if section.settings.show_form -%}
+        <button class="vx-btn vx-btn--ghost" type="button" data-review-open style="min-height:46px">{{ section.settings.form_button }}</button>
+      {%- endif -%}
+    </div>
+
+    <div class="vx-rev__grid" data-review-grid>
+      {%- for block in section.blocks -%}
+        <article class="vx-review" data-rating="{{ block.settings.rating }}" data-photo="{% if block.settings.image != blank %}1{% else %}0{% endif %}" {{ block.shopify_attributes }}>
+          <div class="vx-review__head">
+            <span class="vx-review__avatar" aria-hidden="true">{{ block.settings.name | slice: 0 }}</span>
+            <div>
+              <div class="vx-review__name">{{ block.settings.name }}</div>
+              {%- if block.settings.verified -%}<span class="vx-review__verified">{% render 'vx-icon', name: 'verified' %}Compra verificada</span>{%- endif -%}
+            </div>
+            {%- if section.settings.sample_label -%}<span class="vx-review__sample">Ejemplo</span>{%- endif -%}
+          </div>
+          {% render 'vx-stars', rating: block.settings.rating %}
+          {%- if block.settings.title != blank -%}<p class="vx-review__title">{{ block.settings.title }}</p>{%- endif -%}
+          <p class="vx-review__text">{{ block.settings.text | newline_to_br }}</p>
+          {%- if block.settings.image != blank -%}
+            <div class="vx-review__img">{{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 30vw, 90vw', widths: '300,600', alt: block.settings.name }}</div>
+          {%- endif -%}
+          <div class="vx-review__foot">
+            <span>{{ block.settings.variant }}{% if block.settings.date != blank %} · {{ block.settings.date }}{% endif %}</span>
+            <button class="vx-review__helpful" type="button" aria-pressed="false" data-helpful>{% render 'vx-icon', name: 'thumb' %}Útil</button>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+    <div class="vx-rev__more"><button class="vx-btn" type="button" data-review-more hidden>Ver más reseñas</button></div>
+  </div>
+
+  {%- if section.settings.show_form -%}
+  <dialog class="vx-dialog" aria-labelledby="vx-rev-dialog-{{ section.id }}" data-review-dialog>
+    <div class="vx-dialog__inner">
+      <button class="vx-icon-btn vx-dialog__close" type="button" aria-label="Cerrar" data-review-close>{% render 'vx-icon', name: 'close' %}</button>
+      <h3 class="vx-h3" id="vx-rev-dialog-{{ section.id }}" style="margin-bottom:.5rem">{{ section.settings.form_title }}</h3>
+      <p class="vx-muted" style="margin:0 0 1.5rem">{{ section.settings.form_text }}</p>
+      {%- form 'contact', id: 'vx-review-form-dialog' -%}
+        {%- if form.posted_successfully? -%}<p class="vx-form-ok" role="status" data-review-ok>{{ section.settings.form_ok }}</p>{%- endif -%}
+        {%- if form.errors -%}<p class="vx-buybox__msg" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+        <input type="hidden" name="contact[Asunto]" value="Nueva reseña Vortix">
+        <fieldset class="vx-rate-input">
+          <legend>Tu valoración</legend>
+          {%- for i in (1..5) reversed -%}
+            <input type="radio" id="vx-r{{ i }}-{{ section.id }}" name="contact[Valoración]" value="{{ i }} estrellas" {% if i == 5 %}checked{% endif %}>
+            <label for="vx-r{{ i }}-{{ section.id }}" title="{{ i }} estrellas">{% render 'vx-icon', name: 'star' %}<span class="vx-sr">{{ i }} estrellas</span></label>
+          {%- endfor -%}
+        </fieldset>
+        <div class="vx-field"><label for="vx-rn-{{ section.id }}">Nombre</label><input id="vx-rn-{{ section.id }}" type="text" name="contact[name]" autocomplete="name" required></div>
+        <div class="vx-field"><label for="vx-re-{{ section.id }}">Email (no se publica)</label><input id="vx-re-{{ section.id }}" type="email" name="contact[email]" autocomplete="email" required></div>
+        <div class="vx-field"><label for="vx-rb-{{ section.id }}">Tu experiencia</label><textarea id="vx-rb-{{ section.id }}" name="contact[body]" rows="4" required></textarea></div>
+        <button class="vx-btn vx-btn--accent vx-btn--block" type="submit">Enviar reseña</button>
+      {%- endform -%}
+    </div>
+  </dialog>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "VX – Reseñas",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Reseñas" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Lo que dicen quienes ya lo usan." },
+    { "type": "text", "id": "score", "label": "Nota media", "default": "4,9" },
+    { "type": "text", "id": "count_text", "label": "Texto bajo la nota", "default": "basado en las reseñas de clientes" },
+    { "type": "text", "id": "dist", "label": "Reparto de estrellas en % (5★,4★,3★,2★,1★)", "default": "88,9,2,1,0" },
+    { "type": "range", "id": "initial", "label": "Reseñas visibles al principio", "min": 3, "max": 24, "step": 1, "default": 6 },
+    { "type": "checkbox", "id": "sample_label", "label": "Marcar las reseñas como «Ejemplo» (desactívalo cuando pongas reseñas reales)", "default": true },
+    { "type": "header", "content": "Formulario de reseñas" },
+    { "type": "checkbox", "id": "show_form", "label": "Permitir que los clientes envíen reseñas", "default": true },
+    { "type": "text", "id": "form_button", "label": "Texto del botón", "default": "Escribir una reseña" },
+    { "type": "text", "id": "form_title", "label": "Título del formulario", "default": "Cuéntanos tu experiencia" },
+    { "type": "text", "id": "form_text", "label": "Texto del formulario", "default": "Leemos todas las reseñas antes de publicarlas." },
+    { "type": "text", "id": "form_ok", "label": "Mensaje de enviado", "default": "¡Gracias! Hemos recibido tu reseña y la revisaremos en breve." },
+    { "type": "header", "content": "Diseño" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 40, "max": 120, "step": 4, "default": 80 },
+    { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#faf7f2" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "resenas" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 120 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 120 }
+  ],
+  "blocks": [
+    { "type": "review", "name": "Reseña", "settings": [
+      { "type": "text", "id": "name", "label": "Nombre", "default": "Cliente" },
+      { "type": "range", "id": "rating", "label": "Estrellas", "min": 1, "max": 5, "step": 1, "default": 5 },
+      { "type": "text", "id": "title", "label": "Título" },
+      { "type": "textarea", "id": "text", "label": "Texto", "default": "Escribe aquí la reseña." },
+      { "type": "image_picker", "id": "image", "label": "Foto (opcional)" },
+      { "type": "text", "id": "variant", "label": "Modelo comprado", "default": "Clásico · Negro" },
+      { "type": "text", "id": "date", "label": "Fecha" },
+      { "type": "checkbox", "id": "verified", "label": "Compra verificada", "default": false }
+    ] }
+  ],
+  "presets": [ { "name": "VX – Reseñas", "blocks": [ { "type": "review" } ] } ]
+}
+{% endschema %}

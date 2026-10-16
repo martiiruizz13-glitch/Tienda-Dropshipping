@@ -1,0 +1,562 @@
+{
+  "layout": "vortix",
+  "sections": {
+    "hero": {
+      "type": "vx-hero",
+      "settings": {
+        "product": "vortix-vaso-mezclador-electrico-proteinas"
+      }
+    },
+    "marquee": {
+      "type": "vx-marquee",
+      "settings": {
+        "style": "accent",
+        "rows": 1,
+        "size": 88,
+        "speed": 28,
+        "words": "Sin grumos\n7000 rpm\nRecargable USB\n400 ml\nListo en 5 segundos\nCabe en tu mochila"
+      }
+    },
+    "expand": {
+      "type": "vx-expand",
+      "settings": {
+        "fallback_index": 2,
+        "contain": true,
+        "media_bg": "#ffffff",
+        "side_left": "Menos\nagitar.",
+        "side_right": "Más\ndisfrutar.",
+        "eyebrow": "El efecto vórtice",
+        "title": "Un remolino perfecto en cada trago."
+      }
+    },
+    "film": {
+      "type": "vx-film",
+      "settings": {}
+    },
+    "stats": {
+      "type": "vx-stats",
+      "blocks": {
+        "st-1": {
+          "type": "stat",
+          "settings": {
+            "number": "7000",
+            "suffix": "rpm",
+            "label": "velocidad de mezcla"
+          }
+        },
+        "st-2": {
+          "type": "stat",
+          "settings": {
+            "number": "1200",
+            "suffix": "mAh",
+            "label": "batería recargable por USB"
+          }
+        },
+        "st-3": {
+          "type": "stat",
+          "settings": {
+            "number": "400",
+            "suffix": "ml",
+            "label": "capacidad con escala de medida"
+          }
+        },
+        "st-4": {
+          "type": "stat",
+          "settings": {
+            "number": "5",
+            "suffix": "s",
+            "label": "para un batido sin grumos"
+          }
+        },
+        "st-5": {
+          "type": "group",
+          "settings": {
+            "title": "Tiempo hasta un batido sin grumos",
+            "hint": "menos es mejor"
+          }
+        },
+        "st-6": {
+          "type": "bar",
+          "settings": {
+            "name": "Vortix",
+            "value": 14,
+            "display": "≈ 5 s",
+            "highlight": true
+          }
+        },
+        "st-7": {
+          "type": "bar",
+          "settings": {
+            "name": "Batidora",
+            "value": 40,
+            "display": "≈ 15 s"
+          }
+        },
+        "st-8": {
+          "type": "bar",
+          "settings": {
+            "name": "Shaker a mano",
+            "value": 88,
+            "display": "30 s +"
+          }
+        },
+        "st-9": {
+          "type": "group",
+          "settings": {
+            "title": "Lo fácil que es llevarlo contigo",
+            "hint": "más es mejor"
+          }
+        },
+        "st-10": {
+          "type": "bar",
+          "settings": {
+            "name": "Vortix",
+            "value": 94,
+            "display": "Mochila",
+            "highlight": true
+          }
+        },
+        "st-11": {
+          "type": "bar",
+          "settings": {
+            "name": "Shaker a mano",
+            "value": 96,
+            "display": "Mochila"
+          }
+        },
+        "st-12": {
+          "type": "bar",
+          "settings": {
+            "name": "Batidora",
+            "value": 12,
+            "display": "Cocina"
+          }
+        }
+      },
+      "block_order": [
+        "st-1",
+        "st-2",
+        "st-3",
+        "st-4",
+        "st-5",
+        "st-6",
+        "st-7",
+        "st-8",
+        "st-9",
+        "st-10",
+        "st-11",
+        "st-12"
+      ],
+      "settings": {}
+    },
+    "people": {
+      "type": "vx-people",
+      "blocks": {
+        "pp-1": {
+          "type": "card",
+          "settings": {
+            "fallback_index": 4,
+            "card_bg": "#e6ddcf",
+            "tag": "Post-entreno",
+            "quote": "El batido listo antes de salir del vestuario.",
+            "name": "Momento gym",
+            "role": "Clásico · Negro"
+          }
+        },
+        "pp-2": {
+          "type": "card",
+          "settings": {
+            "fallback_index": 6,
+            "card_bg": "#ffd9cc",
+            "tag": "Oficina",
+            "quote": "Tu tentempié de media tarde, sin manchar la mesa.",
+            "name": "Momento oficina",
+            "role": "Estilizado · Rosa"
+          }
+        },
+        "pp-3": {
+          "type": "card",
+          "settings": {
+            "fallback_index": 3,
+            "card_bg": "#efe4d2",
+            "tag": "Por la mañana",
+            "quote": "Café con leche o avena batidos mientras te calzas.",
+            "name": "Momento desayuno",
+            "role": "Clásico · Crema"
+          }
+        },
+        "pp-4": {
+          "type": "card",
+          "settings": {
+            "fallback_index": 7,
+            "card_bg": "#d9e6d5",
+            "tag": "Al aire libre",
+            "quote": "Sin enchufes: la batería va contigo a cualquier parte.",
+            "name": "Momento ruta",
+            "role": "Estilizado · Verde"
+          }
+        },
+        "pp-5": {
+          "type": "card",
+          "settings": {
+            "fallback_index": 5,
+            "card_bg": "#e9e6e1",
+            "tag": "De viaje",
+            "quote": "Cabe en la mochila, en el coche y en la maleta.",
+            "name": "Momento viaje",
+            "role": "Estilizado · Blanco"
+          }
+        },
+        "pp-6": {
+          "type": "card",
+          "settings": {
+            "fallback_index": 1,
+            "card_bg": "#f3d3c4",
+            "tag": "Para regalar",
+            "quote": "El regalo que acaba usando cada día.",
+            "name": "Momento regalo",
+            "role": "Clásico · Blanco"
+          }
+        }
+      },
+      "block_order": [
+        "pp-1",
+        "pp-2",
+        "pp-3",
+        "pp-4",
+        "pp-5",
+        "pp-6"
+      ],
+      "settings": {}
+    },
+    "features": {
+      "type": "vx-features",
+      "blocks": {
+        "ft-1": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 2,
+            "title": "Efecto vórtice a 7000 rpm",
+            "text": "La base crea un remolino a alta velocidad que disuelve el polvo por completo. Batidos cremosos, sin bolas de proteína en el último trago."
+          }
+        },
+        "ft-2": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 4,
+            "title": "Recargable por USB",
+            "text": "Batería de 1200 mAh. Lo cargas con el cable incluido y te olvidas de enchufes durante días."
+          }
+        },
+        "ft-3": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 1,
+            "title": "400 ml con escala",
+            "text": "El tamaño justo para tu batido, un café con leche o un smoothie. La escala impresa te ahorra el medidor."
+          }
+        },
+        "ft-4": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 3,
+            "title": "Tapa de un clic",
+            "text": "Abres y bebes directamente del vaso, sin desenroscar nada. Cierra firme para llevarlo en la bolsa."
+          }
+        },
+        "ft-5": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 6,
+            "title": "Ligero e irrompible",
+            "text": "ABS, PP y PC: materiales resistentes para el día a día. 10,5 × 8,6 × 19 cm y un diseño que te apetece sacar en cualquier sitio."
+          }
+        }
+      },
+      "block_order": [
+        "ft-1",
+        "ft-2",
+        "ft-3",
+        "ft-4",
+        "ft-5"
+      ],
+      "settings": {}
+    },
+    "compare": {
+      "type": "vx-compare",
+      "blocks": {
+        "cp-1": {
+          "type": "row",
+          "settings": {
+            "label": "Batido sin grumos",
+            "us": true,
+            "a": false,
+            "b": true
+          }
+        },
+        "cp-2": {
+          "type": "row",
+          "settings": {
+            "label": "Sin esfuerzo, con un botón",
+            "us": true,
+            "a": false,
+            "b": true
+          }
+        },
+        "cp-3": {
+          "type": "row",
+          "settings": {
+            "label": "Cabe en la mochila",
+            "us": true,
+            "a": true,
+            "b": false
+          }
+        },
+        "cp-4": {
+          "type": "row",
+          "settings": {
+            "label": "Funciona sin enchufe",
+            "us": true,
+            "a": true,
+            "b": false
+          }
+        },
+        "cp-5": {
+          "type": "row",
+          "settings": {
+            "label": "Bebes del mismo vaso",
+            "us": true,
+            "a": true,
+            "b": false
+          }
+        },
+        "cp-6": {
+          "type": "row",
+          "settings": {
+            "label": "Se limpia en segundos",
+            "us": true,
+            "a": true,
+            "b": false
+          }
+        }
+      },
+      "block_order": [
+        "cp-1",
+        "cp-2",
+        "cp-3",
+        "cp-4",
+        "cp-5",
+        "cp-6"
+      ],
+      "settings": {}
+    },
+    "buy": {
+      "type": "vx-buy",
+      "settings": {
+        "product": "vortix-vaso-mezclador-electrico-proteinas"
+      }
+    },
+    "reviews": {
+      "type": "vx-reviews",
+      "blocks": {
+        "rv-1": {
+          "type": "review",
+          "settings": {
+            "name": "Laura G.",
+            "rating": 5,
+            "title": "Adiós a los grumos",
+            "text": "Llevaba años agitando el shaker como una loca y siempre quedaba algo abajo. Con este pulso el botón y en unos segundos está perfecto. Lo uso todos los días después del gym.",
+            "variant": "Clásico · Negro",
+            "verified": false
+          }
+        },
+        "rv-2": {
+          "type": "review",
+          "settings": {
+            "name": "Marcos R.",
+            "rating": 5,
+            "title": "Mejor de lo que esperaba",
+            "text": "Pensaba que sería un juguete, pero mezcla de verdad. La proteína de chocolate queda cremosa. La batería me dura bastante.",
+            "variant": "Clásico · Blanco",
+            "verified": false
+          }
+        },
+        "rv-3": {
+          "type": "review",
+          "settings": {
+            "name": "Ana P.",
+            "rating": 5,
+            "title": "Mi café de las mañanas",
+            "text": "Lo compré para la proteína y al final lo uso más para el café con leche y cacao. Queda espumoso.",
+            "variant": "Estilizado · Rosa",
+            "verified": false
+          }
+        },
+        "rv-4": {
+          "type": "review",
+          "settings": {
+            "name": "Javier M.",
+            "rating": 4,
+            "title": "Muy práctico",
+            "text": "Cumple lo que promete. Le quito una estrella porque hay que tener cuidado al lavarlo para no mojar la base, pero viene explicado.",
+            "variant": "Clásico · Negro",
+            "verified": false
+          }
+        },
+        "rv-5": {
+          "type": "review",
+          "settings": {
+            "name": "Sofía L.",
+            "rating": 5,
+            "title": "Regalo acertado",
+            "text": "Se lo regalé a mi pareja que va al gimnasio y está encantado. El color crema es precioso en persona.",
+            "variant": "Clásico · Crema",
+            "verified": false
+          }
+        },
+        "rv-6": {
+          "type": "review",
+          "settings": {
+            "name": "Daniel C.",
+            "rating": 5,
+            "title": "Para la oficina, ideal",
+            "text": "Me preparo el batido de media tarde en la oficina sin hacer ruido ni manchar. Cabe en el cajón.",
+            "variant": "Estilizado · Blanco",
+            "verified": false
+          }
+        },
+        "rv-7": {
+          "type": "review",
+          "settings": {
+            "name": "Elena V.",
+            "rating": 5,
+            "title": "Bonito y útil",
+            "text": "Por fin un accesorio de gym que no parece de gym. El verde es muy bonito.",
+            "variant": "Estilizado · Verde",
+            "verified": false
+          }
+        },
+        "rv-8": {
+          "type": "review",
+          "settings": {
+            "name": "Pablo S.",
+            "rating": 4,
+            "title": "Buena compra",
+            "text": "Mezcla muy bien con agua y con leche. Para batidos muy espesos añado primero el líquido y va mejor.",
+            "variant": "Clásico · Blanco",
+            "verified": false
+          }
+        },
+        "rv-9": {
+          "type": "review",
+          "settings": {
+            "name": "Irene T.",
+            "rating": 5,
+            "title": "Lo llevo a todas partes",
+            "text": "Lo uso en el coche de camino al trabajo. Sin enchufes y sin ensuciar nada.",
+            "variant": "Clásico · Negro",
+            "verified": false
+          }
+        }
+      },
+      "block_order": [
+        "rv-1",
+        "rv-2",
+        "rv-3",
+        "rv-4",
+        "rv-5",
+        "rv-6",
+        "rv-7",
+        "rv-8",
+        "rv-9"
+      ],
+      "settings": {
+        "count_text": "valoración media de nuestros clientes"
+      }
+    },
+    "faq": {
+      "type": "vx-faq",
+      "blocks": {
+        "qa-1": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Cómo se usa?",
+            "a": "Añade primero el líquido (agua, leche o bebida vegetal), después la proteína en polvo, cierra la tapa y pulsa el botón de la base. En unos segundos lo tienes listo."
+          }
+        },
+        "qa-2": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Cuánto dura la batería?",
+            "a": "La batería de 1200 mAh da para muchos batidos con una sola carga (depende de la duración de cada uso). Se carga por USB (5 V / 1 A) con el cable incluido. Cárgalo antes del primer uso."
+          }
+        },
+        "qa-3": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Se puede meter en el lavavajillas?",
+            "a": "No. La base lleva el motor y la batería: limpia el vaso con agua y un paño suave, sin sumergir la base. Un truco: agua con una gota de jabón, pulsa unos segundos y aclara."
+          }
+        },
+        "qa-4": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Sirve para fruta o hielo?",
+            "a": "Vortix es un mezclador, no una batidora de cuchillas: está pensado para polvos y líquidos (proteína, cacao, café soluble, avena fina). No tritura fruta entera ni hielo."
+          }
+        },
+        "qa-5": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Puedo usar bebidas calientes?",
+            "a": "Úsalo con bebidas frías o templadas. Nunca con líquidos hirviendo."
+          }
+        },
+        "qa-6": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Cuánto tarda el envío?",
+            "a": "El envío es gratis a toda España y llega normalmente en 8–15 días laborables. Recibirás un número de seguimiento por email."
+          }
+        },
+        "qa-7": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Y si no me convence?",
+            "a": "Tienes 14 días desde que lo recibes para desistir de la compra. Además cuenta con la garantía legal de 3 años frente a defectos de fabricación."
+          }
+        }
+      },
+      "block_order": [
+        "qa-1",
+        "qa-2",
+        "qa-3",
+        "qa-4",
+        "qa-5",
+        "qa-6",
+        "qa-7"
+      ],
+      "settings": {}
+    },
+    "cta": {
+      "type": "vx-cta",
+      "settings": {
+        "product": "vortix-vaso-mezclador-electrico-proteinas"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "marquee",
+    "expand",
+    "film",
+    "stats",
+    "people",
+    "features",
+    "compare",
+    "buy",
+    "reviews",
+    "faq",
+    "cta"
+  ]
+}

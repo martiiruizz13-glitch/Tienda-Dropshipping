@@ -1,0 +1,121 @@
+{%- liquid
+  assign p = section.settings.product
+  if p == blank
+    assign p = product
+  endif
+  if p == blank
+    assign p = all_products['vortix-vaso-mezclador-electrico-proteinas']
+  endif
+  assign v = p.selected_or_first_available_variant
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-hero { background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-hero__vortex { background: radial-gradient(closest-side, {{ section.settings.bg }} 52%, transparent 53%), conic-gradient(from 0deg, var(--vx-accent), var(--vx-accent-2), #ffd3bd, var(--vx-sand), var(--vx-accent)); }
+  #shopify-section-{{ section.id }} .vx-hero__title { font-size: clamp(3.2rem, 1.6rem + 7vw, {{ section.settings.title_size }}px); text-align: {{ section.settings.align }}; }
+  #shopify-section-{{ section.id }} .vx-hero__copy { text-align: {{ section.settings.align }}; }
+  #shopify-section-{{ section.id }} .vx-hero__sub { font-size: {{ section.settings.sub_size }}px; {% if section.settings.align == 'center' %}margin-inline: auto;{% endif %} }
+  #shopify-section-{{ section.id }} .vx-hero__ctas, #shopify-section-{{ section.id }} .vx-hero__proof { justify-content: {% if section.settings.align == 'center' %}center{% elsif section.settings.align == 'right' %}flex-end{% else %}flex-start{% endif %}; }
+{% endstyle %}
+
+<section class="vx-hero vx-section" id="{{ section.settings.anchor | default: 'inicio' }}" data-vx-hero style="--vx-vortex-speed: {{ section.settings.vortex_speed }}s">
+  <div class="vx-grain" aria-hidden="true"></div>
+  <div class="vx-hero__particles" aria-hidden="true" data-hero-particles>
+    <i style="--s:14px; left:8%; top:22%"></i>
+    <i style="--s:8px; left:46%; top:12%; --c:#ffb08a"></i>
+    <i style="--s:22px; left:92%; top:70%; --c:var(--vx-ink)"></i>
+    <i style="--s:10px; left:58%; top:86%"></i>
+    <i style="--s:6px; left:30%; top:78%; --c:var(--vx-ink)"></i>
+    <i style="--s:12px; left:78%; top:16%; --c:#c99a6b"></i>
+    <i style="--s:9px; left:4%; top:62%; --c:#c99a6b"></i>
+  </div>
+
+  <div class="vx-wrap vx-hero__grid">
+    <div class="vx-hero__copy">
+      <span class="vx-eyebrow" data-hero-fade>{{ section.settings.eyebrow }}</span>
+      <h1 class="vx-h1 vx-hero__title" aria-label="{{ section.settings.title_1 | escape }} {{ section.settings.title_2 | escape }} {{ section.settings.title_3 | escape }}">
+        <span class="vx-line" aria-hidden="true"><span data-hero-line>{{ section.settings.title_1 }}</span></span>
+        <span class="vx-line" aria-hidden="true"><span data-hero-line><em>{{ section.settings.title_2 }}</em></span></span>
+        <span class="vx-line" aria-hidden="true"><span data-hero-line>{{ section.settings.title_3 }}</span></span>
+      </h1>
+      <p class="vx-lead vx-hero__sub" data-hero-fade>{{ section.settings.subtitle | newline_to_br }}</p>
+      <div class="vx-hero__ctas" data-hero-fade>
+        <a class="vx-btn vx-btn--accent" href="{{ section.settings.cta_url | default: '#comprar' }}" data-magnetic>
+          {{ section.settings.cta_label }}{% if section.settings.show_price and v %} · {{ v.price | money }}{% endif %}
+          {% render 'vx-icon', name: 'arrow' %}
+        </a>
+        {%- if section.settings.cta2_label != blank -%}
+          <a class="vx-btn vx-btn--ghost" href="{{ section.settings.cta2_url | default: '#video' }}">{{ section.settings.cta2_label }}</a>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.proof_text != blank -%}
+        <div class="vx-hero__proof" data-hero-fade>
+          <div class="vx-hero__avatars" aria-hidden="true">
+            <span style="background:#ffd3bd">L</span><span style="background:#e6ddcf">M</span><span style="background:#ffb08a">A</span><span style="background:#d9cbb6">J</span>
+          </div>
+          <div>
+            {% render 'vx-stars', rating: 5 %}
+            <div><strong>{{ section.settings.proof_score }}</strong> · {{ section.settings.proof_text }}</div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="vx-hero__stage" data-hero-stage>
+      <div class="vx-hero__ring vx-hero__ring--2" aria-hidden="true"></div>
+      <div class="vx-hero__ring" aria-hidden="true"></div>
+      <div class="vx-hero__vortex" aria-hidden="true" data-hero-vortex></div>
+      <div class="vx-hero__product" data-hero-product>
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 990px) 46vw, 90vw', widths: '500,800,1100,1400' }}
+        {%- elsif p.featured_media -%}
+          {{ p.featured_media.preview_image | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 990px) 46vw, 90vw', widths: '500,800,1200', alt: p.title }}
+        {%- endif -%}
+      </div>
+      <div class="vx-hero__badge vx-hero__badge--a" data-hero-badge><strong data-count="{{ section.settings.badge_a_num }}">{{ section.settings.badge_a_num }}</strong>{{ section.settings.badge_a_text }}</div>
+      <div class="vx-hero__badge vx-hero__badge--b" data-hero-badge><strong>{{ section.settings.badge_b_num }}</strong>{{ section.settings.badge_b_text }}</div>
+    </div>
+  </div>
+
+  <div class="vx-hero__scroll" aria-hidden="true"><i></i>Scroll</div>
+</section>
+
+{% schema %}
+{
+  "name": "VX – Portada (hero)",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto" },
+    { "type": "image_picker", "id": "image", "label": "Imagen principal (opcional, por defecto la del producto)" },
+    { "type": "header", "content": "Textos" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Nuevo · Vaso mezclador eléctrico" },
+    { "type": "text", "id": "title_1", "label": "Título línea 1", "default": "Pulsa." },
+    { "type": "text", "id": "title_2", "label": "Título línea 2 (destacada)", "default": "Remolino." },
+    { "type": "text", "id": "title_3", "label": "Título línea 3", "default": "Cero grumos." },
+    { "type": "textarea", "id": "subtitle", "label": "Subtítulo", "default": "7000 revoluciones por minuto en la palma de tu mano. Tu batido de proteínas perfecto en 5 segundos, donde quieras." },
+    { "type": "text", "id": "cta_label", "label": "Botón principal", "default": "Lo quiero" },
+    { "type": "url", "id": "cta_url", "label": "Enlace del botón principal" },
+    { "type": "checkbox", "id": "show_price", "label": "Mostrar precio en el botón", "default": true },
+    { "type": "text", "id": "cta2_label", "label": "Botón secundario", "default": "Verlo en acción" },
+    { "type": "url", "id": "cta2_url", "label": "Enlace del botón secundario" },
+    { "type": "text", "id": "proof_score", "label": "Valoración", "default": "4,9/5" },
+    { "type": "text", "id": "proof_text", "label": "Texto de valoración", "default": "valorado por quienes ya lo usan" },
+    { "type": "header", "content": "Etiquetas flotantes" },
+    { "type": "text", "id": "badge_a_num", "label": "Etiqueta 1 – cifra", "default": "7000" },
+    { "type": "text", "id": "badge_a_text", "label": "Etiqueta 1 – texto", "default": "revoluciones / min" },
+    { "type": "text", "id": "badge_b_num", "label": "Etiqueta 2 – cifra", "default": "5 s" },
+    { "type": "text", "id": "badge_b_text", "label": "Etiqueta 2 – texto", "default": "batido sin grumos" },
+    { "type": "header", "content": "Diseño" },
+    { "type": "select", "id": "align", "label": "Alineación del texto", "options": [ { "value": "left", "label": "Izquierda" }, { "value": "center", "label": "Centro" }, { "value": "right", "label": "Derecha" } ], "default": "left" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 60, "max": 200, "step": 4, "default": 160 },
+    { "type": "range", "id": "sub_size", "label": "Tamaño del subtítulo (px)", "min": 14, "max": 28, "step": 1, "default": 20 },
+    { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#f1ece4" },
+    { "type": "range", "id": "vortex_speed", "label": "Velocidad del remolino (segundos por vuelta)", "min": 4, "max": 40, "step": 1, "default": 14 },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "inicio" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 0 }
+  ],
+  "presets": [ { "name": "VX – Portada (hero)" } ]
+}
+{% endschema %}

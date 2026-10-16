@@ -1,0 +1,85 @@
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {% if section.settings.dark %}var(--vx-ink){% else %}{{ section.settings.bg }}{% endif %}; }
+  #shopify-section-{{ section.id }} .vx-h2 { font-size: clamp(2.4rem, 1.4rem + 4vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+<section class="vx-stats vx-section{% if section.settings.dark %} vx-dark{% endif %}" id="{{ section.settings.anchor }}" data-stats>
+  <div class="vx-wrap">
+    <div class="vx-stats__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'stat' -%}
+          <div class="vx-stat" {{ block.shopify_attributes }} data-reveal>
+            <div class="vx-stat__num"><span data-count="{{ block.settings.number }}" data-decimals="{{ block.settings.decimals }}">{{ block.settings.number }}</span><sup>{{ block.settings.suffix }}</sup></div>
+            <div class="vx-stat__label">{{ block.settings.label }}</div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="vx-bars">
+      <div>
+        <span class="vx-eyebrow" data-reveal>{{ section.settings.eyebrow }}</span>
+        <h2 class="vx-h2" style="margin:1rem 0 1.25rem" data-reveal>{{ section.settings.title }}</h2>
+        <p class="vx-lead" data-reveal>{{ section.settings.text | newline_to_br }}</p>
+      </div>
+      <div data-bars>
+        {%- assign open = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'group' -%}
+            {%- if open -%}</div>{%- endif -%}
+            <div class="vx-bars__group" {{ block.shopify_attributes }}>
+              <p class="vx-bars__title"><span>{{ block.settings.title }}</span><span class="vx-muted" style="font-weight:400">{{ block.settings.hint }}</span></p>
+            {%- assign open = true -%}
+          {%- elsif block.type == 'bar' -%}
+            {%- assign val = block.settings.value | divided_by: 100.0 -%}
+            <div class="vx-bar{% if block.settings.highlight %} vx-bar--hero{% endif %}" {{ block.shopify_attributes }}>
+              <span class="vx-bar__name">{{ block.settings.name }}</span>
+              <span class="vx-bar__track" role="presentation"><span class="vx-bar__fill" style="--v: {{ val }}" data-bar="{{ val }}"></span></span>
+              <span class="vx-bar__val">{{ block.settings.display }}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if open -%}</div>{%- endif -%}
+        {%- if section.settings.note != blank -%}<p class="vx-bars__note">{{ section.settings.note }}</p>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VX – Cifras y barras",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Los números" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Hecho para ganarle a tu brazo." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Agitar a mano deja grumos y cansa. Una batidora ensucia y no cabe en la mochila. Vortix está justo en medio." },
+    { "type": "text", "id": "note", "label": "Nota al pie de las barras", "default": "Comparativa orientativa con un batido de 30 g de proteína en 300 ml de agua." },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 40, "max": 120, "step": 4, "default": 80 },
+    { "type": "checkbox", "id": "dark", "label": "Fondo oscuro", "default": false },
+    { "type": "color", "id": "bg", "label": "Color de fondo (modo claro)", "default": "#faf7f2" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "cifras" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 120 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 120 }
+  ],
+  "blocks": [
+    { "type": "stat", "name": "Cifra", "settings": [
+      { "type": "text", "id": "number", "label": "Número", "default": "7000" },
+      { "type": "range", "id": "decimals", "label": "Decimales", "min": 0, "max": 2, "step": 1, "default": 0 },
+      { "type": "text", "id": "suffix", "label": "Unidad", "default": "rpm" },
+      { "type": "text", "id": "label", "label": "Descripción", "default": "de velocidad de mezcla" }
+    ] },
+    { "type": "group", "name": "Grupo de barras", "settings": [
+      { "type": "text", "id": "title", "label": "Título del grupo", "default": "Tiempo hasta batido sin grumos" },
+      { "type": "text", "id": "hint", "label": "Aclaración", "default": "menos es mejor" }
+    ] },
+    { "type": "bar", "name": "Barra", "settings": [
+      { "type": "text", "id": "name", "label": "Nombre", "default": "Vortix" },
+      { "type": "range", "id": "value", "label": "Longitud de la barra (%)", "min": 0, "max": 100, "step": 1, "default": 20 },
+      { "type": "text", "id": "display", "label": "Valor mostrado", "default": "5 s" },
+      { "type": "checkbox", "id": "highlight", "label": "Destacar (naranja)", "default": false }
+    ] }
+  ],
+  "presets": [ { "name": "VX – Cifras y barras" } ]
+}
+{% endschema %}

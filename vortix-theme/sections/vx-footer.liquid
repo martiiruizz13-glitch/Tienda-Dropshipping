@@ -1,0 +1,67 @@
+<footer class="vx-footer">
+  <div class="vx-wrap">
+    <div class="vx-footer__grid">
+      <div class="vx-footer__brand">
+        <a class="vx-logo" href="{{ routes.root_url }}" style="justify-self:start;color:var(--vx-paper);--vx-logo-w: {{ section.settings.logo_width }}px">
+          {%- if section.settings.logo != blank -%}{{ section.settings.logo | image_url: width: 480 | image_tag: alt: shop.name, loading: 'lazy' }}{%- else -%}<span class="vx-logo__mark">{% render 'vx-icon', name: 'vortex' %}</span>{{ section.settings.wordmark }}{%- endif -%}
+        </a>
+        <p class="vx-footer__tag">{{ section.settings.tagline | newline_to_br }}</p>
+        <div class="vx-footer__social">
+          {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}" aria-label="Instagram" target="_blank" rel="noopener">{% render 'vx-icon', name: 'instagram' %}</a>{%- endif -%}
+          {%- if settings.social_tiktok_link != blank -%}<a href="{{ settings.social_tiktok_link }}" aria-label="TikTok" target="_blank" rel="noopener">{% render 'vx-icon', name: 'tiktok' %}</a>{%- endif -%}
+          {%- if settings.social_youtube_link != blank -%}<a href="{{ settings.social_youtube_link }}" aria-label="YouTube" target="_blank" rel="noopener">{% render 'vx-icon', name: 'youtube' %}</a>{%- endif -%}
+        </div>
+      </div>
+      <div>
+        <h3>{{ section.settings.col1_title }}</h3>
+        <ul>
+          {%- for i in (1..4) -%}
+            {%- capture lk %}link_{{ i }}_label{% endcapture -%}{%- capture lu %}link_{{ i }}_url{% endcapture -%}
+            {%- assign defs = '/#como-funciona,/#resenas,/#preguntas,/#comprar' | split: ',' -%}{%- assign di = i | minus: 1 -%}
+            {%- if section.settings[lk] != blank -%}<li><a href="{{ section.settings[lu] | default: defs[di] }}">{{ section.settings[lk] }}</a></li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+      <div>
+        <h3>{{ section.settings.col2_title }}</h3>
+        <ul>
+          <li><a href="{{ routes.root_url }}policies/shipping-policy">Envíos</a></li>
+          <li><a href="{{ routes.root_url }}policies/refund-policy">Devoluciones</a></li>
+          <li><a href="{{ routes.root_url }}policies/privacy-policy">Privacidad</a></li>
+          <li><a href="{{ routes.root_url }}policies/terms-of-service">Términos y condiciones</a></li>
+          {%- if section.settings.contact_email != blank -%}<li><a href="mailto:{{ section.settings.contact_email }}">{{ section.settings.contact_email }}</a></li>{%- endif -%}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="vx-footer__giant" aria-hidden="true" data-footer-giant>{{ section.settings.wordmark }}</div>
+  <div class="vx-wrap vx-footer__bottom">
+    <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}. Todos los derechos reservados.</span>
+    <div class="vx-pay" aria-label="Métodos de pago">
+      {%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "VX – Pie de página",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (opcional)" },
+    { "type": "range", "id": "logo_width", "label": "Ancho del logo (px)", "min": 60, "max": 240, "step": 5, "default": 120 },
+    { "type": "text", "id": "wordmark", "label": "Nombre de marca", "default": "VORTIX" },
+    { "type": "textarea", "id": "tagline", "label": "Frase de marca", "default": "Menos agitar, más disfrutar. Batidos perfectos en 5 segundos, estés donde estés." },
+    { "type": "text", "id": "contact_email", "label": "Email de contacto" },
+    { "type": "text", "id": "col1_title", "label": "Título columna 1", "default": "Explora" },
+    { "type": "text", "id": "link_1_label", "label": "Enlace 1 – texto", "default": "Cómo funciona" },
+    { "type": "url", "id": "link_1_url", "label": "Enlace 1 – destino" },
+    { "type": "text", "id": "link_2_label", "label": "Enlace 2 – texto", "default": "Reseñas" },
+    { "type": "url", "id": "link_2_url", "label": "Enlace 2 – destino" },
+    { "type": "text", "id": "link_3_label", "label": "Enlace 3 – texto", "default": "Preguntas frecuentes" },
+    { "type": "url", "id": "link_3_url", "label": "Enlace 3 – destino" },
+    { "type": "text", "id": "link_4_label", "label": "Enlace 4 – texto", "default": "Comprar" },
+    { "type": "url", "id": "link_4_url", "label": "Enlace 4 – destino" },
+    { "type": "text", "id": "col2_title", "label": "Título columna 2", "default": "Ayuda" }
+  ]
+}
+{% endschema %}

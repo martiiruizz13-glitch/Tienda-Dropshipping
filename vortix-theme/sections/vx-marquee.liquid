@@ -1,0 +1,37 @@
+{%- assign words = section.settings.words | newline_to_br | split: '<br />' -%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+  #shopify-section-{{ section.id }} .vx-marquee { --vx-mq-size: clamp(2.25rem, 1.2rem + 4.5vw, {{ section.settings.size }}px); --vx-mq-speed: {{ section.settings.speed }}s; }
+{% endstyle %}
+<section class="vx-marquee vx-section{% if section.settings.style == 'dark' %} vx-dark{% elsif section.settings.style == 'accent' %} vx-accent-bg{% endif %}" aria-label="{{ words | join: ' · ' | strip_newlines | escape }}" data-marquee>
+  {%- assign rows = section.settings.rows -%}
+  {%- for r in (1..rows) -%}
+    <div class="vx-marquee__skew"><div class="vx-marquee__row{% if forloop.index == 2 %} vx-marquee__row--rev{% endif %}" aria-hidden="true">
+      {%- for k in (1..2) -%}
+        <div class="vx-marquee__track">
+          {%- for w in words -%}{%- assign t = w | strip -%}{%- if t != blank -%}
+            <span class="vx-marquee__item">{{ t }}{% render 'vx-icon', name: 'vortex' %}</span>
+          {%- endif -%}{%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div></div>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "VX – Texto en movimiento",
+  "tag": "div",
+  "settings": [
+    { "type": "textarea", "id": "words", "label": "Frases (una por línea)", "default": "Sin grumos\n7000 rpm\nRecargable USB\n400 ml\nEn 5 segundos" },
+    { "type": "select", "id": "style", "label": "Estilo", "options": [ { "value": "light", "label": "Claro" }, { "value": "dark", "label": "Oscuro" }, { "value": "accent", "label": "Naranja" } ], "default": "light" },
+    { "type": "range", "id": "rows", "label": "Filas", "min": 1, "max": 2, "step": 1, "default": 1 },
+    { "type": "range", "id": "size", "label": "Tamaño máximo del texto (px)", "min": 32, "max": 160, "step": 4, "default": 96 },
+    { "type": "range", "id": "speed", "label": "Velocidad (segundos por vuelta)", "min": 10, "max": 90, "step": 5, "default": 30 },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 0 }
+  ],
+  "presets": [ { "name": "VX – Texto en movimiento" } ]
+}
+{% endschema %}

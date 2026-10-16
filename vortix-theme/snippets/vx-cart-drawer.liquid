@@ -1,0 +1,19 @@
+<div class="vx-drawer" data-drawer aria-hidden="true">
+  <button class="vx-drawer__overlay" type="button" aria-label="Cerrar carrito" tabindex="-1" data-drawer-close></button>
+  <div class="vx-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="vx-drawer-title" tabindex="-1">
+    <div class="vx-drawer__head">
+      <h2 id="vx-drawer-title">Tu carrito</h2>
+      <button class="vx-icon-btn" type="button" aria-label="Cerrar carrito" data-drawer-close>{% render 'vx-icon', name: 'close' %}</button>
+    </div>
+    <div class="vx-drawer__ship" data-drawer-ship>
+      <span>🚚 <strong>Envío gratis</strong> en tu pedido a toda España.</span>
+    </div>
+    <div class="vx-drawer__items" data-drawer-items aria-live="polite"></div>
+    <div class="vx-drawer__foot" data-drawer-foot>
+      <div class="vx-drawer__total"><span>Total</span><span data-drawer-total>{{ cart.total_price | money }}</span></div>
+      <p class="vx-drawer__note">Impuestos incluidos. Envío gratis. Pago 100 % seguro.</p>
+      <a class="vx-btn vx-btn--accent vx-btn--block" href="{{ routes.root_url }}checkout">Finalizar compra </a>
+      <div class="vx-pay" style="justify-content:center">{%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}</div>
+    </div>
+  </div>
+</div>

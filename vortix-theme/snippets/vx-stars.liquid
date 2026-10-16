@@ -1,0 +1,7 @@
+{%- comment -%} Estrellas. Uso: {% render 'vx-stars', rating: 5 %} {%- endcomment -%}
+{%- assign r = rating | default: 5 | round -%}
+<span class="vx-stars" role="img" aria-label="{{ r }} de 5 estrellas">
+  {%- for i in (1..5) -%}
+    <span{% if i > r %} style="opacity:.25"{% endif %}>{% render 'vx-icon', name: 'star' %}</span>
+  {%- endfor -%}
+</span>

@@ -1,0 +1,65 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = all_products['vortix-vaso-mezclador-electrico-proteinas']
+  endif
+  assign idx = section.settings.fallback_index | minus: 1
+  assign fb = p.media[idx] | default: p.featured_media
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+  #shopify-section-{{ section.id }} .vx-expand { background: {{ section.settings.bg }}; }
+  #shopify-section-{{ section.id }} .vx-expand__title .vx-h2 { font-size: clamp(2.6rem, 1.4rem + 5vw, {{ section.settings.title_size }}px); }
+  #shopify-section-{{ section.id }} .vx-expand__title { text-align: {{ section.settings.align }}; {% if section.settings.align == 'center' %}margin-inline:auto; left:0; right:0; max-width:none;{% endif %} }
+  #shopify-section-{{ section.id }} .vx-expand__media { background: {{ section.settings.media_bg }}; }
+  {%- if section.settings.contain -%}
+  #shopify-section-{{ section.id }} .vx-expand__media img { object-fit: contain; padding: 6% 10%; }
+  {%- endif -%}
+{% endstyle %}
+
+<section class="vx-expand vx-section" id="{{ section.settings.anchor }}" data-expand>
+  <div class="vx-expand__pin" data-expand-pin>
+    <div class="vx-expand__side vx-expand__side--l" data-expand-side="-1" aria-hidden="true">{{ section.settings.side_left | newline_to_br }}</div>
+    <div class="vx-expand__side vx-expand__side--r" data-expand-side="1" aria-hidden="true">{{ section.settings.side_right | newline_to_br }}</div>
+    <div class="vx-expand__media" data-expand-media>
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, preload: 'metadata', image_size: '1600x' }}
+      {%- elsif section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'lazy', sizes: '100vw', widths: '800,1200,1800,2400', alt: section.settings.image.alt }}
+      {%- elsif fb -%}
+        {{ fb.preview_image | image_url: width: 1800 | image_tag: loading: 'lazy', sizes: '100vw', widths: '800,1200,1800', alt: fb.alt }}
+      {%- endif -%}
+    </div>
+    <div class="vx-expand__title" data-expand-title>
+      <span class="vx-eyebrow" style="color:rgba(250,247,242,.75)">{{ section.settings.eyebrow }}</span>
+      <h2 class="vx-h2" style="margin-top:.8rem">{{ section.settings.title }}</h2>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VX – Imagen expansiva",
+  "tag": "div",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Imagen" },
+    { "type": "video", "id": "video", "label": "Vídeo (opcional, sustituye a la imagen)" },
+    { "type": "range", "id": "fallback_index", "label": "Si no hay imagen: nº de foto del producto", "min": 1, "max": 10, "step": 1, "default": 2 },
+    { "type": "checkbox", "id": "contain", "label": "Mostrar la imagen entera (sin recortar)", "default": false },
+    { "type": "color", "id": "media_bg", "label": "Fondo detrás de la imagen", "default": "#141210" },
+    { "type": "header", "content": "Textos" },
+    { "type": "text", "id": "side_left", "label": "Texto lateral izquierdo", "default": "Menos agitar." },
+    { "type": "text", "id": "side_right", "label": "Texto lateral derecho", "default": "Más disfrutar." },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "El efecto vórtice" },
+    { "type": "text", "id": "title", "label": "Título final", "default": "Un remolino perfecto en cada trago." },
+    { "type": "select", "id": "align", "label": "Alineación", "options": [ { "value": "left", "label": "Izquierda" }, { "value": "center", "label": "Centro" } ], "default": "left" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 40, "max": 160, "step": 4, "default": 120 },
+    { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#faf7f2" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "como-funciona" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 0 }
+  ],
+  "presets": [ { "name": "VX – Imagen expansiva" } ]
+}
+{% endschema %}

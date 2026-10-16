@@ -1,0 +1,58 @@
+{%- liquid
+  assign p = section.settings.product
+  if p == blank
+    assign p = product
+  endif
+  if p == blank
+    assign p = all_products['vortix-vaso-mezclador-electrico-proteinas']
+  endif
+  assign v = p.selected_or_first_available_variant
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: var(--vx-ink); }
+  #shopify-section-{{ section.id }} .vx-cta__title { font-size: clamp(3rem, 1.6rem + 6vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+<section class="vx-cta vx-section vx-dark" id="{{ section.settings.anchor }}" data-cta>
+  {%- if section.settings.image != blank -%}
+    <div class="vx-cta__bg" data-parallax="0.18">{{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'lazy', sizes: '100vw', widths: '800,1400,2000,2400', alt: '' }}</div>
+  {%- else -%}
+    <div class="vx-cta__fallback" aria-hidden="true"></div>
+  {%- endif -%}
+  <div class="vx-wrap">
+    <span class="vx-eyebrow" data-reveal>{{ section.settings.eyebrow }}</span>
+    <h2 class="vx-h1 vx-cta__title" data-reveal>{{ section.settings.title }}</h2>
+    <p data-reveal>{{ section.settings.text | newline_to_br }}</p>
+    <div data-reveal>
+      <a class="vx-btn vx-btn--accent" href="{{ section.settings.cta_url | default: '#comprar' }}" data-magnetic>
+        {{ section.settings.cta_label }}{% if section.settings.show_price and v %} · {{ v.price | money }}{% endif %}{% render 'vx-icon', name: 'arrow' %}
+      </a>
+    </div>
+    {%- if section.settings.guarantee != blank -%}
+      <div class="vx-guarantee" data-reveal>{% render 'vx-icon', name: 'shield' %}{{ section.settings.guarantee }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VX – Llamada final",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto" },
+    { "type": "image_picker", "id": "image", "label": "Imagen de fondo (opcional)" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Tu próximo batido" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Deja de agitar. Empieza a disfrutar." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Envío gratis a toda España y 14 días para probarlo en casa." },
+    { "type": "text", "id": "cta_label", "label": "Texto del botón", "default": "Quiero mi Vortix" },
+    { "type": "url", "id": "cta_url", "label": "Enlace del botón" },
+    { "type": "checkbox", "id": "show_price", "label": "Mostrar precio en el botón", "default": true },
+    { "type": "text", "id": "guarantee", "label": "Texto de garantía", "default": "Garantía legal de 3 años · Pago 100 % seguro" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 48, "max": 180, "step": 4, "default": 136 },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "final" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "default": 0 }
+  ],
+  "presets": [ { "name": "VX – Llamada final" } ]
+}
+{% endschema %}

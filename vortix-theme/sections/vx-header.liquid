@@ -1,0 +1,81 @@
+{%- if section.blocks.size == 0 -%}
+  {%- capture vx_default_links -%}#como-funciona|Cómo funciona,#resenas|Reseñas,#preguntas|Preguntas{%- endcapture -%}
+{%- endif -%}
+{%- assign msgs = section.settings.announce | newline_to_br | split: '<br />' -%}
+{%- if section.settings.show_announce and section.settings.announce != blank -%}
+  <div class="vx-announce" style="--vx-announce-speed: {{ section.settings.announce_speed }}s">
+    <div class="vx-announce__track" aria-label="Avisos">
+      {%- for n in (1..2) -%}
+        {%- for m in msgs -%}{%- assign t = m | strip -%}{%- if t != blank -%}<span{% if n == 2 %} aria-hidden="true"{% endif %}>{{ t }}</span>{%- endif -%}{%- endfor -%}
+        {%- for m in msgs -%}{%- assign t = m | strip -%}{%- if t != blank -%}<span aria-hidden="true">{{ t }}</span>{%- endif -%}{%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+<header class="vx-header" data-vx-header>
+  <div class="vx-wrap vx-header__inner">
+    <nav class="vx-nav" aria-label="Principal">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+      {%- endfor -%}
+      {%- if vx_default_links -%}{%- assign ls = vx_default_links | split: ',' -%}{%- for l in ls -%}{%- assign lp = l | split: '|' -%}<a href="{{ lp[0] }}">{{ lp[1] }}</a>{%- endfor -%}{%- endif -%}
+    </nav>
+    <button class="vx-icon-btn vx-menu-btn" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="vx-mobile-nav" data-menu-open>
+      {% render 'vx-icon', name: 'menu' %}
+    </button>
+
+    <a class="vx-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} — inicio" style="--vx-logo-w: {{ section.settings.logo_width }}px">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 480 | image_tag: alt: shop.name, loading: 'eager' }}
+      {%- else -%}
+        <span class="vx-logo__mark">{% render 'vx-icon', name: 'vortex' %}</span>{{ section.settings.wordmark }}
+      {%- endif -%}
+    </a>
+
+    <div class="vx-header__actions">
+      <a class="vx-btn vx-btn--accent vx-header__buy" href="{{ section.settings.cta_url | default: '#comprar' }}">{{ section.settings.cta_label }}</a>
+      <a class="vx-icon-btn" href="{{ routes.cart_url }}" aria-label="Abrir carrito" data-cart-open>
+        {% render 'vx-icon', name: 'bag' %}
+        <span class="vx-cart-count{% if cart.item_count > 0 %} has-items{% endif %}" data-cart-count aria-live="polite">{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="vx-mobile-nav" id="vx-mobile-nav" role="dialog" aria-modal="true" aria-label="Menú" data-mobile-nav>
+  <button class="vx-icon-btn vx-mobile-nav__close" type="button" aria-label="Cerrar menú" data-menu-close>{% render 'vx-icon', name: 'close' %}</button>
+  {%- for block in section.blocks -%}
+    <a href="{{ block.settings.url | default: '#' }}" data-menu-close>{{ block.settings.label }}</a>
+  {%- endfor -%}
+  {%- if vx_default_links -%}{%- assign ls = vx_default_links | split: ',' -%}{%- for l in ls -%}{%- assign lp = l | split: '|' -%}<a href="{{ lp[0] }}" data-menu-close>{{ lp[1] }}</a>{%- endfor -%}{%- endif -%}
+  <div style="margin-top:2rem"><a class="vx-btn vx-btn--accent" style="font-family:var(--vx-f-body);font-size:1rem;letter-spacing:0" href="{{ section.settings.cta_url | default: '#comprar' }}" data-menu-close>{{ section.settings.cta_label }}</a></div>
+</div>
+
+{% schema %}
+{
+  "name": "VX – Cabecera",
+  "settings": [
+    { "type": "header", "content": "Barra de avisos" },
+    { "type": "checkbox", "id": "show_announce", "label": "Mostrar barra de avisos", "default": true },
+    { "type": "textarea", "id": "announce", "label": "Avisos (uno por línea)", "default": "Envío gratis a toda España\nPago 100 % seguro\n14 días para devolverlo\nGarantía de 3 años" },
+    { "type": "range", "id": "announce_speed", "label": "Velocidad (segundos por vuelta)", "min": 10, "max": 90, "step": 5, "default": 40 },
+    { "type": "header", "content": "Logo" },
+    { "type": "image_picker", "id": "logo", "label": "Logo (opcional)" },
+    { "type": "range", "id": "logo_width", "label": "Ancho del logo (px)", "min": 60, "max": 240, "step": 5, "default": 120 },
+    { "type": "text", "id": "wordmark", "label": "Texto del logo (si no hay imagen)", "default": "VORTIX" },
+    { "type": "header", "content": "Botón" },
+    { "type": "text", "id": "cta_label", "label": "Texto del botón", "default": "Comprar" },
+    { "type": "url", "id": "cta_url", "label": "Enlace del botón" }
+  ],
+  "blocks": [
+    {
+      "type": "link", "name": "Enlace del menú",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "Enlace" },
+        { "type": "url", "id": "url", "label": "Enlace" }
+      ]
+    }
+  ]
+}
+{% endschema %}
