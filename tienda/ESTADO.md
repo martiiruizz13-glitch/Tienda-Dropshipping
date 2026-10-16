@@ -66,3 +66,14 @@ la plantilla `mt` y escribir título/descripción.
 - Fotos (diseño de Canva DAHYGNBIf2I, ahora "Pulsia · Fotos tienda"): principal,
   características y confianza, ya con el nombre PULSIA.
 - Nombres descartados por el usuario: Pisalma, Soléa / Soléa Pulse.
+
+## 16/10/2026 — Producto nuevo: **Vortix** (shaker eléctrico) · BORRADOR
+- Shopify gid://shopify/Product/16020491469183, handle `vortix-shaker-electrico-proteinas`,
+  vendor "Vortix", DRAFT. Descripción en /vortix/descripcion.html.
+- AutoDS 6ad2415e35c9808409e79e45, proveedor CJdropshipping (CJYD209276603CX), región ES.
+  Pedido automático activado; seguimiento de precio y stock desactivados.
+  OJO: AutoDS muestra envío 0 € / 999 días y stock 0 (no cargó los datos de envío de CJ).
+  Envío real CJ a España ≈ 6,2–6,8 € (12–25 días).
+- 6 variantes a 29,99 €, sin inventario: Classic (Negro 5,34 · Blanco 3,77 · Crema 3,19 €)
+  y Slim (Blanco · Rosa · Verde, 5,09 €). Costes sin envío.
+- Fotos: 7 del proveedor sin texto en inglés (se borraron 5 con textos en inglés).
