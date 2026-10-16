@@ -10,7 +10,7 @@ def blocks(prefix, items):
 
 S = {}
 S['hero'] = {'type': 'vx-hero', 'settings': {'product': H}}
-S['marquee'] = {'type': 'vx-marquee', 'settings': {'style': 'accent', 'rows': 1, 'size': 88, 'speed': 28,
+S['marquee'] = {'type': 'vx-marquee', 'settings': {'style': 'accent', 'rows': '1', 'size': 88, 'speed': 28,
     'words': 'Sin grumos\n7000 rpm\nRecargable USB\n400 ml\nListo en 5 segundos\nCabe en tu mochila'}}
 S['expand'] = {'type': 'vx-expand', 'settings': {'fallback_index': 2, 'contain': True, 'media_bg': '#ffffff',
     'side_left': 'Menos\nagitar.', 'side_right': 'Más\ndisfrutar.', 'eyebrow': 'El efecto vórtice',
