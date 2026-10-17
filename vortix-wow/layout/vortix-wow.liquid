@@ -41,7 +41,7 @@
         var c = d.documentElement;
         c.className = c.className.replace('no-js', 'vw-js');
         /* Si las animaciones no llegan a cargar, el contenido se muestra igualmente. */
-        setTimeout(function () { if (!window.gsap) c.classList.add('vw-nofx'); }, 3500);
+        setTimeout(function () { if (!window.vwReady) c.classList.add('vw-nofx'); }, 4000);
       })(document);
       window.vwConfig = {
         moneyFormat: {{ shop.money_format | json }},

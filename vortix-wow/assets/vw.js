@@ -911,9 +911,19 @@
       var fromUrl = findVariant(params.get('variant'));
       var input = $('[data-variant-input]');
       var initial = fromUrl || findVariant(input && input.value) || product.variants.find(function (v) { return v.available; }) || product.variants[0];
-      if (initial) setVariant(initial.id, { instant: true, silentUrl: !fromUrl });
+      try {
+        if (initial) setVariant(initial.id, { instant: true, silentUrl: !fromUrl });
+      } catch (e) { if (window.console) console.error('[vortix] variante', e); }
     }
-    initMotion();
+    try {
+      initMotion();
+      window.vwReady = true;
+    } catch (e) {
+      // Si algo falla, el contenido nunca se queda oculto
+      if (window.console) console.error('[vortix] animaciones', e);
+      root.classList.add('vw-nofx');
+      revealAll();
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
