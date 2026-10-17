@@ -1,0 +1,425 @@
+{
+  "layout": "vortix-wow",
+  "sections": {
+    "hero": {
+      "type": "vw-hero",
+      "settings": {
+        "title": "Tu espalda,\npor fin *en calma.*",
+        "sub": "Almohadilla térmica de 30 x 60 cm en terciopelo suave. 9 niveles de calor, apagado automático y lista en segundos para espalda, cuello y hombros.",
+        "cta_label": "Comprar",
+        "cta2_label": "Cómo funciona",
+        "cta2_anchor": "calor",
+        "chips": "9 niveles de calor\n30 × 60 cm\nApagado automático",
+        "media_index": 1,
+        "blend": true,
+        "show_dots": false,
+        "badge": "9",
+        "badge_sub": "niveles"
+      }
+    },
+    "expand": {
+      "type": "vw-expand",
+      "settings": {
+        "fallback_index": 10,
+        "fit": "auto",
+        "frame_bg": "#1b1210",
+        "kicker": "Calor que envuelve",
+        "word_left": "Menos tensión.",
+        "word_right": "Más calma.",
+        "title": "Calor suave\ny uniforme,\nsin puntos fríos.",
+        "text": "Enchúfala, elige tu nivel de calor y en segundos empiezas a notarlo. El calor se reparte por toda la superficie para que los músculos se relajen.",
+        "anchor": "calor"
+      }
+    },
+    "rpm": {
+      "type": "vw-rpm",
+      "settings": {
+        "eyebrow": "En cifras",
+        "title": "Todo el control, desde el mando."
+      },
+      "blocks": {
+        "rpm-1": {
+          "type": "stat",
+          "settings": {
+            "number": "9",
+            "unit": "niveles",
+            "label": "Calor a tu medida",
+            "text": "Desde una tibieza suave (unos 30 °C) hasta un calor intenso (unos 50 °C). Tú decides cuánto mimo necesitas hoy."
+          }
+        },
+        "rpm-2": {
+          "type": "stat",
+          "settings": {
+            "number": "50",
+            "unit": "°C",
+            "label": "Temperatura máxima percibida",
+            "text": "Empieza siempre por un nivel bajo y revisa la piel con frecuencia."
+          }
+        },
+        "rpm-3": {
+          "type": "stat",
+          "settings": {
+            "number": "120",
+            "unit": "min",
+            "label": "Se apaga sola",
+            "text": "Temporizador de 30, 60, 90 o 120 minutos. Relájate sin estar pendiente del reloj."
+          }
+        },
+        "rpm-4": {
+          "type": "stat",
+          "settings": {
+            "number": "60",
+            "unit": "cm",
+            "label": "30 × 60 cm de superficie",
+            "text": "Lo justo para cubrir toda la espalda, los hombros y el cuello a la vez."
+          }
+        }
+      },
+      "block_order": [
+        "rpm-1",
+        "rpm-2",
+        "rpm-3",
+        "rpm-4"
+      ]
+    },
+    "features": {
+      "type": "vw-features",
+      "settings": {
+        "eyebrow": "Por qué TermoCalm",
+        "title": "Calor que *abraza.*",
+        "intro": "Horas frente al ordenador, el móvil, el coche, el frío del invierno… TermoCalm envuelve la zona con un calor suave y uniforme para que vuelvas a sentirte a gusto en tu propia piel."
+      },
+      "blocks": {
+        "features-1": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 11,
+            "blend": false,
+            "bg": "#f3d9c8",
+            "icon": "flame",
+            "title": "Calor a tu medida",
+            "text": "9 niveles desde el mando, de una tibieza suave a un calor intenso. Calienta en segundos y reparte el calor por toda la superficie, sin puntos fríos.",
+            "layout": "left"
+          }
+        },
+        "features-2": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 0,
+            "blend": false,
+            "bg": "#ffd8c4",
+            "icon": "clock",
+            "title": "Se apaga sola",
+            "text": "Temporizador de 30, 60, 90 o 120 minutos con apagado automático. Relájate sin estar pendiente del reloj.",
+            "layout": "right"
+          }
+        },
+        "features-3": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 13,
+            "blend": false,
+            "bg": "#efe2d6",
+            "icon": "feather",
+            "title": "Suavidad de manta",
+            "text": "Terciopelo por las dos caras, tan agradable que vas a querer usarla aunque no haga frío.",
+            "layout": "left"
+          }
+        },
+        "features-4": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 12,
+            "blend": false,
+            "bg": "#f6e3d4",
+            "icon": "drop",
+            "title": "Fácil de limpiar",
+            "text": "Separa el mando, lávala a mano y déjala secar del todo antes de volver a usarla.",
+            "layout": "right"
+          }
+        },
+        "features-5": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 0,
+            "blend": false,
+            "bg": "#f4cfe0",
+            "icon": "feather",
+            "title": "Ligera, plegable y silenciosa",
+            "text": "Cabe en un cajón, en la mochila o en la maleta. Sin ruidos ni instalaciones: solo enchufar y disfrutar.",
+            "layout": "left"
+          }
+        }
+      },
+      "block_order": [
+        "features-1",
+        "features-2",
+        "features-3",
+        "features-4",
+        "features-5"
+      ]
+    },
+    "buy": {
+      "type": "vw-buy",
+      "settings": {
+        "padding_top": 64,
+        "eyebrow": "Hazla tuya",
+        "tax_note": "IVA incluido · En España, elige el enchufe europeo",
+        "bullets": "9 niveles de calor (de unos 30 °C a unos 50 °C)\nTemporizador con apagado automático\n30 x 60 cm, terciopelo por las dos caras\nLavable a mano separando el mando",
+        "show_dots": false,
+        "media_order": "1,10,11,12,13",
+        "trust_1": "Pago 100 % seguro y cifrado",
+        "trust_2": "14 días para desistir de la compra",
+        "trust_3": "Garantía legal de 3 años",
+        "trust_4": "",
+        "shipping_title": "Advertencias de seguridad",
+        "shipping_text": "<p>Lee el manual antes del primer uso. No te duermas con la almohadilla encendida y desenchúfala cuando no la uses. Empieza con un nivel bajo y revisa la piel con frecuencia. No la uses mojada ni la dobles mientras está encendida. Si estás embarazada, tienes diabetes, problemas de circulación, un marcapasos o cualquier problema de salud, consulta a tu médico antes de usarla.</p>"
+      }
+    },
+    "moments": {
+      "type": "vw-moments",
+      "settings": {
+        "row_1": "Sofá\nEscritorio\nDespués de entrenar",
+        "row_2": "Calor suave\nSin puntos fríos\nSe apaga sola",
+        "title": "Un aliado para todo el invierno.",
+        "bg": "#ff7a45",
+        "fg": "#1b1210"
+      },
+      "blocks": {
+        "moments-1": {
+          "type": "moment",
+          "settings": {
+            "title": "En el sofá",
+            "text": "Sobre la espalda o los hombros mientras ves tu serie favorita, con una manta y algo calentito."
+          }
+        },
+        "moments-2": {
+          "type": "moment",
+          "settings": {
+            "title": "En el escritorio",
+            "text": "Como respaldo caliente en la silla mientras teletrabajas. Adiós a la espalda fría a media tarde."
+          }
+        },
+        "moments-3": {
+          "type": "moment",
+          "settings": {
+            "title": "Después de entrenar",
+            "text": "Calor relajante para la musculatura cargada tras el gimnasio o una buena caminata."
+          }
+        },
+        "moments-4": {
+          "type": "moment",
+          "settings": {
+            "title": "Antes de acostarte",
+            "text": "Para templar los pies o las piernas en las noches más frías. Retírala y desenchúfala antes de dormir."
+          }
+        },
+        "moments-5": {
+          "type": "moment",
+          "settings": {
+            "title": "Como regalo",
+            "text": "Un detalle útil para padres, abuelos, tu pareja o cualquiera que pase muchas horas sentado."
+          }
+        }
+      },
+      "block_order": [
+        "moments-1",
+        "moments-2",
+        "moments-3",
+        "moments-4",
+        "moments-5"
+      ]
+    },
+    "specs": {
+      "type": "vw-specs",
+      "settings": {
+        "eyebrow": "Ficha técnica",
+        "title": "Todo lo que necesitas saber.",
+        "fallback_index": 10,
+        "fit": "cover",
+        "image_bg": "#efe2d6",
+        "box": "1 almohadilla térmica TermoCalm de 30 x 60 cm con mando\nManual de instrucciones",
+        "tips_title": "Consejos de uso",
+        "tips": "Usa la versión de enchufe de tu país (en España, la europea de 220-240 V). No la dobles ni te sientes encima mientras está encendida. Desenchúfala y separa el mando antes de lavarla."
+      },
+      "blocks": {
+        "specs-1": {
+          "type": "spec",
+          "settings": {
+            "label": "Tamaño",
+            "value": "30 x 60 cm"
+          }
+        },
+        "specs-2": {
+          "type": "spec",
+          "settings": {
+            "label": "Color",
+            "value": "Gris"
+          }
+        },
+        "specs-3": {
+          "type": "spec",
+          "settings": {
+            "label": "Tejido",
+            "value": "Terciopelo suave por ambas caras"
+          }
+        },
+        "specs-4": {
+          "type": "spec",
+          "settings": {
+            "label": "Niveles de calor",
+            "value": "9 (temperatura percibida de 30 °C a 50 °C)"
+          }
+        },
+        "specs-5": {
+          "type": "spec",
+          "settings": {
+            "label": "Temporizador",
+            "value": "30 / 60 / 90 / 120 minutos con apagado automático"
+          }
+        },
+        "specs-6": {
+          "type": "spec",
+          "settings": {
+            "label": "Potencia",
+            "value": "75 W"
+          }
+        },
+        "specs-7": {
+          "type": "spec",
+          "settings": {
+            "label": "Enchufe",
+            "value": "Europeo o británico (220-240 V) o americano (110 V)"
+          }
+        }
+      },
+      "block_order": [
+        "specs-1",
+        "specs-2",
+        "specs-3",
+        "specs-4",
+        "specs-5",
+        "specs-6",
+        "specs-7"
+      ]
+    },
+    "faq": {
+      "type": "vw-faq",
+      "settings": {
+        "eyebrow": "Compra con tranquilidad",
+        "contact_url": "/pages/contact"
+      },
+      "blocks": {
+        "faq-1": {
+          "type": "promise",
+          "settings": {
+            "big": "9",
+            "label": "niveles de calor desde el mando"
+          }
+        },
+        "faq-2": {
+          "type": "promise",
+          "settings": {
+            "big": "120 min",
+            "label": "temporizador con apagado automático"
+          }
+        },
+        "faq-3": {
+          "type": "promise",
+          "settings": {
+            "big": "14 días",
+            "label": "para desistir de la compra"
+          }
+        },
+        "faq-4": {
+          "type": "promise",
+          "settings": {
+            "big": "3 años",
+            "label": "de garantía legal"
+          }
+        },
+        "faq-5": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Cuánto tarda en calentar?",
+            "a": "<p>En cuestión de segundos empiezas a notar el calor, y se reparte por toda la superficie sin puntos fríos.</p>"
+          }
+        },
+        "faq-6": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Se apaga sola?",
+            "a": "<p>Sí. Puedes elegir un temporizador de 30, 60, 90 o 120 minutos y se apaga automáticamente.</p>"
+          }
+        },
+        "faq-7": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Cómo se lava?",
+            "a": "<p>Desenchúfala y separa el mando de la almohadilla. Lávala a mano y deja que se seque del todo antes de volver a usarla.</p>"
+          }
+        },
+        "faq-8": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Qué enchufe necesito?",
+            "a": "<p>Hay tres versiones: enchufe europeo (220-240 V), británico (220-240 V) y americano (110 V). En España, elige la de enchufe europeo.</p>"
+          }
+        },
+        "faq-9": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Para qué zonas sirve?",
+            "a": "<p>Con sus 30 x 60 cm cubre la espalda, los hombros y el cuello a la vez. También puedes usarla para templar los pies o las piernas.</p>"
+          }
+        },
+        "faq-10": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Puedo dormir con ella?",
+            "a": "<p>No. No te duermas con la almohadilla encendida: retírala y desenchúfala antes de dormir.</p>"
+          }
+        },
+        "faq-11": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Quién no debería usarla?",
+            "a": "<p>No la uses con bebés, niños pequeños ni personas que no puedan reaccionar al calor o tengan poca sensibilidad en la piel. Los niños solo pueden usarla bajo la supervisión de un adulto. Si estás embarazada, tienes diabetes, problemas de circulación, un marcapasos o cualquier problema de salud, consulta antes a tu médico.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5",
+        "faq-6",
+        "faq-7",
+        "faq-8",
+        "faq-9",
+        "faq-10",
+        "faq-11"
+      ]
+    },
+    "final": {
+      "type": "vw-final",
+      "settings": {
+        "title": "Menos frío.\nMás *calma.*",
+        "text": "Tu momento de calor, cuando quieras.",
+        "cta_label": "La quiero"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "expand",
+    "rpm",
+    "features",
+    "buy",
+    "moments",
+    "specs",
+    "faq",
+    "final"
+  ]
+}

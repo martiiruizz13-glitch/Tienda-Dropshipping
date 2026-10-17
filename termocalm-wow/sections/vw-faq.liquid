@@ -1,0 +1,86 @@
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: var(--vw-paper); }
+  #shopify-section-{{ section.id }} .vw-faq__title { font-size: clamp(2.2rem, 1.3rem + 4vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+
+<section class="vw-faq vw-section" id="{{ section.settings.anchor }}" data-tone="paper">
+  <div class="vw-wrap">
+    {%- assign has_promises = false -%}
+    {%- for block in section.blocks -%}{%- if block.type == 'promise' -%}{%- assign has_promises = true -%}{%- endif -%}{%- endfor -%}
+    {%- if has_promises -%}
+      <ul class="vw-promises">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'promise' -%}
+            <li class="vw-promise" data-reveal {{ block.shopify_attributes }}>
+              <b class="vw-display">{{ block.settings.big }}</b>
+              <span>{{ block.settings.label }}</span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <div class="vw-faq__grid">
+      <div class="vw-faq__head">
+        <p class="vw-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="vw-faq__title vw-display" data-split>{{ section.settings.title }}</h2>
+        {%- if section.settings.contact_text != blank -%}
+          <p class="vw-faq__contact" data-reveal>
+            {{ section.settings.contact_text }}
+            {%- if section.settings.contact_label != blank -%}
+              <a class="vw-link" href="{{ section.settings.contact_url | default: '/pages/contact' }}">{{ section.settings.contact_label }}{% render 'vw-icon', name: 'arrow' %}</a>
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+      </div>
+      <div class="vw-acc vw-acc--lg">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'qa' -%}
+            <details class="vw-acc__item" {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.q }}<span class="vw-acc__icon" aria-hidden="true">{% render 'vw-icon', name: 'plus' %}</span></summary>
+              <div class="vw-acc__body vw-rte">{{ block.settings.a }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VW – Garantías y FAQ",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto superior", "default": "Compra con tranquilidad" },
+    { "type": "text", "id": "title", "label": "Titular", "default": "Preguntas frecuentes." },
+    { "type": "text", "id": "contact_text", "label": "Texto de contacto", "default": "¿Otra duda? Te respondemos personalmente." },
+    { "type": "text", "id": "contact_label", "label": "Texto del enlace de contacto", "default": "Escríbenos" },
+    { "type": "url", "id": "contact_url", "label": "Enlace de contacto" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "preguntas" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del titular (px)", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 112 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 120 }
+  ],
+  "blocks": [
+    {
+      "type": "promise",
+      "name": "Garantía destacada",
+      "settings": [
+        { "type": "text", "id": "big", "label": "Texto grande", "default": "14 días" },
+        { "type": "text", "id": "label", "label": "Texto pequeño", "default": "para cambiar de opinión" }
+      ]
+    },
+    {
+      "type": "qa",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Pregunta", "default": "¿Cómo se usa?" },
+        { "type": "richtext", "id": "a", "label": "Respuesta", "default": "<p>Respuesta</p>" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "VW – Garantías y FAQ", "blocks": [ { "type": "promise" }, { "type": "qa" } ] } ]
+}
+{% endschema %}

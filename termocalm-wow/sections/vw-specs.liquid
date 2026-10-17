@@ -1,0 +1,93 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = section.settings.product
+  endif
+  assign img = section.settings.image
+  if img == blank and p != blank and section.settings.fallback_index > 0
+    assign idx = section.settings.fallback_index | minus: 1
+    assign img = p.media[idx].preview_image
+  endif
+  assign box = section.settings.box | newline_to_br | split: '<br />'
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: var(--vw-ink); }
+  #shopify-section-{{ section.id }} .vw-specs__title { font-size: clamp(2.2rem, 1.3rem + 4vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+
+<section class="vw-specs vw-section" id="{{ section.settings.anchor }}" data-tone="ink">
+  <div class="vw-wrap vw-specs__grid">
+    <div class="vw-specs__visual">
+      <p class="vw-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="vw-specs__title vw-display" data-split>{{ section.settings.title }}</h2>
+      {%- if img -%}
+        <div class="vw-specs__media vw-specs__media--{{ section.settings.fit }}" style="--feat-bg: {{ section.settings.image_bg }}">
+          {{ img | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,700,1000,1200', sizes: '(min-width: 990px) 40vw, 92vw', alt: img.alt }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="vw-specs__data">
+      <dl class="vw-specs__table">
+        {%- for block in section.blocks -%}
+          <div class="vw-specs__row" data-reveal {{ block.shopify_attributes }}>
+            <dt>{{ block.settings.label }}</dt>
+            <dd>{{ block.settings.value }}</dd>
+          </div>
+        {%- endfor -%}
+      </dl>
+
+      {%- if section.settings.box != blank -%}
+        <div class="vw-specs__box" data-reveal>
+          <h3>{{ section.settings.box_title }}</h3>
+          <ul>
+            {%- for b in box -%}{%- assign t = b | strip -%}{%- if t != blank -%}<li>{{ t }}</li>{%- endif -%}{%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.tips != blank -%}
+        <div class="vw-specs__tips" data-reveal>
+          <h3>{{ section.settings.tips_title }}</h3>
+          <p>{{ section.settings.tips }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VW – Especificaciones",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (en su página se usa el propio)" },
+    { "type": "text", "id": "eyebrow", "label": "Texto superior", "default": "Ficha técnica" },
+    { "type": "text", "id": "title", "label": "Titular", "default": "Todo lo que hay dentro." },
+    { "type": "image_picker", "id": "image", "label": "Imagen" },
+    { "type": "range", "id": "fallback_index", "label": "Si no hay imagen, foto nº del producto (0 = ninguna)", "min": 0, "max": 10, "step": 1, "default": 4 },
+    { "type": "color", "id": "image_bg", "label": "Color de fondo de la imagen", "default": "#ffffff" },
+    { "type": "select", "id": "fit", "label": "Encaje de la foto", "options": [ { "value": "contain", "label": "Foto completa" }, { "value": "cover", "label": "Llenar el marco" } ], "default": "contain" },
+    { "type": "text", "id": "box_title", "label": "Título de «Qué incluye»", "default": "Qué incluye" },
+    { "type": "textarea", "id": "box", "label": "Contenido de la caja (uno por línea)", "default": "1 vaso mezclador Vortix con base motorizada\n1 tapa\n1 cable de carga USB\nManual de instrucciones" },
+    { "type": "text", "id": "tips_title", "label": "Título de consejos", "default": "Consejos de uso" },
+    { "type": "textarea", "id": "tips", "label": "Consejos", "default": "Añade primero el líquido y después el polvo para una mezcla aún más fina. Usa bebidas frías o templadas, nunca hirviendo. Limpia el vaso con agua y un paño suave, sin sumergir la base ni meterla en el lavavajillas. Cárgalo antes del primer uso." },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "ficha" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del titular (px)", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 84 },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 120 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 120 }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Dato",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Nombre", "default": "Capacidad" },
+        { "type": "text", "id": "value", "label": "Valor", "default": "400 ml" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "VW – Especificaciones", "blocks": [ { "type": "spec" } ] } ]
+}
+{% endschema %}

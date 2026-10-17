@@ -1,0 +1,87 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = section.settings.product
+  endif
+  assign tbits = section.settings.title | split: '*'
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: var(--vw-paper); }
+  #shopify-section-{{ section.id }} .vw-feat__title { font-size: clamp(2.2rem, 1.3rem + 4vw, {{ section.settings.title_size }}px); text-align: {{ section.settings.align }}; }
+  #shopify-section-{{ section.id }} .vw-feat__head { text-align: {{ section.settings.align }};{% if section.settings.align == 'center' %} margin-inline: auto;{% endif %} }
+{% endstyle %}
+
+<section class="vw-feat vw-section" id="{{ section.settings.anchor }}" data-tone="paper">
+  <div class="vw-wrap">
+    <header class="vw-feat__head">
+      <p class="vw-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="vw-feat__title vw-display" data-split>
+        {%- for b in tbits -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 1 -%}<em class="vw-serif">{{ b }}</em>{%- else -%}{{ b }}{%- endif -%}{%- endfor -%}
+      </h2>
+      {%- if section.settings.intro != blank -%}<p class="vw-feat__intro" data-reveal>{{ section.settings.intro }}</p>{%- endif -%}
+    </header>
+
+    <div class="vw-feat__list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign img = block.settings.image
+          if img == blank and p != blank and block.settings.fallback_index > 0
+            assign idx = block.settings.fallback_index | minus: 1
+            assign img = p.media[idx].preview_image
+          endif
+        -%}
+        <article class="vw-feat__item vw-feat__item--{{ block.settings.layout }}" {{ block.shopify_attributes }}>
+          <div class="vw-feat__media{% if block.settings.blend %} is-blend{% endif %}" style="--feat-bg: {{ block.settings.bg }}">
+            {%- if img -%}
+              {{ img | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400,700,1000,1400', sizes: '(min-width: 990px) 50vw, 92vw', class: 'vw-feat__img', alt: img.alt }}
+            {%- else -%}
+              <div class="vw-feat__icon-xl">{% render 'vw-icon', name: block.settings.icon %}</div>
+            {%- endif -%}
+            <span class="vw-feat__num" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          </div>
+          <div class="vw-feat__copy" data-reveal>
+            <span class="vw-feat__icon">{% render 'vw-icon', name: block.settings.icon %}</span>
+            <h3 class="vw-feat__h">{{ block.settings.title }}</h3>
+            <p class="vw-feat__p">{{ block.settings.text }}</p>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VW – Ventajas editoriales",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (en su página se usa el propio)" },
+    { "type": "text", "id": "eyebrow", "label": "Texto superior", "default": "Por qué Vortix" },
+    { "type": "text", "id": "title", "label": "Titular (*entre asteriscos* = cursiva)", "default": "Pensado para tu *ritmo.*" },
+    { "type": "textarea", "id": "intro", "label": "Introducción", "default": "Líneas limpias, acabado mate y un tamaño que se siente bien en la mano. Vortix no parece un accesorio de gimnasio cualquiera: es el vaso que te apetece sacar en cualquier sitio." },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "detalles" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del titular (px)", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 96 },
+    { "type": "select", "id": "align", "label": "Alineación de la cabecera", "options": [ { "value": "left", "label": "Izquierda" }, { "value": "center", "label": "Centro" } ], "default": "left" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 120 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 120 }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Ventaja",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Imagen" },
+        { "type": "range", "id": "fallback_index", "label": "Si no hay imagen, foto nº del producto (0 = solo icono)", "min": 0, "max": 10, "step": 1, "default": 1 },
+        { "type": "checkbox", "id": "blend", "label": "Fundir el fondo blanco de la foto con el color", "default": true },
+        { "type": "color", "id": "bg", "label": "Color de fondo de la imagen", "default": "#ebe6dc" },
+        { "type": "select", "id": "icon", "label": "Icono", "options": [ { "value": "bolt", "label": "Rayo" }, { "value": "battery", "label": "Batería" }, { "value": "cup", "label": "Vaso" }, { "value": "lid", "label": "Tapa" }, { "value": "feather", "label": "Ligero" }, { "value": "shield", "label": "Escudo" }, { "value": "spin", "label": "Giro" }, { "value": "clock", "label": "Reloj" }, { "value": "flame", "label": "Llama" }, { "value": "drop", "label": "Gota" } ], "default": "bolt" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Ventaja" },
+        { "type": "textarea", "id": "text", "label": "Texto" },
+        { "type": "select", "id": "layout", "label": "Composición", "options": [ { "value": "left", "label": "Imagen a la izquierda" }, { "value": "right", "label": "Imagen a la derecha" }, { "value": "wide", "label": "Imagen ancha" } ], "default": "left" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "VW – Ventajas editoriales", "blocks": [ { "type": "feature" }, { "type": "feature" } ] } ]
+}
+{% endschema %}

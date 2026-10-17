@@ -1,0 +1,48 @@
+<footer class="vw-footer" data-tone="ink">
+  <div class="vw-wrap">
+    <div class="vw-footer__top">
+      <p class="vw-footer__brand vw-display">{{ section.settings.brand }}</p>
+      <p class="vw-footer__claim">{{ section.settings.claim }}</p>
+    </div>
+    <div class="vw-footer__cols">
+      {%- if section.settings.menu != blank -%}
+        <nav aria-label="{{ linklists[section.settings.menu].title | escape }}">
+          <h2>{{ linklists[section.settings.menu].title }}</h2>
+          <ul>{%- for link in linklists[section.settings.menu].links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul>
+        </nav>
+      {%- endif -%}
+      <nav aria-label="Información legal">
+        <h2>Legal</h2>
+        <ul>
+          {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endfor -%}
+          {%- if section.settings.show_contact -%}<li><a href="/pages/contact">Contacto</a></li>{%- endif -%}
+        </ul>
+      </nav>
+      {%- if section.settings.email != blank -%}
+        <div>
+          <h2>Atención al cliente</h2>
+          <p><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></p>
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="vw-footer__bottom">
+      <small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</small>
+      {%- if shop.enabled_payment_types.size > 0 -%}
+        <div class="vw-pay vw-pay--dark" aria-label="Métodos de pago aceptados">{%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "VW – Pie de página",
+  "settings": [
+    { "type": "text", "id": "brand", "label": "Marca", "default": "TERMOCALM" },
+    { "type": "text", "id": "claim", "label": "Frase", "default": "Menos frío, más calma." },
+    { "type": "link_list", "id": "menu", "label": "Menú (opcional)", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_contact", "label": "Mostrar enlace a Contacto", "default": true },
+    { "type": "text", "id": "email", "label": "Email de atención al cliente (opcional)" }
+  ]
+}
+{% endschema %}
