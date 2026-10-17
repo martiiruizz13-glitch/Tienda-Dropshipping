@@ -48,13 +48,13 @@
 
 {% schema %}
 {
-  "name": "VW – Imagen que se expande",
+  "name": "VW – Expansión de imagen",
   "tag": "div",
   "settings": [
     { "type": "product", "id": "product", "label": "Producto (en su página se usa el propio)" },
     { "type": "image_picker", "id": "image", "label": "Imagen (ideal: horizontal, 2000 px o más)" },
     { "type": "range", "id": "fallback_index", "label": "Si no hay imagen, usar la foto nº del producto", "min": 1, "max": 10, "step": 1, "default": 2 },
-    { "type": "select", "id": "fit", "label": "Encaje de la foto", "options": [ { "value": "cover", "label": "Llenar el marco (recorta)" }, { "value": "contain", "label": "Foto completa sobre fondo difuminado" }, { "value": "auto", "label": "Automático (llenar en móvil, completa en escritorio)" } ], "default": "auto" },
+    { "type": "select", "id": "fit", "label": "Encaje de la foto", "options": [ { "value": "cover", "label": "Llenar el marco (recorta)" }, { "value": "contain", "label": "Foto completa sobre fondo difuminado" }, { "value": "auto", "label": "Automático (según la pantalla)" } ], "default": "auto" },
     { "type": "color", "id": "frame_bg", "label": "Color de fondo del marco", "default": "#0c0b14" },
     { "type": "header", "content": "Textos" },
     { "type": "text", "id": "kicker", "label": "Texto superior", "default": "El efecto vórtice" },
@@ -68,6 +68,6 @@
     { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 0 },
     { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 0 }
   ],
-  "presets": [ { "name": "VW – Imagen que se expande" } ]
+  "presets": [ { "name": "VW – Expansión de imagen" } ]
 }
 {% endschema %}

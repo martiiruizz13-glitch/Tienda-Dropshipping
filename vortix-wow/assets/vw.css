@@ -383,7 +383,8 @@ main:focus { outline: none; }
 }
 
 /* ---------- COLORES ---------- */
-.vw-colors { --colors-bg: var(--vw-tint); background: var(--vw-paper); overflow: hidden; isolation: isolate; }
+.vw-colors { --colors-bg: var(--vw-tint); position: static !important; }
+.vw-colors .vw-wrap, .vw-colors__rail-wrap { position: relative; }
 .vw-colors__bg { position: absolute; inset: 0; z-index: -1; background-color: color-mix(in srgb, var(--colors-bg) 34%, #f4f1ea); transition: background-color .8s var(--vw-ease); }
 .vw-colors__bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0) 45%); }
 .vw-colors__head { display: grid; gap: 28px; margin-bottom: clamp(36px, 6vw, 72px); }
@@ -674,3 +675,4 @@ body.vw-locked { overflow: hidden; }
 }
 .vw-rpm:not(.is-fx) .vw-rpm__dial { display: none; }
 @media (max-width: 989px) { .vw-rpm__dial { display: none; } }
+.vw-header__logo-img { display: block; } .vw-header__logo-img img { width: 100%; height: auto; }

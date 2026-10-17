@@ -5,7 +5,7 @@
   <div class="vw-header__bar">
     <a class="vw-header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} – inicio">
       {%- if section.settings.logo != blank -%}
-        {{ section.settings.logo | image_url: width: 300 | image_tag: alt: shop.name, width: section.settings.logo_width, height: null, style: 'height:auto' }}
+        <span class="vw-header__logo-img" style="width: {{ section.settings.logo_width }}px">{{ section.settings.logo | image_url: width: 440 | image_tag: alt: shop.name }}</span>
       {%- else -%}
         <svg class="vw-header__mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"/><path d="M16 6a10 10 0 1010 10"/><path d="M16 11a5 5 0 105 5"/></svg>
         <span>{{ section.settings.brand }}</span>
