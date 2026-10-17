@@ -1,0 +1,25 @@
+{%- comment -%}
+  Devuelve el color de muestra (hex) para un valor de variante, p. ej. "Clásico · Rosa".
+  Los colores se editan en Ajustes del tema → Vortix Wow → «Colores de las muestras»
+  (una línea por color: Palabra:#hex). Uso: {% render 'vw-tint', value: variant.title %}
+{%- endcomment -%}
+{%- liquid
+  assign map = settings.vw_tints
+  if map == blank
+    assign map = 'Negro:#2b2a30|Blanco:#eeeef0|Crema:#ead9bb|Rosa:#f6b9cb|Verde:#b9dcb0'
+  endif
+  assign tint = settings.vw_tint_fallback | default: '#e9e4da'
+  assign needle = value | downcase
+  assign lines = map | newline_to_br | replace: '<br />', '|' | split: '|'
+  for line in lines
+    assign parts = line | strip | split: ':'
+    if parts.size > 1
+      assign key = parts[0] | strip | downcase
+      if key != blank and needle contains key
+        assign tint = parts[1] | strip
+        break
+      endif
+    endif
+  endfor
+-%}
+{{- tint -}}

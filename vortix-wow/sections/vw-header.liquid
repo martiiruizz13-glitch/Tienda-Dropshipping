@@ -1,0 +1,63 @@
+{%- liquid
+  assign links = section.settings.links | newline_to_br | split: '<br />'
+-%}
+<header class="vw-header" data-header>
+  <div class="vw-header__bar">
+    <a class="vw-header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} – inicio">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 300 | image_tag: alt: shop.name, width: section.settings.logo_width, height: null, style: 'height:auto' }}
+      {%- else -%}
+        <svg class="vw-header__mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"/><path d="M16 6a10 10 0 1010 10"/><path d="M16 11a5 5 0 105 5"/></svg>
+        <span>{{ section.settings.brand }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="vw-header__nav" aria-label="Secciones de la página">
+      <ul>
+        {%- for l in links -%}
+          {%- assign parts = l | strip | split: '|' -%}
+          {%- if parts.size > 1 -%}<li><a href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a></li>{%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="vw-header__actions">
+      <a class="vw-btn vw-btn--accent vw-btn--sm vw-header__cta" href="#{{ section.settings.cta_anchor }}">{{ section.settings.cta_label }}</a>
+      <a class="vw-icon-btn vw-header__cart" href="{{ routes.cart_url }}" data-cart-open aria-label="Abrir carrito">
+        {% render 'vw-icon', name: 'bag' %}
+        <span class="vw-header__count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+      <button class="vw-icon-btn vw-header__burger" type="button" aria-expanded="false" aria-controls="vw-menu" data-menu-toggle>
+        <span class="vw-sr">Abrir menú</span>
+        <span class="vw-header__ico-open">{% render 'vw-icon', name: 'menu' %}</span>
+        <span class="vw-header__ico-close">{% render 'vw-icon', name: 'close' %}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="vw-menu" id="vw-menu" data-menu hidden>
+    <ul>
+      {%- for l in links -%}
+        {%- assign parts = l | strip | split: '|' -%}
+        {%- if parts.size > 1 -%}
+          <li><a href="{{ parts[1] | strip }}" data-menu-link><span class="vw-menu__n">0{{ forloop.index }}</span>{{ parts[0] | strip }}</a></li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+    <a class="vw-btn vw-btn--accent vw-btn--block" href="#{{ section.settings.cta_anchor }}" data-menu-link>{{ section.settings.cta_label }}{% render 'vw-icon', name: 'arrow' %}</a>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "VW – Cabecera",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logotipo (opcional)" },
+    { "type": "range", "id": "logo_width", "label": "Ancho del logotipo (px)", "min": 60, "max": 220, "step": 10, "default": 110 },
+    { "type": "text", "id": "brand", "label": "Nombre de marca (si no hay logotipo)", "default": "VORTIX" },
+    { "type": "textarea", "id": "links", "label": "Enlaces (Texto|#ancla, uno por línea)", "default": "Cómo funciona|#vortice\nColores|#colores\nDetalles|#detalles\nPreguntas|#preguntas" },
+    { "type": "text", "id": "cta_label", "label": "Texto del botón", "default": "Comprar" },
+    { "type": "text", "id": "cta_anchor", "label": "Ancla del botón (sin #)", "default": "comprar" }
+  ]
+}
+{% endschema %}

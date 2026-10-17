@@ -1,0 +1,131 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = section.settings.product
+  endif
+  assign v = p.selected_or_first_available_variant
+  assign lines = section.settings.title | newline_to_br | split: '<br />'
+  assign chips = section.settings.chips | newline_to_br | split: '<br />'
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: var(--vw-ink); }
+  #shopify-section-{{ section.id }} .vw-hero__title { font-size: clamp(2.9rem, 1.6rem + 6.4vw, {{ section.settings.title_size }}px); text-align: {{ section.settings.align }}; }
+  #shopify-section-{{ section.id }} .vw-hero__sub { font-size: {{ section.settings.body_size }}px; }
+{% endstyle %}
+
+<section class="vw-hero vw-section" data-hero data-tone="ink">
+  <canvas class="vw-vortex" data-vortex data-density="{{ section.settings.particles }}" aria-hidden="true"></canvas>
+  <div class="vw-hero__glow" aria-hidden="true"></div>
+
+  <div class="vw-wrap vw-hero__grid">
+    <div class="vw-hero__top">
+      {%- if p != blank -%}
+        <h1 class="vw-hero__eyebrow" data-hero-in><span class="vw-pulse" aria-hidden="true"></span>{{ section.settings.eyebrow | default: p.title }}</h1>
+      {%- endif -%}
+      <p class="vw-hero__title vw-display" data-hero-title>
+        {%- for line in lines -%}
+          {%- assign bits = line | strip | split: '*' -%}
+          <span class="vw-line">
+            {%- for b in bits -%}
+              {%- assign m = forloop.index0 | modulo: 2 -%}
+              {%- if m == 1 -%}<em class="vw-serif">{{ b }}</em>{%- else -%}{{ b }}{%- endif -%}
+            {%- endfor -%}
+          </span>
+        {%- endfor -%}
+      </p>
+    </div>
+
+    <div class="vw-hero__media" data-hero-media>
+      <svg class="vw-rings" viewBox="0 0 600 600" aria-hidden="true" data-rings>
+        <circle class="vw-rings__a" cx="300" cy="300" r="296"/>
+        <circle class="vw-rings__b" cx="300" cy="300" r="276"/>
+        <circle class="vw-rings__c" cx="300" cy="300" r="258"/>
+      </svg>
+      <div class="vw-hero__stage" data-stage>
+        {%- if section.settings.image != blank -%}
+          <div class="vw-hero__shot is-active">{{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '420,640,900,1200,1400', sizes: '(min-width: 990px) 44vw, 82vw', class: 'vw-hero__img', alt: section.settings.image.alt }}</div>
+        {%- elsif p != blank -%}
+          {%- for variant in p.variants -%}
+            {%- assign img = variant.featured_media.preview_image | default: p.featured_media.preview_image -%}
+            {%- if img -%}
+              {%- if variant.id == v.id -%}
+                <div class="vw-hero__shot is-active" data-variant-img="{{ variant.id }}">
+                  {{ img | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '420,640,900,1200', sizes: '(min-width: 990px) 44vw, 82vw', class: 'vw-hero__img', alt: variant.featured_media.alt }}
+                </div>
+              {%- else -%}
+                <div class="vw-hero__shot" data-variant-img="{{ variant.id }}">
+                  {{ img | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '420,640,900,1200', sizes: '(min-width: 990px) 44vw, 82vw', class: 'vw-hero__img', alt: variant.featured_media.alt }}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      {%- if section.settings.badge != blank -%}
+        <span class="vw-hero__badge" data-hero-badge><b>{{ section.settings.badge }}</b><small>{{ section.settings.badge_sub }}</small></span>
+      {%- endif -%}
+      {%- if section.settings.show_dots and p.variants.size > 1 and section.settings.image == blank -%}
+        <div class="vw-hero__dots" role="group" aria-label="Elige color">
+          {%- for variant in p.variants -%}
+            <button type="button" class="vw-dot" style="--dot: {% render 'vw-tint', value: variant.title %}" data-pick-variant="{{ variant.id }}" aria-pressed="{% if variant.id == v.id %}true{% else %}false{% endif %}">
+              <span class="vw-sr">{{ variant.title }}</span>
+            </button>
+          {%- endfor -%}
+          <span class="vw-hero__dots-label" data-variant-name aria-live="polite">{{ v.title }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="vw-hero__bottom">
+      {%- if section.settings.sub != blank -%}
+        <p class="vw-hero__sub" data-hero-in>{{ section.settings.sub | newline_to_br }}</p>
+      {%- endif -%}
+      <div class="vw-hero__ctas" data-hero-in>
+        <a class="vw-btn vw-btn--accent vw-btn--lg" href="#{{ section.settings.cta_anchor }}">
+          <span>{{ section.settings.cta_label }}</span>
+          {%- if p != blank -%}<span class="vw-btn__price" data-live-price>{{ v.price | money }}</span>{%- endif -%}
+        </a>
+        {%- if section.settings.cta2_label != blank -%}
+          <a class="vw-link" href="#{{ section.settings.cta2_anchor }}">{{ section.settings.cta2_label }}{% render 'vw-icon', name: 'arrow-down' %}</a>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.chips != blank -%}
+        <ul class="vw-hero__chips" data-hero-in>
+          {%- for c in chips -%}{%- assign t = c | strip -%}{%- if t != blank -%}<li>{{ t }}</li>{%- endif -%}{%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VW – Portada (hero)",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (en su página se usa el propio)" },
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior (vacío = nombre del producto)" },
+    { "type": "textarea", "id": "title", "label": "Titular (una línea por renglón; *entre asteriscos* = cursiva)", "default": "Tu batido,\nsin *grumos.*" },
+    { "type": "textarea", "id": "sub", "label": "Texto", "default": "Vaso mezclador eléctrico recargable por USB. Un remolino a 7000 rpm mezcla tu proteína, tu café o tu leche en segundos, con solo pulsar un botón." },
+    { "type": "text", "id": "cta_label", "label": "Texto del botón principal", "default": "Comprar" },
+    { "type": "text", "id": "cta_anchor", "label": "Ancla del botón principal (sin #)", "default": "comprar" },
+    { "type": "text", "id": "cta2_label", "label": "Texto del enlace secundario", "default": "Ver los 6 colores" },
+    { "type": "text", "id": "cta2_anchor", "label": "Ancla del enlace secundario (sin #)", "default": "colores" },
+    { "type": "textarea", "id": "chips", "label": "Datos destacados (uno por línea)", "default": "7000 rpm\nUSB · 1200 mAh\n400 ml" },
+    { "type": "header", "content": "Imagen" },
+    { "type": "image_picker", "id": "image", "label": "Imagen fija (vacío = foto del color elegido)" },
+    { "type": "checkbox", "id": "show_dots", "label": "Mostrar selector de color bajo la foto", "default": true },
+    { "type": "text", "id": "badge", "label": "Insignia sobre la foto", "default": "7000" },
+    { "type": "text", "id": "badge_sub", "label": "Texto bajo la insignia", "default": "rpm" },
+    { "type": "range", "id": "particles", "label": "Intensidad del remolino de fondo", "min": 0, "max": 100, "step": 10, "default": 70 },
+    { "type": "header", "content": "Tipografía" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del titular (px)", "min": 48, "max": 180, "step": 4, "unit": "px", "default": 136 },
+    { "type": "range", "id": "body_size", "label": "Tamaño del texto (px)", "min": 14, "max": 24, "step": 1, "unit": "px", "default": 17 },
+    { "type": "select", "id": "align", "label": "Alineación del titular", "options": [ { "value": "left", "label": "Izquierda" }, { "value": "center", "label": "Centro" } ], "default": "left" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "VW – Portada (hero)" } ]
+}
+{% endschema %}

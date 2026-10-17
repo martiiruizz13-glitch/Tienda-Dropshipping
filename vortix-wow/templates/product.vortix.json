@@ -1,0 +1,385 @@
+{
+  "layout": "vortix-wow",
+  "sections": {
+    "hero": {
+      "type": "vw-hero",
+      "settings": {}
+    },
+    "expand": {
+      "type": "vw-expand",
+      "settings": {
+        "fallback_index": 2
+      }
+    },
+    "rpm": {
+      "type": "vw-rpm",
+      "settings": {},
+      "blocks": {
+        "rpm-1": {
+          "type": "stat",
+          "settings": {
+            "number": "7000",
+            "unit": "rpm",
+            "label": "Velocidad de mezcla",
+            "text": "Un remolino a alta velocidad que deja tu batido suave y homogéneo, sin bolas de proteína en el último trago."
+          }
+        },
+        "rpm-2": {
+          "type": "stat",
+          "settings": {
+            "number": "1200",
+            "unit": "mAh",
+            "label": "Batería recargable por USB",
+            "text": "Lo cargas con el cable incluido y te acompaña muchos días sin enchufes."
+          }
+        },
+        "rpm-3": {
+          "type": "stat",
+          "settings": {
+            "number": "400",
+            "unit": "ml",
+            "label": "Capacidad con escala de medida",
+            "text": "El tamaño justo para tu batido de proteínas o un café con leche. Dosificas sin medidor."
+          }
+        },
+        "rpm-4": {
+          "type": "stat",
+          "settings": {
+            "number": "1",
+            "unit": "botón",
+            "label": "Pulsas y listo",
+            "text": "Echas el polvo, añades el líquido, pulsas y en unos segundos lo tienes."
+          }
+        }
+      },
+      "block_order": [
+        "rpm-1",
+        "rpm-2",
+        "rpm-3",
+        "rpm-4"
+      ]
+    },
+    "features": {
+      "type": "vw-features",
+      "settings": {},
+      "blocks": {
+        "features-1": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 4,
+            "icon": "battery",
+            "title": "Recargable por USB",
+            "text": "Batería de 1200 mAh. Lo cargas con el cable incluido y te olvidas de enchufes: gimnasio, oficina o coche.",
+            "layout": "left",
+            "bg": "#e6eef0"
+          }
+        },
+        "features-2": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 3,
+            "icon": "cup",
+            "title": "400 ml con escala de medida",
+            "text": "El tamaño justo para tu batido de proteínas, un café con leche o tu cacao. La escala impresa en el vaso te ahorra el medidor.",
+            "layout": "right",
+            "bg": "#efe4d0"
+          }
+        },
+        "features-3": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 1,
+            "icon": "lid",
+            "title": "Tapa con apertura en un clic",
+            "text": "Bebes directamente del vaso sin desenroscar nada. Así de fácil.",
+            "layout": "left",
+            "bg": "#ecebf3"
+          }
+        },
+        "features-4": {
+          "type": "feature",
+          "settings": {
+            "fallback_index": 7,
+            "icon": "shield",
+            "title": "Resistente, compacto y ligero",
+            "text": "Fabricado en ABS, PP y PC, materiales pensados para el día a día y para ir en la mochila. 10,5 × 8,6 × 19 cm: cabe en la bolsa del gimnasio, en el portavasos del coche o en el cajón de la oficina.",
+            "layout": "right",
+            "bg": "#e3efdc"
+          }
+        }
+      },
+      "block_order": [
+        "features-1",
+        "features-2",
+        "features-3",
+        "features-4"
+      ]
+    },
+    "colors": {
+      "type": "vw-colors",
+      "settings": {},
+      "blocks": {
+        "colors-1": {
+          "type": "model",
+          "settings": {
+            "name": "Clásico",
+            "text": "Tapa de asa y boquilla abatible. En negro, blanco o crema."
+          }
+        },
+        "colors-2": {
+          "type": "model",
+          "settings": {
+            "name": "Estilizado",
+            "text": "Silueta más fina y botón frontal. En blanco, rosa o verde."
+          }
+        }
+      },
+      "block_order": [
+        "colors-1",
+        "colors-2"
+      ]
+    },
+    "buy": {
+      "type": "vw-buy",
+      "settings": {
+        "padding_top": 64
+      }
+    },
+    "moments": {
+      "type": "vw-moments",
+      "settings": {},
+      "blocks": {
+        "moments-1": {
+          "type": "moment",
+          "settings": {
+            "title": "Después de entrenar",
+            "text": "Tu batido de recuperación listo en segundos, sin grumos y sin agitar a mano."
+          }
+        },
+        "moments-2": {
+          "type": "moment",
+          "settings": {
+            "title": "Por la mañana",
+            "text": "Café con leche, cacao o avena batidos en un momento antes de salir de casa."
+          }
+        },
+        "moments-3": {
+          "type": "moment",
+          "settings": {
+            "title": "En la oficina",
+            "text": "Tu tentempié saludable de media tarde sin manchar ni hacer ruido."
+          }
+        },
+        "moments-4": {
+          "type": "moment",
+          "settings": {
+            "title": "De viaje",
+            "text": "Al no necesitar enchufe, lo usas donde quieras."
+          }
+        },
+        "moments-5": {
+          "type": "moment",
+          "settings": {
+            "title": "Como regalo",
+            "text": "Un detalle útil y original para quien entrena, cuida su alimentación o vive enganchado al café."
+          }
+        }
+      },
+      "block_order": [
+        "moments-1",
+        "moments-2",
+        "moments-3",
+        "moments-4",
+        "moments-5"
+      ]
+    },
+    "specs": {
+      "type": "vw-specs",
+      "settings": {
+        "fallback_index": 5
+      },
+      "blocks": {
+        "specs-1": {
+          "type": "spec",
+          "settings": {
+            "label": "Capacidad",
+            "value": "400 ml"
+          }
+        },
+        "specs-2": {
+          "type": "spec",
+          "settings": {
+            "label": "Velocidad de mezcla",
+            "value": "Hasta 7000 rpm"
+          }
+        },
+        "specs-3": {
+          "type": "spec",
+          "settings": {
+            "label": "Batería",
+            "value": "1200 mAh, recargable por USB (5 V / 1 A)"
+          }
+        },
+        "specs-4": {
+          "type": "spec",
+          "settings": {
+            "label": "Potencia",
+            "value": "2,2 W"
+          }
+        },
+        "specs-5": {
+          "type": "spec",
+          "settings": {
+            "label": "Voltaje nominal",
+            "value": "3,7 V"
+          }
+        },
+        "specs-6": {
+          "type": "spec",
+          "settings": {
+            "label": "Materiales",
+            "value": "ABS + PP + PC"
+          }
+        },
+        "specs-7": {
+          "type": "spec",
+          "settings": {
+            "label": "Medidas (modelo Clásico)",
+            "value": "10,5 × 8,6 × 19 cm"
+          }
+        },
+        "specs-8": {
+          "type": "spec",
+          "settings": {
+            "label": "Modelos",
+            "value": "Clásico (negro, blanco o crema) y Estilizado (blanco, rosa o verde)"
+          }
+        }
+      },
+      "block_order": [
+        "specs-1",
+        "specs-2",
+        "specs-3",
+        "specs-4",
+        "specs-5",
+        "specs-6",
+        "specs-7",
+        "specs-8"
+      ]
+    },
+    "faq": {
+      "type": "vw-faq",
+      "settings": {
+        "contact_url": "/pages/contact"
+      },
+      "blocks": {
+        "faq-1": {
+          "type": "promise",
+          "settings": {
+            "big": "0 €",
+            "label": "de envío a toda España, con seguimiento"
+          }
+        },
+        "faq-2": {
+          "type": "promise",
+          "settings": {
+            "big": "14 días",
+            "label": "para cambiar de opinión desde que lo recibes"
+          }
+        },
+        "faq-3": {
+          "type": "promise",
+          "settings": {
+            "big": "3 años",
+            "label": "de garantía legal frente a defectos de fabricación"
+          }
+        },
+        "faq-4": {
+          "type": "promise",
+          "settings": {
+            "big": "100 %",
+            "label": "pago seguro: tus datos viajan cifrados"
+          }
+        },
+        "faq-5": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Cómo se usa?",
+            "a": "<p>Añade primero el líquido (agua, leche o bebida vegetal), después la proteína en polvo, cierra la tapa y pulsa el botón de la base. En unos segundos lo tienes listo.</p>"
+          }
+        },
+        "faq-6": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Cómo se carga?",
+            "a": "<p>Tiene una batería de 1200 mAh que se carga por USB (5 V / 1 A) con el cable incluido. Cárgalo antes del primer uso.</p>"
+          }
+        },
+        "faq-7": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Se puede meter en el lavavajillas?",
+            "a": "<p>No. La base lleva el motor y la batería: limpia el vaso con agua y un paño suave, sin sumergir la base ni meterla en el lavavajillas.</p>"
+          }
+        },
+        "faq-8": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Qué puedo mezclar?",
+            "a": "<p>Vortix es un vaso mezclador para líquidos y polvos: proteína, cacao, café o leche. Para una mezcla aún más fina, añade primero el líquido y después el polvo.</p>"
+          }
+        },
+        "faq-9": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Puedo usar bebidas calientes?",
+            "a": "<p>Úsalo con bebidas frías o templadas, nunca con líquidos hirviendo.</p>"
+          }
+        },
+        "faq-10": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Cuánto tarda el envío?",
+            "a": "<p>El envío es gratis a toda España y llega normalmente en 8–15 días laborables. Recibirás un número de seguimiento por email.</p>"
+          }
+        },
+        "faq-11": {
+          "type": "qa",
+          "settings": {
+            "q": "¿Y si no me convence?",
+            "a": "<p>Tienes 14 días desde que lo recibes para desistir de la compra. Además cuenta con la garantía legal de 3 años frente a defectos de fabricación.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5",
+        "faq-6",
+        "faq-7",
+        "faq-8",
+        "faq-9",
+        "faq-10",
+        "faq-11"
+      ]
+    },
+    "final": {
+      "type": "vw-final",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "expand",
+    "rpm",
+    "features",
+    "colors",
+    "buy",
+    "moments",
+    "specs",
+    "faq",
+    "final"
+  ]
+}

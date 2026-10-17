@@ -1,0 +1,103 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = section.settings.product
+  endif
+  assign v = p.selected_or_first_available_variant
+  assign tbits = section.settings.title | split: '*'
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+  #shopify-section-{{ section.id }} .vw-colors__title { font-size: clamp(2.4rem, 1.2rem + 5vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+
+{%- if p != blank -%}
+<section class="vw-colors vw-section" id="{{ section.settings.anchor }}" data-colors data-tone="tint">
+  <div class="vw-colors__bg" aria-hidden="true" data-colors-bg></div>
+  <div class="vw-wrap vw-colors__head">
+    <div>
+      <p class="vw-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="vw-colors__title vw-display" data-split>
+        {%- for b in tbits -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 1 -%}<em class="vw-serif">{{ b }}</em>{%- else -%}{{ b }}{%- endif -%}{%- endfor -%}
+      </h2>
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <dl class="vw-colors__models" data-reveal>
+        {%- for block in section.blocks -%}
+          <div {{ block.shopify_attributes }}><dt>{{ block.settings.name }}</dt><dd>{{ block.settings.text }}</dd></div>
+        {%- endfor -%}
+      </dl>
+    {%- endif -%}
+  </div>
+
+  <div class="vw-colors__rail-wrap">
+    <ul class="vw-colors__rail" data-colors-rail aria-label="Colores disponibles">
+      {%- for variant in p.variants -%}
+        {%- liquid
+          assign img = variant.featured_media.preview_image | default: p.featured_media.preview_image
+          assign name_bits = variant.title | split: '·'
+        -%}
+        <li class="vw-swatch-card{% if variant.id == v.id %} is-current{% endif %}" style="--card: {% render 'vw-tint', value: variant.title %}" data-color-card="{{ variant.id }}">
+          <div class="vw-swatch-card__media">
+            {%- if img -%}
+              {{ img | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 990px) 30vw, 74vw', alt: variant.featured_media.alt }}
+            {%- endif -%}
+          </div>
+          <div class="vw-swatch-card__info">
+            <p>
+              {%- if name_bits.size > 1 -%}
+                <small>{{ name_bits[0] | strip }}</small><b>{{ name_bits[1] | strip }}</b>
+              {%- else -%}
+                <b>{{ variant.title }}</b>
+              {%- endif -%}
+            </p>
+            {%- if variant.available -%}
+              <a class="vw-swatch-card__btn" href="#{{ section.settings.buy_anchor }}" data-pick-variant="{{ variant.id }}" aria-label="Elegir {{ variant.title }}">
+                {{ section.settings.button_label }}{% render 'vw-icon', name: 'arrow' %}
+              </a>
+            {%- else -%}
+              <span class="vw-swatch-card__btn is-off">Agotado</span>
+            {%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <div class="vw-wrap vw-colors__nav">
+      <div class="vw-colors__progress" aria-hidden="true"><span data-colors-progress></span></div>
+      <button class="vw-icon-btn vw-icon-btn--line" type="button" aria-label="Color anterior" data-colors-prev>{% render 'vw-icon', name: 'left' %}</button>
+      <button class="vw-icon-btn vw-icon-btn--line" type="button" aria-label="Color siguiente" data-colors-next>{% render 'vw-icon', name: 'right' %}</button>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "VW – Colores",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (en su página se usa el propio)" },
+    { "type": "text", "id": "eyebrow", "label": "Texto superior", "default": "Elige tu estilo" },
+    { "type": "text", "id": "title", "label": "Titular (*entre asteriscos* = cursiva)", "default": "Seis colores. *Dos siluetas.*" },
+    { "type": "text", "id": "button_label", "label": "Texto del botón de cada color", "default": "Elegir" },
+    { "type": "text", "id": "buy_anchor", "label": "Ancla de la zona de compra (sin #)", "default": "comprar" },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "colores" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del titular (px)", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 96 },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 112 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 112 }
+  ],
+  "blocks": [
+    {
+      "type": "model",
+      "name": "Modelo",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nombre", "default": "Clásico" },
+        { "type": "textarea", "id": "text", "label": "Descripción" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [ { "name": "VW – Colores" } ]
+}
+{% endschema %}

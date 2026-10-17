@@ -1,0 +1,73 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = section.settings.product
+  endif
+  assign img = section.settings.image
+  if img == blank and p != blank
+    assign idx = section.settings.fallback_index | minus: 1
+    assign img = p.media[idx].preview_image | default: p.featured_media.preview_image
+  endif
+  assign lines = section.settings.title | newline_to_br | split: '<br />'
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: var(--vw-paper); }
+  #shopify-section-{{ section.id }} .vw-expand__title { font-size: clamp(2.2rem, 1.2rem + 4.6vw, {{ section.settings.title_size }}px); }
+  #shopify-section-{{ section.id }} .vw-expand__frame { --frame-bg: {{ section.settings.frame_bg }}; }
+{% endstyle %}
+
+<section class="vw-expand vw-section" id="{{ section.settings.anchor }}" data-expand data-fit="{{ section.settings.fit }}">
+  <div class="vw-expand__stage" data-expand-stage>
+    <p class="vw-expand__kicker"><span>{{ section.settings.kicker }}</span></p>
+    <div class="vw-expand__words" aria-hidden="true">
+      <span data-expand-word="l">{{ section.settings.word_left }}</span>
+      <span data-expand-word="r">{{ section.settings.word_right }}</span>
+    </div>
+
+    <div class="vw-expand__frame" data-expand-frame>
+      {%- if img -%}
+        <div class="vw-expand__backdrop" aria-hidden="true">
+          {{ img | image_url: width: 600 | image_tag: loading: 'lazy', alt: '', class: 'vw-expand__blur' }}
+        </div>
+        <div class="vw-expand__media" data-expand-media>
+          {{ img | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '600,900,1200,1600,2000', sizes: '100vw', class: 'vw-expand__img', alt: img.alt }}
+        </div>
+      {%- else -%}
+        <div class="vw-expand__media vw-placeholder" data-expand-media>{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+      {%- endif -%}
+      <div class="vw-expand__shade" aria-hidden="true"></div>
+      <div class="vw-expand__caption" data-expand-caption>
+        <h2 class="vw-expand__title vw-display">
+          {%- for line in lines -%}<span class="vw-line">{{ line | strip }}</span>{%- endfor -%}
+        </h2>
+        {%- if section.settings.text != blank -%}<p class="vw-expand__text">{{ section.settings.text | newline_to_br }}</p>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VW – Imagen que se expande",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (en su página se usa el propio)" },
+    { "type": "image_picker", "id": "image", "label": "Imagen (ideal: horizontal, 2000 px o más)" },
+    { "type": "range", "id": "fallback_index", "label": "Si no hay imagen, usar la foto nº del producto", "min": 1, "max": 10, "step": 1, "default": 2 },
+    { "type": "select", "id": "fit", "label": "Encaje de la foto", "options": [ { "value": "cover", "label": "Llenar el marco (recorta)" }, { "value": "contain", "label": "Foto completa sobre fondo difuminado" }, { "value": "auto", "label": "Automático (llenar en móvil, completa en escritorio)" } ], "default": "auto" },
+    { "type": "color", "id": "frame_bg", "label": "Color de fondo del marco", "default": "#0c0b14" },
+    { "type": "header", "content": "Textos" },
+    { "type": "text", "id": "kicker", "label": "Texto superior", "default": "El efecto vórtice" },
+    { "type": "text", "id": "word_left", "label": "Palabra izquierda (se separa al expandir)", "default": "Menos agitar." },
+    { "type": "text", "id": "word_right", "label": "Palabra derecha (se separa al expandir)", "default": "Más disfrutar." },
+    { "type": "textarea", "id": "title", "label": "Titular final (una línea por renglón)", "default": "Un remolino\nperfecto en\ncada trago." },
+    { "type": "textarea", "id": "text", "label": "Texto final", "default": "Echas el polvo, añades el líquido y pulsas. A 7000 revoluciones por minuto, tu batido queda suave y homogéneo en unos segundos." },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "vortice" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del titular (px)", "min": 32, "max": 120, "step": 4, "unit": "px", "default": 88 },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "VW – Imagen que se expande" } ]
+}
+{% endschema %}

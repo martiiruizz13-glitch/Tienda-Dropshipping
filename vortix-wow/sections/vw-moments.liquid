@@ -1,0 +1,61 @@
+{%- liquid
+  assign row1 = section.settings.row_1 | newline_to_br | split: '<br />'
+  assign row2 = section.settings.row_2 | newline_to_br | split: '<br />'
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: {{ section.settings.bg }}; color: {{ section.settings.fg }}; }
+  #shopify-section-{{ section.id }} .vw-band__row { font-size: clamp(3rem, 1rem + 9vw, {{ section.settings.band_size }}px); }
+{% endstyle %}
+
+<section class="vw-moments vw-section" data-tone="accent">
+  <div class="vw-band" aria-hidden="true">
+    <div class="vw-band__row" data-band="-1">
+      {%- for i in (1..3) -%}{%- for w in row1 -%}{%- assign t = w | strip -%}{%- if t != blank -%}<span>{{ t }}</span><i>✳</i>{%- endif -%}{%- endfor -%}{%- endfor -%}
+    </div>
+    <div class="vw-band__row vw-band__row--outline" data-band="1">
+      {%- for i in (1..3) -%}{%- for w in row2 -%}{%- assign t = w | strip -%}{%- if t != blank -%}<span>{{ t }}</span><i>✳</i>{%- endif -%}{%- endfor -%}{%- endfor -%}
+    </div>
+  </div>
+
+  <div class="vw-wrap vw-moments__body">
+    <h2 class="vw-moments__title vw-h2" data-split>{{ section.settings.title }}</h2>
+    <ol class="vw-moments__list">
+      {%- for block in section.blocks -%}
+        <li class="vw-moment" data-reveal {{ block.shopify_attributes }}>
+          <span class="vw-moment__n">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <h3 class="vw-moment__h">{{ block.settings.title }}</h3>
+          <p class="vw-moment__p">{{ block.settings.text }}</p>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VW – Momentos",
+  "tag": "div",
+  "settings": [
+    { "type": "textarea", "id": "row_1", "label": "Cinta superior (una palabra por línea)", "default": "Sin grumos\nSin esfuerzo\nSin enchufes" },
+    { "type": "textarea", "id": "row_2", "label": "Cinta inferior (una palabra por línea)", "default": "Gimnasio\nOficina\nCoche\nViaje" },
+    { "type": "range", "id": "band_size", "label": "Tamaño de la cinta (px)", "min": 48, "max": 200, "step": 4, "unit": "px", "default": 152 },
+    { "type": "text", "id": "title", "label": "Titular", "default": "Tu momento Vortix." },
+    { "type": "color", "id": "bg", "label": "Color de fondo", "default": "#d7ff3a" },
+    { "type": "color", "id": "fg", "label": "Color del texto", "default": "#0c0b14" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 112 }
+  ],
+  "blocks": [
+    {
+      "type": "moment",
+      "name": "Momento",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Después de entrenar" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "VW – Momentos", "blocks": [ { "type": "moment" } ] } ]
+}
+{% endschema %}

@@ -1,0 +1,17 @@
+<div class="vw-cart" data-cart aria-hidden="true">
+  <button class="vw-cart__overlay" type="button" tabindex="-1" aria-label="Cerrar carrito" data-cart-close></button>
+  <div class="vw-cart__panel" role="dialog" aria-modal="true" aria-labelledby="vw-cart-title" tabindex="-1">
+    <div class="vw-cart__head">
+      <h2 id="vw-cart-title">Tu carrito <span data-cart-count-label></span></h2>
+      <button class="vw-icon-btn vw-icon-btn--line" type="button" aria-label="Cerrar carrito" data-cart-close>{% render 'vw-icon', name: 'close' %}</button>
+    </div>
+    <p class="vw-cart__note">{% render 'vw-icon', name: 'truck' %}<span>Envío gratis a toda España, con seguimiento.</span></p>
+    <div class="vw-cart__items" data-cart-items aria-live="polite"></div>
+    <div class="vw-cart__foot" data-cart-foot>
+      <div class="vw-cart__total"><span>Total</span><b data-cart-total>{{ cart.total_price | money }}</b></div>
+      <p class="vw-cart__small">Impuestos incluidos. Los gastos de envío se confirman al finalizar la compra.</p>
+      <a class="vw-btn vw-btn--accent vw-btn--lg vw-btn--block" href="/checkout">Finalizar compra{% render 'vw-icon', name: 'lock' %}</a>
+      <a class="vw-cart__full" href="{{ routes.cart_url }}">Ver carrito completo</a>
+    </div>
+  </div>
+</div>

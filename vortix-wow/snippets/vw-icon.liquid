@@ -1,0 +1,48 @@
+{%- comment -%}
+  Iconos de línea de Vortix Wow. Uso: {% render 'vw-icon', name: 'arrow' %}
+  Trazo de 1.6 px, esquinas redondeadas y color heredado (currentColor).
+{%- endcomment -%}
+{%- case name -%}
+  {%- when 'arrow' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+  {%- when 'arrow-down' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4v15M6 13l6 6 6-6"/></svg>
+  {%- when 'left' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>
+  {%- when 'right' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg>
+  {%- when 'plus' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+  {%- when 'minus' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14"/></svg>
+  {%- when 'close' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  {%- when 'menu' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 8h16M4 16h10"/></svg>
+  {%- when 'bag' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>
+  {%- when 'check' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+  {%- when 'truck' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
+  {%- when 'return' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 7L4 12l5 5"/><path d="M4 12h11a5 5 0 010 10h-3"/></svg>
+  {%- when 'shield' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+  {%- when 'lock' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+  {%- when 'chat' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5h16v11H9l-5 4V5z"/></svg>
+  {%- when 'bolt' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13 2L5 14h6l-1 8 8-12h-6l1-8z"/></svg>
+  {%- when 'battery' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3M6.5 10v4M10 10v4"/></svg>
+  {%- when 'cup' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4h10l-1.2 16H8.2L7 4z"/><path d="M7.4 9h9.2M10 13h2M10 16h2"/></svg>
+  {%- when 'lid' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 11h14v3H5zM8 11V8a4 4 0 018 0v3"/><path d="M7 14l1 6h8l1-6"/></svg>
+  {%- when 'feather' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 4C11 4 6 9 6 18l-2 2"/><path d="M6 18c6 0 10-3 11-9M10 14h5"/></svg>
+  {%- when 'spin' -%}
+    <svg class="vw-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 12a8 8 0 11-3-6.2"/><path d="M20 4v5h-5"/></svg>
+{%- endcase -%}

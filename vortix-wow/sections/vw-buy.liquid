@@ -1,0 +1,178 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = section.settings.product
+  endif
+  assign v = p.selected_or_first_available_variant
+  assign bullets = section.settings.bullets | newline_to_br | split: '<br />'
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: var(--vw-paper); }
+  #shopify-section-{{ section.id }} .vw-buy__title { font-size: clamp(1.9rem, 1.3rem + 2.2vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+
+{%- if p != blank -%}
+<section class="vw-buy vw-section" id="{{ section.settings.anchor }}" data-buy data-product-url="{{ p.url }}" data-tone="paper">
+  <div class="vw-wrap vw-buy__grid">
+    <div class="vw-gallery" data-gallery>
+      <div class="vw-gallery__track" data-gallery-track tabindex="0" aria-label="Fotos del producto" role="region">
+        {%- for m in p.media -%}
+          <figure class="vw-gallery__slide" data-media-id="{{ m.id }}">
+            {%- assign load = 'lazy' -%}
+            {%- if forloop.first -%}{%- assign load = 'eager' -%}{%- endif -%}
+            {{ m.preview_image | image_url: width: 1400 | image_tag: loading: load, widths: '400,600,800,1100,1400', sizes: '(min-width: 990px) 52vw, 100vw', alt: m.alt, class: 'vw-gallery__img' }}
+          </figure>
+        {%- endfor -%}
+      </div>
+      {%- if p.media.size > 1 -%}
+        <div class="vw-gallery__ui">
+          <span class="vw-gallery__count" aria-hidden="true"><b data-gallery-index>01</b> / {{ p.media.size | prepend: '0' | slice: -2, 2 }}</span>
+          <div class="vw-gallery__thumbs" role="group" aria-label="Elegir foto">
+            {%- for m in p.media -%}
+              <button type="button" data-thumb="{{ forloop.index0 }}" aria-label="Ver foto {{ forloop.index }}"{% if forloop.first %} aria-current="true"{% endif %}>
+                {{ m.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+              </button>
+            {%- endfor -%}
+          </div>
+          <div class="vw-gallery__arrows">
+            <button class="vw-icon-btn vw-icon-btn--line" type="button" aria-label="Foto anterior" data-gallery-prev>{% render 'vw-icon', name: 'left' %}</button>
+            <button class="vw-icon-btn vw-icon-btn--line" type="button" aria-label="Foto siguiente" data-gallery-next>{% render 'vw-icon', name: 'right' %}</button>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="vw-buy__panel">
+      <p class="vw-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="vw-buy__title">{{ p.title }}</h2>
+
+      <div class="vw-buy__price" aria-live="polite">
+        <span class="vw-buy__now" data-price>{{ v.price | money }}</span>
+        <s class="vw-buy__was" data-compare{% unless v.compare_at_price > v.price %} hidden{% endunless %}>{{ v.compare_at_price | money }}</s>
+        {%- if section.settings.tax_note != blank -%}<span class="vw-buy__tax">{{ section.settings.tax_note }}</span>{%- endif -%}
+      </div>
+
+      {%- if section.settings.bullets != blank -%}
+        <ul class="vw-buy__bullets">
+          {%- for b in bullets -%}{%- assign t = b | strip -%}{%- if t != blank -%}<li>{% render 'vw-icon', name: 'check' %}<span>{{ t }}</span></li>{%- endif -%}{%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- form 'product', p, data-buy-form: '', novalidate: 'novalidate', class: 'vw-buy__form' -%}
+        <input type="hidden" name="id" value="{{ v.id }}" data-variant-input>
+        {%- unless p.has_only_default_variant -%}
+          {%- for option in p.options_with_values -%}
+            {%- assign opos = forloop.index0 -%}
+            <fieldset class="vw-opt" data-option-index="{{ opos }}">
+              <legend>{{ option.name }} <span data-option-label="{{ opos }}">{{ option.selected_value }}</span></legend>
+              <div class="vw-opt__values">
+                {%- for value in option.values -%}
+                  {%- assign oid = section.id | append: '-' | append: opos | append: '-' | append: forloop.index -%}
+                  <input class="vw-sr" type="radio" id="vw-o-{{ oid }}" name="vw-option-{{ opos }}" value="{{ value | escape }}" data-option="{{ opos }}"{% if option.selected_value == value %} checked{% endif %}>
+                  <label for="vw-o-{{ oid }}" class="vw-opt__chip">
+                    <span class="vw-opt__dot" style="--dot: {% render 'vw-tint', value: value %}" aria-hidden="true"></span>
+                    <span>{{ value }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <div class="vw-buy__row">
+          <div class="vw-qty">
+            <button type="button" aria-label="Quitar una unidad" data-qty="-1">{% render 'vw-icon', name: 'minus' %}</button>
+            <label class="vw-sr" for="vw-qty-{{ section.id }}">Cantidad</label>
+            <input id="vw-qty-{{ section.id }}" type="number" name="quantity" value="1" min="1" max="20" inputmode="numeric" data-qty-input>
+            <button type="button" aria-label="Añadir una unidad" data-qty="1">{% render 'vw-icon', name: 'plus' %}</button>
+          </div>
+          <button class="vw-btn vw-btn--accent vw-btn--lg vw-btn--grow" type="submit" name="add" data-add{% unless v.available %} disabled{% endunless %}>
+            <span data-add-label>{% if v.available %}{{ section.settings.add_label }}{% else %}Agotado{% endif %}</span>
+            <span class="vw-btn__spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+        {%- if section.settings.show_dynamic_checkout -%}
+          <div class="vw-buy__dynamic">{{ form | payment_button }}</div>
+        {%- endif -%}
+        <p class="vw-buy__msg" role="alert" data-buy-msg></p>
+      {%- endform -%}
+
+      <ul class="vw-buy__trust">
+        {%- if section.settings.trust_1 != blank -%}<li>{% render 'vw-icon', name: 'truck' %}<span>{{ section.settings.trust_1 }}</span></li>{%- endif -%}
+        {%- if section.settings.trust_2 != blank -%}<li>{% render 'vw-icon', name: 'return' %}<span>{{ section.settings.trust_2 }}</span></li>{%- endif -%}
+        {%- if section.settings.trust_3 != blank -%}<li>{% render 'vw-icon', name: 'shield' %}<span>{{ section.settings.trust_3 }}</span></li>{%- endif -%}
+        {%- if section.settings.trust_4 != blank -%}<li>{% render 'vw-icon', name: 'lock' %}<span>{{ section.settings.trust_4 }}</span></li>{%- endif -%}
+      </ul>
+
+      {%- if shop.enabled_payment_types.size > 0 -%}
+        <div class="vw-pay" aria-label="Métodos de pago aceptados">{%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}</div>
+      {%- endif -%}
+
+      <div class="vw-acc">
+        {%- if section.settings.show_description and p.description != blank -%}
+          <details class="vw-acc__item">
+            <summary>Descripción completa<span class="vw-acc__icon" aria-hidden="true">{% render 'vw-icon', name: 'plus' %}</span></summary>
+            <div class="vw-acc__body vw-rte">{{ p.description }}</div>
+          </details>
+        {%- endif -%}
+        {%- if section.settings.shipping_text != blank -%}
+          <details class="vw-acc__item">
+            <summary>{{ section.settings.shipping_title }}<span class="vw-acc__icon" aria-hidden="true">{% render 'vw-icon', name: 'plus' %}</span></summary>
+            <div class="vw-acc__body vw-rte">{{ section.settings.shipping_text }}</div>
+          </details>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.sticky -%}
+  <div class="vw-sticky" data-sticky hidden>
+    <div class="vw-sticky__thumb" aria-hidden="true">
+      {%- if p.featured_media -%}{{ p.featured_media.preview_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+    </div>
+    <div class="vw-sticky__info">
+      <b data-variant-name>{{ v.title }}</b>
+      <span data-live-price>{{ v.price | money }}</span>
+    </div>
+    <button class="vw-btn vw-btn--accent" type="button" data-sticky-add{% unless v.available %} disabled{% endunless %}>
+      <span data-add-label>{% if v.available %}{{ section.settings.sticky_label }}{% else %}Agotado{% endif %}</span>
+      <span class="vw-btn__spinner" aria-hidden="true"></span>
+    </button>
+  </div>
+{%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "VW – Comprar",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (en su página se usa el propio)" },
+    { "type": "text", "id": "eyebrow", "label": "Texto superior", "default": "Hazlo tuyo" },
+    { "type": "text", "id": "tax_note", "label": "Nota bajo el precio", "default": "IVA incluido · Envío gratis a España" },
+    { "type": "textarea", "id": "bullets", "label": "Ventajas (una por línea)", "default": "Mezcla a 7000 rpm, sin grumos\nRecargable por USB: sin enchufes\n400 ml con escala de medida\nTapa con apertura en un clic" },
+    { "type": "text", "id": "add_label", "label": "Texto del botón de añadir", "default": "Añadir al carrito" },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Mostrar botones de pago rápido de Shopify", "default": true },
+    { "type": "header", "content": "Garantías" },
+    { "type": "text", "id": "trust_1", "label": "Garantía 1", "default": "Envío gratis a toda España, con seguimiento" },
+    { "type": "text", "id": "trust_2", "label": "Garantía 2", "default": "14 días para cambiar de opinión" },
+    { "type": "text", "id": "trust_3", "label": "Garantía 3", "default": "Garantía legal de 3 años" },
+    { "type": "text", "id": "trust_4", "label": "Garantía 4", "default": "Pago 100 % seguro y cifrado" },
+    { "type": "header", "content": "Desplegables" },
+    { "type": "checkbox", "id": "show_description", "label": "Mostrar la descripción del producto", "default": true },
+    { "type": "text", "id": "shipping_title", "label": "Título de envío y devoluciones", "default": "Envío y devoluciones" },
+    { "type": "richtext", "id": "shipping_text", "label": "Texto de envío y devoluciones", "default": "<p>Envío gratis a toda España con número de seguimiento. Tienes 14 días desde que lo recibes para desistir de la compra, y el producto cuenta con la garantía legal de 3 años frente a defectos de fabricación.</p>" },
+    { "type": "header", "content": "Barra de compra en móvil" },
+    { "type": "checkbox", "id": "sticky", "label": "Mostrar barra de compra fija", "default": true },
+    { "type": "text", "id": "sticky_label", "label": "Texto del botón de la barra", "default": "Añadir" },
+    { "type": "header", "content": "Diseño" },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del título (px)", "min": 24, "max": 64, "step": 2, "unit": "px", "default": 44 },
+    { "type": "text", "id": "anchor", "label": "Ancla (id para enlaces)", "default": "comprar" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 200, "step": 8, "unit": "px", "default": 96 }
+  ],
+  "presets": [ { "name": "VW – Comprar" } ]
+}
+{% endschema %}

@@ -1,0 +1,51 @@
+{%- liquid
+  assign p = product
+  if p == blank
+    assign p = section.settings.product
+  endif
+  assign v = p.selected_or_first_available_variant
+  assign lines = section.settings.title | newline_to_br | split: '<br />'
+-%}
+{% style %}
+  #shopify-section-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background: var(--vw-ink); }
+  #shopify-section-{{ section.id }} .vw-final__title { font-size: clamp(3rem, 1.4rem + 8vw, {{ section.settings.title_size }}px); }
+{% endstyle %}
+
+<section class="vw-final vw-section" data-tone="ink" data-final>
+  <canvas class="vw-vortex" data-vortex data-density="{{ section.settings.particles }}" aria-hidden="true"></canvas>
+  <div class="vw-wrap vw-final__inner">
+    <h2 class="vw-final__title vw-display" data-split>
+      {%- for line in lines -%}
+        {%- assign bits = line | strip | split: '*' -%}
+        <span class="vw-line">{%- for b in bits -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 1 -%}<em class="vw-serif">{{ b }}</em>{%- else -%}{{ b }}{%- endif -%}{%- endfor -%}</span>
+      {%- endfor -%}
+    </h2>
+    {%- if section.settings.text != blank -%}<p class="vw-final__text" data-reveal>{{ section.settings.text }}</p>{%- endif -%}
+    <div class="vw-final__cta" data-reveal>
+      <a class="vw-btn vw-btn--accent vw-btn--lg" href="#{{ section.settings.cta_anchor }}">
+        <span>{{ section.settings.cta_label }}</span>
+        {%- if p != blank -%}<span class="vw-btn__price" data-live-price>{{ v.price | money }}</span>{%- endif -%}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VW – Cierre",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (en su página se usa el propio)" },
+    { "type": "textarea", "id": "title", "label": "Titular (una línea por renglón; *entre asteriscos* = cursiva)", "default": "Menos agitar.\nMás *disfrutar.*" },
+    { "type": "text", "id": "text", "label": "Texto", "default": "Bienvenido al remolino Vortix." },
+    { "type": "text", "id": "cta_label", "label": "Texto del botón", "default": "Quiero el mío" },
+    { "type": "text", "id": "cta_anchor", "label": "Ancla del botón (sin #)", "default": "comprar" },
+    { "type": "range", "id": "particles", "label": "Intensidad del remolino de fondo", "min": 0, "max": 100, "step": 10, "default": 100 },
+    { "type": "range", "id": "title_size", "label": "Tamaño máximo del titular (px)", "min": 48, "max": 200, "step": 4, "unit": "px", "default": 168 },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 240, "step": 8, "unit": "px", "default": 160 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 240, "step": 8, "unit": "px", "default": 160 }
+  ],
+  "presets": [ { "name": "VW – Cierre" } ]
+}
+{% endschema %}
