@@ -579,9 +579,9 @@ main:focus { outline: none; }
 .vw-final__text { color: var(--vw-muted-dark); font-size: 1.1rem; }
 
 /* ---------- PIE ---------- */
-.vw-footer { color: var(--vw-paper); background: var(--vw-ink); padding: 72px 0 calc(28px + env(safe-area-inset-bottom)); border-top: 1px solid var(--vw-line-dark); }
+.vw-footer { overflow: hidden; color: var(--vw-paper); background: var(--vw-ink); padding: 72px 0 calc(28px + env(safe-area-inset-bottom)); border-top: 1px solid var(--vw-line-dark); }
 .vw-footer__top { display: grid; gap: 8px; margin-bottom: 48px; }
-.vw-footer__brand { font-size: clamp(4rem, 2rem + 14vw, 15rem); line-height: .8; letter-spacing: -0.07em; background: linear-gradient(90deg, var(--vw-paper), color-mix(in srgb, var(--vw-paper) 40%, transparent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.vw-footer__brand { max-width: 100%; overflow-wrap: anywhere; font-size: clamp(3rem, 15vw, 15rem); line-height: .8; letter-spacing: -0.07em; background: linear-gradient(90deg, var(--vw-paper), color-mix(in srgb, var(--vw-paper) 40%, transparent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .vw-footer__claim { color: var(--vw-muted-dark); }
 .vw-footer__cols { display: grid; gap: 32px; padding: 32px 0; border-top: 1px solid var(--vw-line-dark); }
 .vw-footer__cols h2 { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--vw-muted-dark); margin-bottom: 12px; }
