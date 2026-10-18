@@ -114,6 +114,16 @@
         "room-3"
       ]
     },
+    "band-trust": {
+      "type": "zd-marquee",
+      "settings": {
+        "items": "Envío gratis a España\n14 días para cambiar de opinión\nGarantía legal de 3 años\nPago seguro\nAtención en support@zaldori.com",
+        "style": "rasp",
+        "direction": "-1",
+        "speed": 40,
+        "tilt": false
+      }
+    },
     "vortix": {
       "type": "zd-chapter",
       "settings": {
@@ -255,6 +265,16 @@
         "b-13"
       ]
     },
+    "band-specs": {
+      "type": "zd-marquee",
+      "settings": {
+        "items": "400 ml\n7000 rpm\n30 × 60 cm\n9 niveles de calor\n8 modos EMS\n19 intensidades",
+        "style": "outline",
+        "direction": "1",
+        "speed": 55,
+        "tilt": true
+      }
+    },
     "termocalm": {
       "type": "zd-chapter",
       "settings": {
@@ -326,18 +346,15 @@
           }
         },
         "b-8": {
-          "type": "compare",
+          "type": "tension",
           "settings": {
-            "title": "Antes y después",
-            "text": "Del frío de una tarde de invierno al calor suave de TermoCalm. Desliza para encenderla.",
-            "note": "Recreación ilustrativa del ambiente.",
+            "title": "Siente cómo se suelta",
+            "text": "Desliza y enciéndela: el calor se extiende desde la almohadilla por hombros, cuello y espalda, y la rigidez del día se va soltando.",
             "before_label": "Antes",
-            "after_label": "Después",
-            "ratio": "portrait",
-            "before_asset": "zd-tc-antes.jpg",
-            "after_asset": "zd-tc-despues.jpg",
-            "before_alt": "TermoCalm apagada, con luz fría de invierno",
-            "after_alt": "TermoCalm encendida, con luz cálida"
+            "after_label": "Con TermoCalm",
+            "levels": 9,
+            "from_label": "Tibio, unos 30 °C",
+            "to_label": "Intenso, unos 50 °C"
           }
         },
         "b-9": {
@@ -558,6 +575,16 @@
         "b-14"
       ]
     },
+    "band-trio": {
+      "type": "zd-marquee",
+      "settings": {
+        "items": "Vortix\nTermoCalm\nPulsia\nEnvío gratis a España\nPago seguro",
+        "style": "cream",
+        "direction": "-1",
+        "speed": 45,
+        "tilt": true
+      }
+    },
     "ads": {
       "type": "zd-ads",
       "settings": {},
@@ -766,9 +793,12 @@
   "order": [
     "hero",
     "rooms",
+    "band-trust",
     "vortix",
+    "band-specs",
     "termocalm",
     "pulsia",
+    "band-trio",
     "ads",
     "chooser",
     "trust",

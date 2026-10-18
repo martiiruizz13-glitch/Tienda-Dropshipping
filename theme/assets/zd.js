@@ -110,7 +110,7 @@
       requestAnimationFrame(() => requestAnimationFrame(() => dialog.classList.add('is-open')));
       onOpen && onOpen();
     };
-    const close = () => {
+    const close = (after) => {
       if (!dialog.open || closing) return;
       closing = true;
       dialog.classList.remove('is-open');
@@ -121,6 +121,7 @@
         lockScroll(false);
         onClose && onClose();
         if (opener && typeof opener.focus === 'function') opener.focus({ preventScroll: true });
+        if (typeof after === 'function') after();
       };
       if (mqReduce.matches) return done();
       panel.addEventListener('transitionend', (e) => { if (e.target === panel) done(); }, { once: true });
@@ -243,8 +244,7 @@
       const href = a.getAttribute('href') || '';
       if (!href.startsWith('#') || !menuSheet) return;
       e.preventDefault();
-      menuSheet.close();
-      setTimeout(() => scrollToHash(href), mqReduce.matches ? 0 : 260);
+      menuSheet.close(() => scrollToHash(href));
     })
   );
 
@@ -273,6 +273,46 @@
     e.preventDefault();
     scrollToHash(href);
   });
+
+  /* ---------------------------------------------------------- Fly to cart */
+  // A small copy of the product photo arcs into the header bag; the count bumps on landing.
+  function flyToCart(img, fallback) {
+    const target = $('.zd-cart-btn');
+    if (mqReduce.matches || !target || typeof Element.prototype.animate !== 'function') return Promise.resolve();
+    const inView = (r) => r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
+    let from = img ? img.getBoundingClientRect() : null;
+    if (!from || !inView(from)) from = fallback.getBoundingClientRect();
+    const to = target.getBoundingClientRect();
+    const size = 64;
+    const x0 = from.left + from.width / 2 - size / 2;
+    const y0 = from.top + from.height / 2 - size / 2;
+    const x1 = to.left + to.width / 2 - size / 2;
+    const y1 = to.top + to.height / 2 - size / 2;
+    const lift = Math.min(160, Math.abs(y0 - y1) * 0.35 + 60);
+    const dot = document.createElement('div');
+    dot.className = 'zd-fly';
+    dot.setAttribute('aria-hidden', 'true');
+    if (img && img.currentSrc) dot.innerHTML = `<img src="${escapeHtml(img.currentSrc)}" alt="">`;
+    document.body.appendChild(dot);
+    const anim = dot.animate(
+      [
+        { transform: `translate(${x0}px, ${y0}px) scale(0.6)`, opacity: 0 },
+        { transform: `translate(${x0}px, ${y0}px) scale(1)`, opacity: 1, offset: 0.12 },
+        { transform: `translate(${(x0 + x1) / 2}px, ${Math.min(y0, y1) - lift}px) scale(0.75)`, opacity: 1, offset: 0.55 },
+        { transform: `translate(${x1}px, ${y1}px) scale(0.18)`, opacity: 0.9 }
+      ],
+      { duration: 720, easing: 'cubic-bezier(0.45, 0, 0.25, 1)' }
+    );
+    return anim.finished.catch(() => {}).then(() => {
+      dot.remove();
+      const count = $('.zd-cart-btn [data-zd-cart-count]');
+      if (count) {
+        count.classList.remove('is-bumped');
+        void count.offsetWidth;
+        count.classList.add('is-bumped');
+      }
+    });
+  }
 
   /* ---------------------------------------------------------------- Buy box */
   const buyBoxes = [];
@@ -453,10 +493,12 @@
         button.dataset.state = 'added';
         button.removeAttribute('aria-busy');
         if (cartStatus) cartStatus.textContent = `${this.name} añadido al carrito.`;
+        const flight = flyToCart(this.mainWrap && $('img', this.mainWrap), button);
         await refreshCart(key);
+        await flight;
         setTimeout(() => {
           if (cartSheet) cartSheet.open(button);
-        }, mqReduce.matches ? 0 : 420);
+        }, mqReduce.matches ? 0 : 160);
         setTimeout(() => {
           delete button.dataset.state;
         }, 1600);
@@ -567,6 +609,198 @@
     }
   }
 
+  /* ---------------------------------------------------------------- Search */
+  // The header pill appears once you scroll past the hero. "/" or Ctrl/⌘ K opens the palette
+  // from anywhere. Results come instantly from the Liquid index; Shopify's predictive search
+  // adds anything the index missed. Products with a chapter on this page scroll to it.
+  (() => {
+    const dialog = $('[data-zd-search]');
+    const input = dialog && $('[data-zd-search-input]', dialog);
+    if (!dialog || !input) return;
+    const list = $('[data-zd-search-list]', dialog);
+    const heading = $('[data-zd-search-heading]', dialog);
+    const empty = $('[data-zd-search-empty]', dialog);
+    const status = $('[data-zd-search-status]', dialog);
+    const all = $('[data-zd-search-all]', dialog);
+    const allText = $('[data-zd-search-all-text]', dialog);
+    const form = $('[data-zd-search-form]', dialog);
+    const searchUrl = (form && form.getAttribute('action')) || '/search';
+    const suggestUrl = (ZD.routes && ZD.routes.predictiveSearch) || '/search/suggest';
+
+    const fold = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    let index = [];
+    try {
+      index = JSON.parse($('[data-zd-search-index]').textContent).map((p) => ({ ...p, hay: fold(`${p.name} ${p.sub} ${p.words}`), title: fold(`${p.name} ${p.sub}`) }));
+    } catch (e) {
+      index = [];
+    }
+    const chapterFor = (handle) => $(`[data-zd-chapter][data-zd-handle="${CSS.escape(handle)}"]`);
+
+    let results = [];
+    let active = -1;
+    let seq = 0;
+    let timer = 0;
+
+    const sheet = makeSheet(dialog, {
+      onOpen: () => {
+        list.classList.add('is-intro');
+        render(input.value);
+        setTimeout(() => input.focus(), 0);
+        setTimeout(() => list.classList.remove('is-intro'), 700);
+      }
+    });
+    if (!sheet) return;
+
+    function score(p, terms) {
+      let s = 0;
+      for (const t of terms) {
+        if (!p.hay.includes(t)) return 0;
+        s += p.title.includes(t) ? (p.title.split(/\s+/).some((w) => w.startsWith(t)) ? 4 : 3) : 1;
+      }
+      return s;
+    }
+
+    function localSearch(q) {
+      const terms = fold(q).split(/\s+/).filter(Boolean);
+      if (!terms.length) return index.slice();
+      return index
+        .map((p) => ({ p, s: score(p, terms) }))
+        .filter((r) => r.s > 0)
+        .sort((a, b) => b.s - a.s)
+        .map((r) => r.p);
+    }
+
+    function setActive(i) {
+      const items = $$('[role="option"]', list);
+      active = items.length ? (i + items.length) % items.length : -1;
+      items.forEach((el, n) => el.setAttribute('aria-selected', n === active ? 'true' : 'false'));
+      if (active > -1) {
+        input.setAttribute('aria-activedescendant', items[active].id);
+        items[active].scrollIntoView({ block: 'nearest' });
+      } else {
+        input.removeAttribute('aria-activedescendant');
+      }
+    }
+
+    function draw(q) {
+      const query = q.trim();
+      heading.textContent = query ? 'Resultados' : 'Nuestros objetos';
+      list.innerHTML = results
+        .map((p, i) => {
+          const price = p.price ? `<span class="zd-search__price">${p.from ? 'Desde ' : ''}${escapeHtml(p.price)}</span>` : '';
+          const img = p.image ? `<img src="${escapeHtml(p.image)}" alt="" width="56" height="56" loading="lazy">` : '';
+          const here = chapterFor(p.handle) ? '<span class="zd-search__here">En esta página</span>' : '';
+          return `<li class="zd-search__item" role="option" id="zd-search-opt-${i}" aria-selected="false" data-i="${i}" style="--i:${i}">
+            <span class="zd-search__thumb">${img}</span>
+            <span class="zd-search__text"><span class="zd-search__name">${escapeHtml(p.name)}</span><span class="zd-search__sub">${escapeHtml(p.sub || '')}</span></span>
+            <span class="zd-search__meta">${price}${here}</span>
+          </li>`;
+        })
+        .join('');
+      empty.hidden = results.length > 0;
+      if (!results.length) empty.textContent = `Nada coincide con «${query}». Prueba con otra palabra o mira todo el catálogo.`;
+      all.hidden = !query;
+      if (query) {
+        all.href = `${searchUrl}?q=${encodeURIComponent(query)}&type=product`;
+        allText.textContent = `Buscar «${query}» en toda la tienda`;
+      }
+      status.textContent = query ? (results.length === 1 ? '1 resultado' : `${results.length} resultados`) : '';
+      setActive(query && results.length ? 0 : -1);
+    }
+
+    async function remote(q, ticket) {
+      try {
+        const res = await fetch(`${suggestUrl}.json?q=${encodeURIComponent(q)}&resources[type]=product&resources[limit]=6`, { headers: { Accept: 'application/json' } });
+        if (!res.ok || ticket !== seq) return;
+        const data = await res.json();
+        const found = (data.resources && data.resources.results && data.resources.results.products) || [];
+        if (ticket !== seq) return;
+        let changed = false;
+        found.forEach((r) => {
+          if (results.some((p) => p.handle === r.handle)) return;
+          const local = index.find((p) => p.handle === r.handle);
+          const parts = String(r.title || '').split(' · ');
+          const price = r.price != null ? formatMoney(Math.round(parseFloat(r.price) * 100)) : '';
+          results.push(local || { handle: r.handle, name: parts[0], sub: parts[1] || '', url: r.url, price, image: r.image || (r.featured_image && r.featured_image.url) || null });
+          changed = true;
+        });
+        if (changed) draw(q);
+      } catch (e) {
+        /* offline or not available: the local index already answered */
+      }
+    }
+
+    function render(q) {
+      const ticket = ++seq;
+      results = localSearch(q);
+      draw(q);
+      clearTimeout(timer);
+      if (q.trim().length > 1) timer = setTimeout(() => remote(q.trim(), ticket), 180);
+    }
+
+    function go(p) {
+      if (!p) return;
+      const chapter = chapterFor(p.handle);
+      if (chapter && chapter.id) {
+        sheet.close(() => scrollToHash(`#${chapter.id}`));
+      } else {
+        window.location.href = p.url;
+      }
+    }
+
+    input.addEventListener('input', () => render(input.value));
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+      else if (e.key === 'Enter' && active > -1 && results[active]) { e.preventDefault(); go(results[active]); }
+      else if (e.key === 'Escape') { e.preventDefault(); sheet.close(); }
+    });
+    form.addEventListener('submit', (e) => {
+      if (!input.value.trim()) e.preventDefault();
+    });
+    list.addEventListener('click', (e) => {
+      const li = e.target.closest('[role="option"]');
+      if (li) go(results[Number(li.dataset.i)]);
+    });
+    list.addEventListener('pointermove', (e) => {
+      const li = e.target.closest('[role="option"]');
+      if (li && Number(li.dataset.i) !== active && e.pointerType === 'mouse') setActive(Number(li.dataset.i));
+    });
+    $$('[data-zd-search-chip]', dialog).forEach((chip) =>
+      chip.addEventListener('click', () => {
+        input.value = chip.dataset.zdSearchChip;
+        render(input.value);
+        input.focus();
+      })
+    );
+    $$('[data-zd-search-close]', dialog).forEach((b) => b.addEventListener('click', () => sheet.close()));
+    $$('[data-zd-search-open]').forEach((b) => b.addEventListener('click', () => sheet.open(b)));
+
+    document.addEventListener('keydown', (e) => {
+      if (sheet.isOpen || e.defaultPrevented || e.altKey) return;
+      const t = e.target;
+      const typing = t && (t.isContentEditable || /^(input|textarea|select)$/i.test(t.tagName));
+      const isSlash = e.key === '/' && !e.ctrlKey && !e.metaKey && !typing;
+      const isK = (e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey);
+      if (!isSlash && !isK) return;
+      if ($('dialog[open]')) return;
+      e.preventDefault();
+      sheet.open($('[data-zd-search-open]'));
+    });
+
+    // Reveal the header pill once the hero has scrolled away.
+    const hero = $('[data-zd-hero]');
+    if (header) {
+      const reveal = () => {
+        const limit = hero ? hero.offsetTop + hero.offsetHeight * 0.6 : window.innerHeight * 0.6;
+        header.classList.toggle('is-searchable', window.scrollY > limit);
+      };
+      reveal();
+      window.addEventListener('scroll', reveal, { passive: true });
+      window.addEventListener('resize', reveal, { passive: true });
+    }
+  })();
+
   /* --------------------------------------------------------------- Chooser */
   $$('[data-zd-chooser]').forEach((root) => {
     const tablist = $('[data-zd-tabs]', root);
@@ -635,6 +869,37 @@
     });
   }
 
+  /* ------------------------------------------------- TermoCalm tension */
+  $$('[data-zd-tension]').forEach((root) => {
+    const levels = Number(root.dataset.levels) || 9;
+    const states = (root.dataset.states || '').split('|');
+    const levelEl = $('[data-zd-tension-level]', root);
+    const stateEl = $('[data-zd-tension-state]', root);
+    const bars = $$('.zd-tension__bar li', root);
+    const knots = $$('.zd-t-knot', root);
+    let lastLevel = 0;
+    let lastState = -1;
+    const update = (pos) => {
+      const warm = (100 - pos) / 100; // share of the illustration already warmed up
+      const level = Math.max(1, Math.round(1 + warm * (levels - 1)));
+      if (level !== lastLevel) {
+        lastLevel = level;
+        levelEl.textContent = level;
+        bars.forEach((b, i) => b.classList.toggle('is-on', i < level));
+      }
+      const idx = warm < 0.34 ? 0 : warm < 0.67 ? 1 : 2;
+      if (idx !== lastState && states[idx]) {
+        lastState = idx;
+        stateEl.textContent = states[idx];
+        stateEl.classList.remove('is-changing');
+        void stateEl.offsetWidth;
+        stateEl.classList.add('is-changing');
+      }
+      knots.forEach((k) => (k.style.opacity = String(1 - warm * 0.7)));
+    };
+    root.addEventListener('zd:compare', (e) => update(e.detail));
+  });
+
   /* ------------------------------------------------------- Before / after */
   $$('[data-zd-compare]').forEach((root) => {
     const stage = $('[data-zd-compare-stage]', root);
@@ -655,6 +920,7 @@
     const set = (value, fromRange) => {
       pos = Math.min(100, Math.max(0, value));
       render();
+      root.dispatchEvent(new CustomEvent('zd:compare', { detail: pos, bubbles: true }));
       if (!fromRange) range.value = Math.round(pos);
       range.setAttribute('aria-valuetext', `${Math.round(pos)} % ${labels[0] || ''}, ${Math.round(100 - pos)} % ${labels[1] || ''}`);
     };
@@ -1066,9 +1332,93 @@
           });
         }
 
+        /* ---------- Information bands: speed and direction follow the scroll ---------- */
+        const bands = $$('[data-zd-marquee]').map((band) => {
+          const track = $('[data-zd-marquee-track]', band);
+          if (!track) return null;
+          const dir = Number(band.dataset.direction) < 0 ? -1 : 1;
+          const speed = parseFloat(getComputedStyle(band).getPropertyValue('--zd-marquee-speed')) || 45;
+          band.classList.add('is-driven');
+          const loop = gsap.fromTo(track, { xPercent: dir < 0 ? 0 : -50 }, { xPercent: dir < 0 ? -50 : 0, duration: speed, ease: 'none', repeat: -1, paused: true });
+          loop.totalTime(speed * 400); // room to run backwards when you scroll up
+          let settle = null;
+          ScrollTrigger.create({
+            trigger: band,
+            start: 'top bottom',
+            end: 'bottom top',
+            onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
+            onUpdate: (self) => {
+              const boost = gsap.utils.clamp(1, 6, 1 + Math.abs(self.getVelocity()) / 300);
+              const sign = self.direction;
+              settle && settle.kill();
+              gsap.to(loop, { timeScale: sign * boost, duration: 0.25, overwrite: true });
+              settle = gsap.to(loop, { timeScale: sign, duration: 1.1, delay: 0.25, ease: 'power2.out' });
+            }
+          });
+          return band;
+        });
+
+        /* ---------- Reading progress ---------- */
+        const progress = document.createElement('div');
+        progress.className = 'zd-progress';
+        progress.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(progress);
+        gsap.to(progress, { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
+
+        /* ---------- Figures count up the first time they are seen ---------- */
+        const figures = $$('.zd-feat__val')
+          .filter((el) => /^\d{2,5}$/.test(el.textContent.trim()))
+          .map((el) => {
+            const raw = el.textContent.trim();
+            el.style.display = 'inline-block';
+            el.style.minWidth = `${el.getBoundingClientRect().width}px`;
+            const o = { v: 0 };
+            el.textContent = '0';
+            ScrollTrigger.create({
+              trigger: el,
+              start: 'top 90%',
+              once: true,
+              onEnter: () =>
+                gsap.to(o, {
+                  v: Number(raw),
+                  duration: 1.4,
+                  ease: 'expo.out',
+                  onUpdate: () => { el.textContent = String(Math.round(o.v)); },
+                  onComplete: () => { el.textContent = raw; }
+                })
+            });
+            return { el, raw };
+          });
+
+        /* ---------- Hero pieces lean towards the pointer (desktop, mouse) ---------- */
+        const tilts = [];
+        if (isDesktop && mqFine.matches) {
+          $$('[data-zd-piece] .zd-piece__link').forEach((link) => {
+            gsap.set(link, { transformPerspective: 900, transformOrigin: '50% 60%' });
+            const rx = gsap.quickTo(link, 'rotationX', { duration: 0.7, ease: 'power3.out' });
+            const ry = gsap.quickTo(link, 'rotationY', { duration: 0.7, ease: 'power3.out' });
+            const move = (e) => {
+              const r = link.getBoundingClientRect();
+              ry(((e.clientX - r.left) / r.width - 0.5) * 9);
+              rx(-((e.clientY - r.top) / r.height - 0.5) * 7);
+            };
+            const leave = () => { rx(0); ry(0); };
+            link.addEventListener('pointermove', move);
+            link.addEventListener('pointerleave', leave);
+            tilts.push(() => {
+              link.removeEventListener('pointermove', move);
+              link.removeEventListener('pointerleave', leave);
+            });
+          });
+        }
+
         return () => {
           $$('[data-zd-rooms]').forEach((s) => s.classList.remove('is-pinned'));
           header && header.classList.remove('is-tinted');
+          bands.forEach((b) => b && b.classList.remove('is-driven'));
+          progress.remove();
+          figures.forEach(({ el, raw }) => { el.textContent = raw; el.style.display = ''; el.style.minWidth = ''; });
+          tilts.forEach((off) => off());
         };
       }
     );

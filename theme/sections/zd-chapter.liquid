@@ -23,6 +23,7 @@
   assign scales = section.blocks | where: 'type', 'scale'
   assign chips = section.blocks | where: 'type', 'chips'
   assign compares = section.blocks | where: 'type', 'compare'
+  assign tensions = section.blocks | where: 'type', 'tension'
   assign review_heads = section.blocks | where: 'type', 'reviews'
 
   assign rating = nil
@@ -59,7 +60,7 @@
   endif
 -%}
 
-<section class="zd-ch zd-ch--{{ pattern }}" id="{{ section.settings.anchor }}" data-zd-chapter data-pattern="{{ pattern }}" style="--ch-tint: {{ section.settings.tint }}; --ch-deep: {{ section.settings.deep }};" aria-labelledby="zd-ch-title-{{ section.id }}">
+<section class="zd-ch zd-ch--{{ pattern }}" id="{{ section.settings.anchor }}" data-zd-chapter{% if product != blank %} data-zd-handle="{{ product.handle }}"{% endif %} data-pattern="{{ pattern }}" style="--ch-tint: {{ section.settings.tint }}; --ch-deep: {{ section.settings.deep }};" aria-labelledby="zd-ch-title-{{ section.id }}">
 
   {%- capture head -%}
     <header class="zd-ch__head">
@@ -155,6 +156,23 @@
       </div>
     {%- endfor -%}
   {%- endcapture -%}
+
+  {%- capture tension_html -%}
+    {%- for block in tensions -%}
+      <div class="zd-ab zd-ab--tension" {{ block.shopify_attributes }}>
+        <div class="zd-ab__text" data-zd-fade>
+          <h3 class="zd-ab__title">{{ block.settings.title | escape }}</h3>
+          {%- if block.settings.text != blank -%}<p class="zd-ab__lede">{{ block.settings.text | escape }}</p>{%- endif -%}
+          <p class="zd-ab__hint" aria-hidden="true"><span class="zd-ab__hint-line"></span>Desliza para encenderla</p>
+          {%- if block.settings.note != blank -%}<p class="zd-ab__note">{{ block.settings.note | escape }}</p>{%- endif -%}
+        </div>
+        <div class="zd-ab__media">
+          {%- render 'zd-tension', id: block.id, before_label: block.settings.before_label, after_label: block.settings.after_label, levels: block.settings.levels, from_label: block.settings.from_label, to_label: block.settings.to_label, states: block.settings.states -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- capture compare_html -%}{{ tension_html }}{{ compare_html }}{%- endcapture -%}
 
   {%- capture reviews_html -%}
     {%- assign app_blocks = section.blocks | where: 'type', '@app' -%}
@@ -412,6 +430,22 @@
         { "type": "range", "id": "after_media", "label": "Derecha: foto del producto nº", "info": "0 = no usar", "min": 0, "max": 20, "step": 1, "default": 0 },
         { "type": "text", "id": "after_asset", "label": "Derecha: imagen del tema" },
         { "type": "text", "id": "after_alt", "label": "Derecha: texto alternativo" }
+      ]
+    },
+    {
+      "type": "tension",
+      "name": "Calor y tensión",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Siente cómo se suelta" },
+        { "type": "textarea", "id": "text", "label": "Texto" },
+        { "type": "text", "id": "note", "label": "Nota", "default": "Ilustración de la sensación de calor. No es una medición ni un tratamiento médico." },
+        { "type": "text", "id": "before_label", "label": "Etiqueta izquierda", "default": "Antes" },
+        { "type": "text", "id": "after_label", "label": "Etiqueta derecha", "default": "Con TermoCalm" },
+        { "type": "range", "id": "levels", "label": "Niveles de calor", "min": 3, "max": 12, "step": 1, "default": 9 },
+        { "type": "text", "id": "from_label", "label": "Primer nivel", "default": "Tibio, unos 30 °C" },
+        { "type": "text", "id": "to_label", "label": "Último nivel", "default": "Intenso, unos 50 °C" },
+        { "type": "text", "id": "states", "label": "Sensaciones", "info": "Tres frases separadas por |", "default": "Rigidez en cuello y hombros|El calor empieza a envolver la espalda|Músculos relajados" }
       ]
     },
     {

@@ -50,6 +50,9 @@ Escala de 8 pt: 4, 8, 12, 16, 24, 32, 48, 64 y dos pasos fluidos (72–128, 104�
 - **Variantes**: radios reales; si el valor tiene la forma «Modelo · Color» se agrupan por modelo con muestra de color.
 - **Imágenes**: marcos con radio 18–28 px que el scroll lleva a 0. Fotos de proveedor con fondo blanco se colocan «sobre la pared» de la sala (`mix-blend-mode: multiply`). Sin sombras.
 - **Acordeones**: `<details>` nativos, altura animada solo donde el navegador lo soporta.
+- **Buscador**: píldora en la cabecera que aparece al dejar atrás el hero (en móvil el logotipo se reduce al símbolo para hacerle sitio). Abre una paleta (`/` o Ctrl/⌘ K) con búsquedas rápidas, resultados al instante desde el catálogo (Liquid) más la búsqueda predictiva de Shopify; los productos con capítulo en la página llevan a su sala, el resto a su ficha, y «Buscar en toda la tienda» a `/search`.
+- **Bandas de información** (sección «Zaldori · Banda»): frambuesa, crema o contorno grande, opcionalmente inclinadas. Solo datos reales (envío, devoluciones, garantía, cifras de producto). Los lectores de pantalla leen la lista una vez; las copias en movimiento están ocultas.
+- **Calor y tensión** (TermoCalm): ilustración de una espalda; a un lado, puntos de tensión que laten; al otro, la almohadilla encendida. El marcador muestra el nivel 1–9 y la sensación descrita en la ficha. Es una ilustración, no una medición.
 
 ## Movimiento
 
@@ -61,10 +64,12 @@ Escala de 8 pt: 4, 8, 12, 16, 24, 32, 48, 64 y dos pasos fluidos (72–128, 104�
 | Pulsación | 120 ms · interfaz 200–240 ms · cajón 420 ms |
 | Narrativa (scroll) | GSAP `expo.out` 0,8–1,2 s; scrub 0,4–0,8; stagger 70–80 ms |
 
+Detalles: barra de progreso de lectura (2 px, frambuesa→ámbar), cifras que cuentan hasta su valor la primera vez que se ven, foto que vuela en arco hasta la bolsa al añadir al carrito, piezas del hero que se inclinan hacia el ratón (solo escritorio) y bandas cuya velocidad y sentido siguen al scroll.
+
 Momentos: preloader (Z dibujada, < 1,6 s, solo primera visita de la sesión), entrada del hero por máscara, **salas fijadas** (tinte, marco que crece, nombre por máscara, snap a cada sala), **expansión** de Vortix (inset redondeado → pantalla completa, reversible), parallax en TermoCalm y collage de profundidad en Pulsia. Solo `transform`, `opacity` y `clip-path`.
 
 ## Reglas por dispositivo
 
 - **Escritorio con ratón**: Lenis, hover (solo `@media (hover: hover) and (pointer: fine)`), botón magnético en la CTA del hero.
 - **Móvil**: salas fijadas más cortas con marco al 46 % de alto, expansión sin pin, carrusel de campaña con snap, selector en pestañas, barra de compra fija con zona segura inferior.
-- **Movimiento reducido**: sin pins, sin parallax ni desplazamientos; fundidos de opacidad cortos; cajón y menú aparecen por opacidad.
+- **Movimiento reducido**: sin pins, sin parallax ni desplazamientos; fundidos de opacidad cortos; cajón, menú y buscador aparecen por opacidad; bandas quietas, sin barra de progreso, sin vuelo al carrito ni cuenta de cifras.

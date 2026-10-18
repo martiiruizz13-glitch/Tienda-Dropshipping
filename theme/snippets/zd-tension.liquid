@@ -1,0 +1,115 @@
+{%- comment -%}
+  TermoCalm "tension" slider: an illustrated back with the pad over the shoulders.
+  Left of the handle: cold light and pulsing tension points. Right: the pad warms up and
+  the tension dissolves. It reuses the before/after slider (data-zd-compare), so mouse,
+  touch and keyboard all work, and zd.js updates the heat readout as you drag.
+  It is an illustration of the feeling the product copy describes, not a measurement.
+  Params: id, before_label, after_label, levels (default 9), from_label, to_label, states (3 lines, separated by |)
+{%- endcomment -%}
+{%- liquid
+  assign levels = levels | default: 9
+  assign state_list = states | default: 'Rigidez en cuello y hombros|El calor empieza a envolver la espalda|Músculos relajados' | split: '|'
+-%}
+<div class="zd-tension" data-zd-tension data-levels="{{ levels }}" data-states="{{ states | default: 'Rigidez en cuello y hombros|El calor empieza a envolver la espalda|Músculos relajados' | escape }}">
+  <div class="zd-compare zd-compare--portrait zd-compare--tension" data-zd-compare>
+    <div class="zd-compare__stage" data-zd-compare-stage>
+      {%- capture body -%}
+        <path class="zd-t-skin" d="M268 215C230 228 180 232 152 252C118 274 110 318 126 352C136 372 150 380 160 392C170 470 188 540 206 640L394 640C412 540 430 470 440 392C450 380 464 372 474 352C490 318 482 274 448 252C420 232 370 228 332 215C326 200 322 186 322 170L278 170C278 186 274 200 268 215Z"/>
+        <ellipse class="zd-t-skin" cx="300" cy="118" rx="50" ry="60"/>
+        <g class="zd-t-lines">
+          <path d="M300 236C300 330 302 460 300 610"/>
+          <path d="M300 240C262 300 252 360 300 432"/>
+          <path d="M300 240C338 300 348 360 300 432"/>
+          <path d="M232 296C212 330 214 380 240 406C258 390 264 340 252 298"/>
+          <path d="M368 296C388 330 386 380 360 406C342 390 336 340 348 298"/>
+          <path d="M196 426C226 476 258 504 288 522"/>
+          <path d="M404 426C374 476 342 504 312 522"/>
+          <path d="M268 566C284 580 316 580 332 566"/>
+        </g>
+        <g class="zd-t-spine">
+          {%- for i in (0..14) -%}<circle cx="300" cy="{{ i | times: 24 | plus: 250 }}" r="3"/>{%- endfor -%}
+        </g>
+      {%- endcapture -%}
+      {%- capture pad -%}
+        <g class="zd-t-pad">
+          <rect x="166" y="248" width="268" height="150" rx="22"/>
+          <g class="zd-t-quilt">
+            {%- for row in (0..4) -%}
+              {%- for col in (0..9) -%}
+                <circle cx="{{ col | times: 25 | plus: 188 }}" cy="{{ row | times: 26 | plus: 272 }}" r="3.2"/>
+              {%- endfor -%}
+            {%- endfor -%}
+          </g>
+          <path class="zd-t-cable" d="M434 360C470 380 480 430 470 470C462 500 470 520 492 530"/>
+          <rect class="zd-t-remote" x="478" y="522" width="30" height="62" rx="9"/>
+          <rect class="zd-t-screen" x="485" y="532" width="16" height="14" rx="2"/>
+        </g>
+      {%- endcapture -%}
+
+      <div class="zd-compare__layer zd-compare__layer--before">
+        <svg class="zd-t-svg zd-t-svg--cold" viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustración: espalda con rigidez en cuello y hombros, almohadilla apagada">
+          <defs>
+            <radialGradient id="zd-t-cold-{{ id }}" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#2b3550"/><stop offset="1" stop-color="#120d1a"/></radialGradient>
+            <radialGradient id="zd-t-knot-{{ id }}"><stop offset="0" stop-color="#ff5c8a" stop-opacity=".95"/><stop offset=".45" stop-color="#e2638f" stop-opacity=".45"/><stop offset="1" stop-color="#e2638f" stop-opacity="0"/></radialGradient>
+          </defs>
+          <rect width="600" height="700" fill="url(#zd-t-cold-{{ id }})"/>
+          <g class="zd-t-figure zd-t-figure--cold">{{ body }}</g>
+          <g class="zd-t-figure zd-t-figure--cold">{{ pad }}</g>
+          {%- assign knots = '300,206,46|226,262,54|374,262,54|300,330,40' | split: '|' -%}
+          {%- for k in knots -%}
+            {%- assign c = k | split: ',' -%}
+            <g class="zd-t-knot" style="--d: {{ forloop.index0 | times: 0.35 }}s;">
+              <circle cx="{{ c[0] }}" cy="{{ c[1] }}" r="{{ c[2] }}" fill="url(#zd-t-knot-{{ id }})"/>
+              <circle class="zd-t-ring" cx="{{ c[0] }}" cy="{{ c[1] }}" r="{{ c[2] | times: 0.55 }}"/>
+              <circle class="zd-t-ring zd-t-ring--2" cx="{{ c[0] }}" cy="{{ c[1] }}" r="{{ c[2] | times: 0.55 }}"/>
+              <path class="zd-t-zig" d="M{{ c[0] | minus: 16 }} {{ c[1] }}l6 -7l6 7l6 -7l6 7"/>
+            </g>
+          {%- endfor -%}
+        </svg>
+      </div>
+
+      <div class="zd-compare__layer zd-compare__layer--after" data-zd-compare-after>
+        <svg class="zd-t-svg zd-t-svg--warm" viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustración: almohadilla encendida, calor envolvente sobre espalda y hombros">
+          <defs>
+            <radialGradient id="zd-t-warm-{{ id }}" cx="50%" cy="38%" r="85%"><stop offset="0" stop-color="#5b2a22"/><stop offset=".55" stop-color="#2e1219"/><stop offset="1" stop-color="#1a0912"/></radialGradient>
+            <radialGradient id="zd-t-heat-{{ id }}" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffb36b" stop-opacity=".85"/><stop offset=".5" stop-color="#e2638f" stop-opacity=".35"/><stop offset="1" stop-color="#e2638f" stop-opacity="0"/></radialGradient>
+          </defs>
+          <rect width="600" height="700" fill="url(#zd-t-warm-{{ id }})"/>
+          <ellipse class="zd-t-heat" cx="300" cy="320" rx="260" ry="230" fill="url(#zd-t-heat-{{ id }})"/>
+          <g class="zd-t-figure zd-t-figure--warm">{{ body }}</g>
+          <g class="zd-t-figure zd-t-figure--warm zd-t-on">{{ pad }}</g>
+          <g class="zd-t-waves">
+            <path d="M210 236c10-14 -10-24 0-38s-10-24 0-38"/>
+            <path d="M300 230c10-14 -10-24 0-38s-10-24 0-38"/>
+            <path d="M390 236c10-14 -10-24 0-38s-10-24 0-38"/>
+          </g>
+        </svg>
+      </div>
+
+      <span class="zd-compare__tag zd-compare__tag--before" aria-hidden="true">{{ before_label | escape }}</span>
+      <span class="zd-compare__tag zd-compare__tag--after" aria-hidden="true">{{ after_label | escape }}</span>
+      <div class="zd-compare__handle" data-zd-compare-handle aria-hidden="true">
+        <span class="zd-compare__knob">
+          <svg viewBox="0 0 24 24" focusable="false"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+      <label class="zd-visually-hidden" for="zd-compare-{{ id }}">Desliza para pasar de {{ before_label | escape }} a {{ after_label | escape }}</label>
+      <input class="zd-compare__range" id="zd-compare-{{ id }}" type="range" min="0" max="100" value="50" step="1" data-zd-compare-range>
+    </div>
+  </div>
+
+  <div class="zd-tension__readout" aria-live="polite">
+    <div class="zd-tension__level">
+      <p class="zd-tension__k">Calor</p>
+      <p class="zd-tension__v"><span data-zd-tension-level>5</span><span class="zd-tension__of"> / {{ levels }}</span></p>
+      <ol class="zd-tension__bar" role="list" aria-hidden="true">
+        {%- for i in (1..levels) -%}<li style="--i: {{ i }};"></li>{%- endfor -%}
+      </ol>
+      <p class="zd-tension__ends"><span>{{ from_label | escape }}</span><span>{{ to_label | escape }}</span></p>
+    </div>
+    <div class="zd-tension__feel">
+      <p class="zd-tension__k">Sensación</p>
+      <p class="zd-tension__state" data-zd-tension-state>{{ state_list[1] | escape }}</p>
+    </div>
+  </div>
+</div>

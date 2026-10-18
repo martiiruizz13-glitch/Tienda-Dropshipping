@@ -1,7 +1,8 @@
 <header class="zd-header" data-zd-header>
   <div class="zd-header__inner zd-wrap">
     <a class="zd-header__logo" href="{{ routes.root_url }}" aria-label="Zaldori, inicio">
-      {%- render 'zd-logo', variant: 'full' -%}
+      {%- render 'zd-logo', variant: 'full', class_name: 'zd-header__logo-full' -%}
+      {%- render 'zd-logo', variant: 'symbol', class_name: 'zd-header__logo-mark' -%}
     </a>
 
     <nav class="zd-header__nav" aria-label="Productos">
@@ -16,6 +17,13 @@
         {%- endfor -%}
       </ul>
     </nav>
+
+    {%- comment -%} Appears once you scroll past the hero; opens the search palette. {%- endcomment -%}
+    <button class="zd-header__search" type="button" data-zd-search-open aria-haspopup="dialog" aria-controls="zd-search" aria-keyshortcuts="/">
+      <svg class="zd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span class="zd-header__search-text">Buscar<span class="zd-header__search-long"> productos</span></span>
+      <kbd class="zd-header__kbd" aria-hidden="true">/</kbd>
+    </button>
 
     <div class="zd-header__actions">
       <a class="zd-header__help" href="#ayuda">Ayuda</a>
@@ -61,12 +69,77 @@
   </div>
 </dialog>
 
+{%- comment -%}
+  Search palette. Instant results from the store's products (index below, built by Liquid),
+  enriched by Shopify's predictive search when it answers. Enter on free text goes to /search.
+{%- endcomment -%}
+{%- liquid
+  assign suggest_list = section.settings.suggestions | split: ','
+-%}
+<dialog class="zd-search zd-tone-day" id="zd-search" aria-label="Buscar productos" data-zd-search>
+  <div class="zd-search__panel">
+    <form class="zd-search__form" action="{{ routes.search_url }}" method="get" role="search" data-zd-search-form>
+      <svg class="zd-icon zd-search__glass" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <label class="zd-visually-hidden" for="zd-search-input">Buscar productos</label>
+      <input class="zd-search__input" id="zd-search-input" type="search" name="q" placeholder="{{ section.settings.placeholder | escape }}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"
+        role="combobox" aria-expanded="true" aria-controls="zd-search-list" aria-autocomplete="list" data-zd-search-input>
+      <input type="hidden" name="type" value="product">
+      <button class="zd-search__close" type="button" data-zd-search-close>
+        <span aria-hidden="true">Esc</span><span class="zd-visually-hidden">Cerrar búsqueda</span>
+      </button>
+    </form>
+
+    {%- if suggest_list.size > 0 -%}
+      <div class="zd-search__chips">
+        <p class="zd-search__k" id="zd-search-chips-label">Búsquedas rápidas</p>
+        <ul role="list" aria-labelledby="zd-search-chips-label">
+          {%- for chip in suggest_list -%}
+            {%- assign c = chip | strip -%}
+            {%- if c != blank -%}<li><button type="button" class="zd-search__chip" data-zd-search-chip="{{ c | escape }}">{{ c | escape }}</button></li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    <p class="zd-search__k" id="zd-search-list-label" data-zd-search-heading>Nuestros objetos</p>
+    <ul class="zd-search__list" id="zd-search-list" role="listbox" aria-labelledby="zd-search-list-label" data-zd-search-list></ul>
+    <p class="zd-search__empty" data-zd-search-empty hidden></p>
+    <p class="zd-visually-hidden" aria-live="polite" data-zd-search-status></p>
+    <a class="zd-search__all" href="{{ routes.search_url }}" data-zd-search-all hidden>
+      <span data-zd-search-all-text>Ver todos los resultados</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</dialog>
+
+<script type="application/json" data-zd-search-index>
+  [
+    {%- for p in collections.all.products limit: 24 -%}
+      {%- assign p_name = p.title | split: ' · ' | first -%}
+      {%- assign p_sub = p.title | split: ' · ' | last -%}
+      {%- capture p_words -%}{{ p.title }} {{ p.type }} {{ p.vendor }} {{ p.tags | join: ' ' }} {% for o in p.options_with_values %}{{ o.values | join: ' ' }} {% endfor %}{{ p.description | strip_html | truncatewords: 80, '' }}{%- endcapture -%}
+      {
+        "handle": {{ p.handle | json }},
+        "name": {{ p_name | json }},
+        "sub": {% if p_sub != p_name %}{{ p_sub | json }}{% else %}{{ p.type | json }}{% endif %},
+        "url": {{ p.url | json }},
+        "price": {{ p.price | money | json }},
+        "from": {% if p.price_varies %}true{% else %}false{% endif %},
+        "image": {% if p.featured_image %}{{ p.featured_image | image_url: width: 160 | json }}{% else %}null{% endif %},
+        "words": {{ p_words | strip_newlines | json }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+</script>
+
 {% schema %}
 {
   "name": "Zaldori · Cabecera",
   "class": "zd-header-section",
   "settings": [
-    { "type": "text", "id": "email", "label": "Email de atención al cliente", "default": "support@zaldori.com" }
+    { "type": "text", "id": "email", "label": "Email de atención al cliente", "default": "support@zaldori.com" },
+    { "type": "text", "id": "placeholder", "label": "Texto del buscador", "default": "Busca un producto, una zona, un color…" },
+    { "type": "text", "id": "suggestions", "label": "Búsquedas rápidas", "info": "Separadas por comas.", "default": "Proteínas, Espalda, Pies, Rosa" }
   ],
   "blocks": [
     {

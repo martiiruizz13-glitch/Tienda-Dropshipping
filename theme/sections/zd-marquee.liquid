@@ -1,0 +1,45 @@
+{%- comment -%}
+  Moving information band between chapters. CSS runs it on its own; zd.js takes over with
+  GSAP so it follows the scroll (faster when you scroll fast, reverses when you scroll up).
+  Screen readers get the list once; the moving copies are aria-hidden.
+  Reduced motion: a still, wrapped line.
+{%- endcomment -%}
+{%- liquid
+  assign items = section.settings.items | newline_to_br | split: '<br />'
+-%}
+<div class="zd-marquee zd-marquee--{{ section.settings.style }}{% if section.settings.tilt %} zd-marquee--tilt{% endif %}" data-zd-marquee data-direction="{{ section.settings.direction }}" style="--zd-marquee-speed: {{ section.settings.speed }}s;">
+  <ul class="zd-visually-hidden">
+    {%- for item in items -%}{%- assign t = item | strip -%}{%- if t != blank -%}<li>{{ t | escape }}</li>{%- endif -%}{%- endfor -%}
+  </ul>
+  <div class="zd-marquee__track" aria-hidden="true" data-zd-marquee-track>
+    {%- for copy in (1..2) -%}
+      <div class="zd-marquee__group">
+        {%- for rep in (1..2) -%}
+          {%- for item in items -%}
+            {%- assign t = item | strip -%}
+            {%- if t != blank -%}
+              <span class="zd-marquee__item">{{ t | escape }}</span>
+              {%- render 'zd-logo', variant: 'symbol', class_name: 'zd-marquee__sep' -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Zaldori · Banda",
+  "tag": "div",
+  "class": "zd-section zd-section--marquee",
+  "settings": [
+    { "type": "textarea", "id": "items", "label": "Mensajes (uno por línea)", "default": "Envío gratis a España\n14 días para cambiar de opinión\nGarantía legal de 3 años\nPago seguro" },
+    { "type": "select", "id": "style", "label": "Estilo", "options": [ { "value": "rasp", "label": "Frambuesa" }, { "value": "cream", "label": "Crema" }, { "value": "outline", "label": "Contorno grande" } ], "default": "rasp" },
+    { "type": "select", "id": "direction", "label": "Dirección", "options": [ { "value": "-1", "label": "Hacia la izquierda" }, { "value": "1", "label": "Hacia la derecha" } ], "default": "-1" },
+    { "type": "range", "id": "speed", "label": "Duración de una vuelta (s)", "min": 20, "max": 90, "step": 5, "default": 45 },
+    { "type": "checkbox", "id": "tilt", "label": "Ligeramente inclinada", "default": false }
+  ],
+  "presets": [ { "name": "Zaldori · Banda" } ]
+}
+{% endschema %}
