@@ -1,0 +1,17 @@
+{%- comment -%}
+  Mobile buy bar. zd.js fills it with the product whose chapter is on screen
+  (and whose buy box is not), and adds that product's selected variant to the cart.
+{%- endcomment -%}
+<div class="zd-bar" data-zd-bar aria-hidden="true" inert>
+  <div class="zd-bar__inner">
+    <div class="zd-bar__info">
+      <p class="zd-bar__name" data-zd-bar-name></p>
+      <p class="zd-bar__meta"><span data-zd-bar-variant></span> <span class="zd-bar__price" data-zd-bar-price></span></p>
+    </div>
+    <button class="zd-btn zd-btn--primary zd-bar__btn" type="button" data-zd-bar-add>
+      <span class="zd-btn__label" data-zd-bar-label>Añadir</span>
+      <span class="zd-btn__spinner" aria-hidden="true"></span>
+      <svg class="zd-btn__check" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" stroke-width="1.75"/></svg>
+    </button>
+  </div>
+</div>

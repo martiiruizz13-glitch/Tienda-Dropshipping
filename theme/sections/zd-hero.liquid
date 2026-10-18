@@ -1,0 +1,108 @@
+{%- comment -%}
+  Hero: an exhibition wall. Headline revealed by line mask, three framed pieces
+  (one per product) with museum captions that double as navigation.
+{%- endcomment -%}
+<section class="zd-hero" data-zd-hero aria-labelledby="zd-hero-title-{{ section.id }}">
+  <div class="zd-hero__grid zd-wrap">
+    <div class="zd-hero__copy">
+      <h1 class="zd-hero__title zd-display" id="zd-hero-title-{{ section.id }}" data-zd-hero-title>
+        {%- if section.settings.line_1 != blank %}<span class="zd-hero__line zd-mask"><span class="zd-mask__in">{{ section.settings.line_1 | escape }}</span></span>{% endif -%}
+        {%- if section.settings.line_2 != blank %} <span class="zd-hero__line zd-mask"><span class="zd-mask__in">{{ section.settings.line_2 | escape }}</span></span>{% endif -%}
+        {%- if section.settings.line_3 != blank %} <span class="zd-hero__line zd-hero__line--accent zd-mask"><span class="zd-mask__in">{{ section.settings.line_3 | escape }}</span></span>{% endif -%}
+      </h1>
+      <div class="zd-hero__lede" data-zd-fade>
+        {%- if section.settings.text != blank -%}
+          <p>{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+        <a class="zd-btn zd-btn--primary" href="{{ section.settings.cta_url }}" data-zd-magnetic>
+          <span>{{ section.settings.cta_label | escape }}</span>
+          <svg class="zd-btn__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <ol class="zd-hero__wall" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign p = block.settings.product
+          assign media_index = block.settings.media_index | minus: 1
+          if block.settings.image != blank
+            assign img = block.settings.image
+          elsif block.settings.asset == blank and p != blank and p.media.size > media_index
+            assign img = p.media[media_index].preview_image
+          else
+            assign img = nil
+          endif
+          case forloop.index
+            when 1
+              assign sizes = '(min-width: 990px) 38vw, 64vw'
+            when 2
+              assign sizes = '(min-width: 990px) 22vw, 40vw'
+            else
+              assign sizes = '(min-width: 990px) 16vw, 34vw'
+          endcase
+          if forloop.first
+            assign prio = true
+          else
+            assign prio = false
+          endif
+        -%}
+        <li class="zd-piece zd-piece--{{ forloop.index }}" {{ block.shopify_attributes }} style="--piece-tint: {{ block.settings.tint }};" data-zd-piece>
+          <a class="zd-piece__link" href="{{ block.settings.url }}">
+            <span class="zd-piece__frame zd-fit-{{ block.settings.fit }}" data-zd-parallax="{{ forloop.index | times: 6 | minus: 4 }}">
+              {%- render 'zd-image', image: img, asset: block.settings.asset, asset_width: block.settings.asset_width, asset_height: block.settings.asset_height, sizes: sizes, alt: block.settings.alt, class_name: 'zd-piece__img', priority: prio -%}
+            </span>
+            <span class="zd-piece__caption">
+              <span class="zd-piece__num">Nº {{ block.settings.number }}</span>
+              <span class="zd-piece__name">{{ block.settings.title | escape }}</span>
+              {%- if p != blank -%}
+                <span class="zd-piece__price">
+                  {%- if p.price_varies %}desde {% endif -%}{{ p.price_min | money }}
+                </span>
+              {%- endif -%}
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+  <p class="zd-hero__scroll" aria-hidden="true"><span>Desliza</span></p>
+</section>
+
+{% schema %}
+{
+  "name": "Zaldori · Portada",
+  "tag": "div",
+  "class": "zd-section zd-section--hero",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "line_1", "label": "Titular, línea 1", "default": "Mezcla." },
+    { "type": "text", "id": "line_2", "label": "Titular, línea 2", "default": "Calienta." },
+    { "type": "text", "id": "line_3", "label": "Titular, línea 3 (acento)", "default": "Descansa." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Tres objetos para tu día: Vortix, TermoCalm y Pulsia. Elige el tuyo y llévatelo desde aquí." },
+    { "type": "text", "id": "cta_label", "label": "Botón", "default": "Ver los tres" },
+    { "type": "text", "id": "cta_url", "label": "Destino del botón", "default": "#salas" }
+  ],
+  "blocks": [
+    {
+      "type": "piece",
+      "name": "Pieza expuesta",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Producto" },
+        { "type": "text", "id": "title", "label": "Nombre", "default": "Vortix" },
+        { "type": "text", "id": "number", "label": "Número de sala", "default": "01" },
+        { "type": "text", "id": "url", "label": "Destino", "default": "#vortix" },
+        { "type": "image_picker", "id": "image", "label": "Imagen" },
+        { "type": "range", "id": "media_index", "label": "Si no hay imagen: foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 1 },
+        { "type": "text", "id": "asset", "label": "Imagen del tema (avanzado)" },
+        { "type": "number", "id": "asset_width", "label": "Ancho de la imagen del tema" },
+        { "type": "number", "id": "asset_height", "label": "Alto de la imagen del tema" },
+        { "type": "text", "id": "alt", "label": "Texto alternativo" },
+        { "type": "select", "id": "fit", "label": "Encaje", "options": [ { "value": "cover", "label": "Llenar" }, { "value": "contain", "label": "Objeto sobre color (fotos con fondo blanco)" } ], "default": "cover" },
+        { "type": "color", "id": "tint", "label": "Color de la sala", "default": "#DDE3D8" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Zaldori · Portada" } ]
+}
+{% endschema %}

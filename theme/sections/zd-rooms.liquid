@@ -1,0 +1,102 @@
+{%- comment -%}
+  The three rooms. Without JavaScript (or with reduced motion) the rooms are stacked
+  full-height panels. zd.js pins the stage and choreographs the room-to-room
+  transition (tint crossfade, framed image growing, title revealed by line mask).
+{%- endcomment -%}
+<section class="zd-rooms" id="{{ section.settings.anchor }}" data-zd-rooms aria-label="{{ section.settings.label | escape }}">
+  <div class="zd-rooms__stage" data-zd-rooms-stage>
+    <div class="zd-rooms__tints" aria-hidden="true">
+      {%- for block in section.blocks -%}
+        <span class="zd-rooms__tint" style="background-color: {{ block.settings.tint }};" data-zd-tint></span>
+      {%- endfor -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign p = block.settings.product
+        assign media_index = block.settings.media_index | minus: 1
+        if block.settings.image != blank
+          assign img = block.settings.image
+        elsif block.settings.asset == blank and p != blank and p.media.size > media_index
+          assign img = p.media[media_index].preview_image
+        else
+          assign img = nil
+        endif
+      -%}
+      <article class="zd-room zd-room--{{ forloop.index }}" style="--room-tint: {{ block.settings.tint }}; --room-ink: {{ block.settings.ink }};" data-zd-room aria-labelledby="zd-room-{{ block.id }}" {{ block.shopify_attributes }}>
+        <div class="zd-room__frame zd-fit-{{ block.settings.fit }}" data-zd-room-frame>
+          <div class="zd-room__media" data-zd-room-media>
+            {%- render 'zd-image', image: img, asset: block.settings.asset, asset_width: block.settings.asset_width, asset_height: block.settings.asset_height, sizes: '(min-width: 990px) 52vw, 92vw', alt: block.settings.alt, class_name: 'zd-room__img' -%}
+          </div>
+        </div>
+
+        <div class="zd-room__text">
+          <h2 class="zd-room__title" id="zd-room-{{ block.id }}" data-zd-room-title><span class="zd-mask"><span class="zd-mask__in">{{ block.settings.title | escape }}</span></span></h2>
+          <div class="zd-label zd-room__label" data-zd-room-label>
+            <p class="zd-label__num">Sala Nº {{ block.settings.number }}</p>
+            <p class="zd-label__line">{{ block.settings.line | escape }}</p>
+            <dl class="zd-label__specs">
+              {%- if block.settings.object != blank -%}
+                <div><dt>Objeto</dt><dd>{{ block.settings.object | escape }}</dd></div>
+              {%- endif -%}
+              {%- if block.settings.specs != blank -%}
+                <div><dt>Ficha</dt><dd>{{ block.settings.specs | escape }}</dd></div>
+              {%- endif -%}
+              {%- if p != blank -%}
+                <div><dt>Precio</dt><dd class="zd-label__price">{% if p.price_varies %}desde {% endif %}{{ p.price_min | money }}</dd></div>
+              {%- endif -%}
+            </dl>
+            <a class="zd-btn zd-btn--ink" href="{{ block.settings.url }}">
+              <span>Entrar en la sala</span>
+              <svg class="zd-btn__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            </a>
+          </div>
+        </div>
+      </article>
+    {%- endfor -%}
+
+    <ol class="zd-rooms__index" aria-hidden="true">
+      {%- for block in section.blocks -%}
+        <li data-zd-room-dot><span>{{ block.settings.number }}</span></li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zaldori · Salas",
+  "tag": "div",
+  "class": "zd-section zd-section--rooms",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "salas" },
+    { "type": "text", "id": "label", "label": "Nombre accesible", "default": "Las tres salas de Zaldori" }
+  ],
+  "blocks": [
+    {
+      "type": "room",
+      "name": "Sala",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Producto" },
+        { "type": "text", "id": "title", "label": "Nombre", "default": "Vortix" },
+        { "type": "text", "id": "number", "label": "Número", "default": "01" },
+        { "type": "text", "id": "line", "label": "Frase", "default": "Tu batido, sin grumos, en segundos." },
+        { "type": "text", "id": "object", "label": "Objeto", "default": "Vaso mezclador eléctrico" },
+        { "type": "text", "id": "specs", "label": "Ficha breve", "default": "400 ml · hasta 7000 rpm · USB" },
+        { "type": "text", "id": "url", "label": "Destino", "default": "#vortix" },
+        { "type": "image_picker", "id": "image", "label": "Imagen" },
+        { "type": "range", "id": "media_index", "label": "Si no hay imagen: foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 1 },
+        { "type": "text", "id": "asset", "label": "Imagen del tema (avanzado)" },
+        { "type": "number", "id": "asset_width", "label": "Ancho de la imagen del tema" },
+        { "type": "number", "id": "asset_height", "label": "Alto de la imagen del tema" },
+        { "type": "text", "id": "alt", "label": "Texto alternativo" },
+        { "type": "select", "id": "fit", "label": "Encaje", "options": [ { "value": "cover", "label": "Llenar" }, { "value": "contain", "label": "Objeto sobre color (fotos con fondo blanco)" } ], "default": "cover" },
+        { "type": "color", "id": "tint", "label": "Color de la sala", "default": "#DDE3D8" },
+        { "type": "color", "id": "ink", "label": "Color del nombre", "default": "#1F1A17" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Zaldori · Salas" } ]
+}
+{% endschema %}

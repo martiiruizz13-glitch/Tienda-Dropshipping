@@ -1,0 +1,182 @@
+{%- comment -%}
+  Buy box ("cartela"). Works without JavaScript (plain POST to /cart/add);
+  zd.js upgrades it to /cart/add.js with the selected variant and the cart drawer.
+  Params: product, section_id, number, note, layout ('split' | 'stacked')
+{%- endcomment -%}
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign title_parts = product.title | split: ' · '
+  assign name = title_parts.first
+  assign subtitle = title_parts | slice: 1, 9 | join: ' · '
+  assign form_id = 'zd-buy-' | append: section_id
+  assign gallery_image = current.featured_media.preview_image | default: product.featured_media.preview_image
+-%}
+<div class="zd-buy zd-buy--{{ layout | default: 'split' }}" data-zd-buy data-name="{{ name | escape }}" id="{{ form_id }}-box">
+  <div class="zd-buy__gallery">
+    <div class="zd-buy__main" data-zd-buy-main>
+      {%- render 'zd-image', image: gallery_image, sizes: '(min-width: 990px) 34vw, 92vw', class_name: 'zd-buy__img', alt: gallery_image.alt -%}
+    </div>
+    {%- if product.media.size > 1 -%}
+      <ul class="zd-buy__thumbs" role="list" aria-label="Fotos de {{ name | escape }}">
+        {%- for media in product.media limit: 8 -%}
+          {%- if media.media_type == 'image' -%}
+            <li>
+              <button class="zd-buy__thumb{% if media.id == gallery_image.id or media.preview_image.src == gallery_image.src %} is-active{% endif %}" type="button" data-zd-thumb
+                data-src="{{ media.preview_image | image_url: width: 1200 }}"
+                data-srcset="{{ media.preview_image | image_url: width: 540 }} 540w, {{ media.preview_image | image_url: width: 900 }} 900w, {{ media.preview_image | image_url: width: 1200 }} 1200w, {{ media.preview_image | image_url: width: 1600 }} 1600w"
+                data-alt="{{ media.alt | escape }}"
+                aria-label="Ver foto {{ forloop.index }} de {{ product.media.size }}">
+                {{- media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '', width: 80, height: 80, sizes: '80px', widths: '80, 160' -}}
+              </button>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+
+  <form class="zd-buy__form zd-label" id="{{ form_id }}" method="post" action="{{ routes.cart_add_url }}" accept-charset="UTF-8" enctype="multipart/form-data" data-zd-buy-form novalidate>
+    <input type="hidden" name="form_type" value="product">
+    <input type="hidden" name="utf8" value="✓">
+    <input type="hidden" name="id" value="{{ current.id }}" data-zd-variant-id>
+
+    <p class="zd-label__num">Nº {{ number }}</p>
+    <h3 class="zd-buy__name">{{ name | escape }}</h3>
+    {%- if subtitle != blank -%}
+      <p class="zd-buy__sub">{{ subtitle | escape }}</p>
+    {%- endif -%}
+
+    <p class="zd-buy__price" aria-live="polite">
+      <span class="zd-visually-hidden">Precio</span>
+      <span data-zd-price>{{ current.price | money }}</span>
+      <s class="zd-buy__compare" data-zd-compare {% unless current.compare_at_price > current.price %}hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
+    </p>
+
+    {%- unless product.has_only_default_variant -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign opt_index = forloop.index0 -%}
+        {%- if option.values.size == 1 -%}
+          <p class="zd-variants__single">
+            <span class="zd-variants__legend">{{ option.name | escape }}</span>
+            <span>{{ option.values.first | escape }}</span>
+          </p>
+          <input type="hidden" data-zd-option="{{ opt_index }}" value="{{ option.values.first | escape }}">
+        {%- else -%}
+          {%- assign first_value = option.values.first | append: '' -%}
+          {%- if first_value contains ' · ' -%}
+            {%- assign grouped = true -%}
+          {%- else -%}
+            {%- assign grouped = false -%}
+          {%- endif -%}
+          <fieldset class="zd-variants{% if grouped %} zd-variants--grouped{% endif %}">
+            <legend class="zd-variants__legend">
+              {{ option.name | escape }}<span aria-hidden="true">:</span>
+              <span class="zd-variants__current" data-zd-option-current="{{ opt_index }}">{{ option.selected_value | escape }}</span>
+            </legend>
+            {%- assign last_group = '' -%}
+            <div class="zd-variants__list">
+              {%- for value in option.values -%}
+                {%- liquid
+                  assign v = value | append: ''
+                  assign input_id = form_id | append: '-' | append: opt_index | append: '-' | append: forloop.index
+                  if grouped
+                    assign parts = v | split: ' · '
+                    assign group = parts.first
+                    assign label = parts.last
+                  else
+                    assign group = ''
+                    assign label = v
+                  endif
+                  assign color_key = label | downcase
+                  case color_key
+                    when 'negro'
+                      assign swatch = '#232020'
+                    when 'blanco'
+                      assign swatch = '#F4F2EE'
+                    when 'crema'
+                      assign swatch = '#E8DCC2'
+                    when 'rosa'
+                      assign swatch = '#F0C6CE'
+                    when 'verde'
+                      assign swatch = '#C9DEBF'
+                    when 'gris'
+                      assign swatch = '#9A9A98'
+                    else
+                      assign swatch = ''
+                  endcase
+                -%}
+                {%- if grouped and group != last_group -%}
+                  {%- unless forloop.first %}</div>{% endunless -%}
+                  <div class="zd-variants__group"><span class="zd-variants__group-name">{{ group | escape }}</span>
+                  {%- assign last_group = group -%}
+                {%- endif -%}
+                <input class="zd-variants__input" type="radio" id="{{ input_id }}" name="{{ form_id }}-option-{{ opt_index }}" value="{{ v | escape }}" data-zd-option="{{ opt_index }}" {% if option.selected_value == v %}checked{% endif %}>
+                <label class="zd-variants__opt{% if swatch != blank %} zd-variants__opt--swatch{% endif %}" for="{{ input_id }}" {% if swatch != blank %}style="--swatch: {{ swatch }};"{% endif %}>
+                  {%- if swatch != blank -%}<span class="zd-variants__dot" aria-hidden="true"></span>{%- endif -%}
+                  <span class="zd-variants__text">{{ label | escape }}</span>
+                  {%- if grouped -%}<span class="zd-visually-hidden">, {{ group | escape }}</span>{%- endif -%}
+                </label>
+                {%- if grouped and forloop.last %}</div>{% endif -%}
+              {%- endfor -%}
+            </div>
+          </fieldset>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endunless -%}
+
+    <p class="zd-buy__stock" data-zd-stock data-state="{% if current.available %}in{% else %}out{% endif %}">
+      <span class="zd-buy__stock-dot" aria-hidden="true"></span>
+      <span data-zd-stock-text>{% if current.available %}Disponible{% else %}Agotado{% endif %}</span>
+    </p>
+
+    <div class="zd-buy__row">
+      <div class="zd-qty" data-zd-qty>
+        <button type="button" class="zd-qty__btn" data-zd-qty-step="-1" aria-label="Quitar una unidad">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+        <label class="zd-visually-hidden" for="{{ form_id }}-qty">Cantidad</label>
+        <input class="zd-qty__input" id="{{ form_id }}-qty" type="number" name="quantity" value="1" min="1" max="10" inputmode="numeric" data-zd-qty-input>
+        <button type="button" class="zd-qty__btn" data-zd-qty-step="1" aria-label="Añadir una unidad">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+      <button class="zd-btn zd-btn--primary zd-btn--add" type="submit" name="add" data-zd-add {% unless current.available %}disabled{% endunless %}>
+        <span class="zd-btn__label" data-zd-add-label>{% if current.available %}Añadir al carrito{% else %}Agotado{% endif %}</span>
+        <span class="zd-btn__spinner" aria-hidden="true"></span>
+        <svg class="zd-btn__check" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" stroke-width="1.75"/></svg>
+      </button>
+    </div>
+    <p class="zd-buy__error" role="alert" data-zd-error hidden></p>
+
+    {%- if note != blank -%}
+      <p class="zd-buy__note">{{ note | escape }}</p>
+    {%- endif -%}
+    <a class="zd-link zd-buy__more" href="{{ product.url }}">Ver la ficha completa de {{ name | escape }}</a>
+  </form>
+
+  <script type="application/json" data-zd-variants>
+    [
+      {%- for variant in product.variants -%}
+        {%- liquid
+          assign vimg = variant.featured_media.preview_image
+          if vimg
+            assign s540 = vimg | image_url: width: 540
+            assign s900 = vimg | image_url: width: 900
+            assign s1200 = vimg | image_url: width: 1200
+            assign s1600 = vimg | image_url: width: 1600
+            assign vsrcset = s540 | append: ' 540w, ' | append: s900 | append: ' 900w, ' | append: s1200 | append: ' 1200w, ' | append: s1600 | append: ' 1600w'
+          endif
+        -%}
+        {
+          "id": {{ variant.id | json }},
+          "title": {{ variant.title | json }},
+          "options": {{ variant.options | json }},
+          "available": {{ variant.available | json }},
+          "price": {{ variant.price | money | json }},
+          "compare": {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | json }}{% else %}null{% endif %},
+          "image": {% if vimg %}{ "src": {{ s1200 | json }}, "srcset": {{ vsrcset | json }}, "alt": {{ vimg.alt | json }} }{% else %}null{% endif %}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  </script>
+</div>

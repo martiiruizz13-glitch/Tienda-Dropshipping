@@ -1,0 +1,707 @@
+{
+  "layout": "zaldori",
+  "sections": {
+    "hero": {
+      "type": "zd-hero",
+      "settings": {},
+      "blocks": {
+        "piece-1": {
+          "type": "piece",
+          "settings": {
+            "product": "30-60cm-electric-heating-pads-for-back-neck-shoulder-home-office-washable-winter-warm-blanket-4-timer-9-temperature-control",
+            "title": "TermoCalm",
+            "number": "02",
+            "url": "#termocalm",
+            "asset": "zd-tc-hero.jpg",
+            "asset_width": 1600,
+            "asset_height": 808,
+            "alt": "TermoCalm, almohadilla térmica gris sobre el brazo de un sofá en un salón cálido",
+            "fit": "cover",
+            "tint": "#EBDDCB"
+          }
+        },
+        "piece-2": {
+          "type": "piece",
+          "settings": {
+            "product": "pulsia-masajeador-de-pies-ems",
+            "title": "Pulsia",
+            "number": "03",
+            "url": "#pulsia",
+            "media_index": 1,
+            "fit": "cover",
+            "tint": "#F2DFE2"
+          }
+        },
+        "piece-3": {
+          "type": "piece",
+          "settings": {
+            "product": "vortix-vaso-mezclador-electrico-proteinas",
+            "title": "Vortix",
+            "number": "01",
+            "url": "#vortix",
+            "media_index": 6,
+            "fit": "contain",
+            "tint": "#DDE3D8"
+          }
+        }
+      },
+      "block_order": [
+        "piece-1",
+        "piece-2",
+        "piece-3"
+      ]
+    },
+    "rooms": {
+      "type": "zd-rooms",
+      "settings": {},
+      "blocks": {
+        "room-1": {
+          "type": "room",
+          "settings": {
+            "product": "vortix-vaso-mezclador-electrico-proteinas",
+            "title": "Vortix",
+            "number": "01",
+            "line": "Tu batido perfecto, sin grumos, en segundos.",
+            "object": "Vaso mezclador eléctrico",
+            "specs": "400 ml · hasta 7000 rpm · recargable por USB",
+            "url": "#vortix",
+            "media_index": 6,
+            "fit": "contain",
+            "tint": "#DDE3D8",
+            "ink": "#1F1A17",
+            "alt": "Vortix Estilizado en rosa"
+          }
+        },
+        "room-2": {
+          "type": "room",
+          "settings": {
+            "product": "30-60cm-electric-heating-pads-for-back-neck-shoulder-home-office-washable-winter-warm-blanket-4-timer-9-temperature-control",
+            "title": "TermoCalm",
+            "number": "02",
+            "line": "Ese momento en que el calor por fin suelta la espalda.",
+            "object": "Almohadilla térmica",
+            "specs": "30 × 60 cm · 9 niveles · apagado automático",
+            "url": "#termocalm",
+            "asset": "zd-tc-hero.jpg",
+            "asset_width": 1600,
+            "asset_height": 808,
+            "fit": "cover",
+            "tint": "#EBDDCB",
+            "ink": "#1F1A17",
+            "alt": "TermoCalm sobre el brazo de un sofá, junto a una taza"
+          }
+        },
+        "room-3": {
+          "type": "room",
+          "settings": {
+            "product": "pulsia-masajeador-de-pies-ems",
+            "title": "Pulsia",
+            "number": "03",
+            "line": "El ritual que tus pies llevan todo el día esperando.",
+            "object": "Alfombrilla de masaje EMS para pies",
+            "specs": "8 modos · 19 niveles · mando a distancia",
+            "url": "#pulsia",
+            "media_index": 1,
+            "fit": "cover",
+            "tint": "#F2DFE2",
+            "ink": "#1F1A17"
+          }
+        }
+      },
+      "block_order": [
+        "room-1",
+        "room-2",
+        "room-3"
+      ]
+    },
+    "vortix": {
+      "type": "zd-chapter",
+      "settings": {
+        "product": "vortix-vaso-mezclador-electrico-proteinas",
+        "pattern": "expand",
+        "anchor": "vortix",
+        "number": "01",
+        "lede": "Se acabó agitar la botella. Vortix crea un remolino a 7000 revoluciones por minuto para mezclar tu proteína, tu café o tu leche de forma suave y homogénea, con solo pulsar un botón.",
+        "statement": "Echas, pulsas, listo.",
+        "specs": "Capacidad: 400 ml\nVelocidad de mezcla: hasta 7000 rpm\nBatería: 1200 mAh, recargable por USB (5 V / 1 A)\nPotencia: 2,2 W\nMateriales: ABS + PP + PC\nMedidas (Clásico): 10,5 × 8,6 × 19 cm\nIncluye: vaso con base motorizada, tapa, cable USB y manual",
+        "tint": "#DDE3D8",
+        "deep": "#3F4A3E",
+        "lineup": true,
+        "v1_media": 6,
+        "v2_media": 5,
+        "v3_media": 7,
+        "v1_fit": "contain"
+      },
+      "blocks": {
+        "b-1": {
+          "type": "feature",
+          "settings": {
+            "title": "Efecto vórtice",
+            "text": "Mezcla a alta velocidad para conseguir batidos cremosos, sin grumos y sin esfuerzo.",
+            "figure": "7000",
+            "unit": "rpm"
+          }
+        },
+        "b-2": {
+          "type": "feature",
+          "settings": {
+            "title": "Recargable por USB",
+            "text": "Lo cargas con el cable incluido y te acompaña muchos días sin enchufes.",
+            "figure": "1200",
+            "unit": "mAh"
+          }
+        },
+        "b-3": {
+          "type": "feature",
+          "settings": {
+            "title": "Escala de medida en el vaso",
+            "text": "El tamaño justo para tu batido de proteínas, un café con leche o un batido de frutas. Dosificas sin medidor.",
+            "figure": "400",
+            "unit": "ml"
+          }
+        },
+        "b-4": {
+          "type": "feature",
+          "settings": {
+            "title": "Tapa con apertura en un clic",
+            "text": "Bebes directamente del vaso, sin desenroscar nada."
+          }
+        },
+        "b-5": {
+          "type": "feature",
+          "settings": {
+            "title": "Dos modelos",
+            "text": "Clásico, con tapa de asa y boquilla abatible. Estilizado, de silueta más fina y botón frontal."
+          }
+        },
+        "b-6": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cómo se usa?",
+            "answer": "<p>Añade primero el líquido (agua, leche o bebida vegetal), después el polvo, cierra la tapa y pulsa el botón de la base. En unos segundos lo tienes listo.</p>"
+          }
+        },
+        "b-7": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cómo se carga?",
+            "answer": "<p>Con el cable USB incluido (5 V / 1 A). La batería es de 1200 mAh. Cárgalo antes del primer uso.</p>"
+          }
+        },
+        "b-8": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Puedo meterlo en el lavavajillas?",
+            "answer": "<p>No. La base lleva el motor y la batería: limpia el vaso con agua y un paño suave, sin sumergir la base ni meterla en el lavavajillas.</p>"
+          }
+        },
+        "b-9": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Qué puedo mezclar?",
+            "answer": "<p>Proteína, café, cacao, avena o leche. Para una mezcla aún más fina, primero el líquido y después el polvo.</p>"
+          }
+        },
+        "b-10": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Sirve para bebidas calientes?",
+            "answer": "<p>Úsalo con bebidas frías o templadas, nunca hirviendo.</p>"
+          }
+        },
+        "b-11": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Qué diferencia hay entre Clásico y Estilizado?",
+            "answer": "<p>El Clásico tiene tapa de asa y boquilla abatible, en negro, blanco o crema. El Estilizado tiene una silueta más fina y botón frontal, en blanco, rosa o verde.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b-1",
+        "b-2",
+        "b-3",
+        "b-4",
+        "b-5",
+        "b-6",
+        "b-7",
+        "b-8",
+        "b-9",
+        "b-10",
+        "b-11"
+      ]
+    },
+    "termocalm": {
+      "type": "zd-chapter",
+      "settings": {
+        "product": "30-60cm-electric-heating-pads-for-back-neck-shoulder-home-office-washable-winter-warm-blanket-4-timer-9-temperature-control",
+        "pattern": "editorial",
+        "anchor": "termocalm",
+        "number": "02",
+        "lede": "Horas frente al ordenador, el coche, el frío del invierno… TermoCalm envuelve la espalda con un calor suave y uniforme para que los músculos se relajen y vuelvas a sentirte a gusto.",
+        "statement": "Terciopelo suave por las dos caras.",
+        "specs": "Tamaño: 30 × 60 cm\nColor: gris\nTejido: terciopelo por ambas caras\nNiveles de calor: 9 (de unos 30 °C a unos 50 °C)\nTemporizador: 30 / 60 / 90 / 120 min\nPotencia: 75 W\nIncluye: almohadilla con mando y manual",
+        "tint": "#EBDDCB",
+        "deep": "#6E1F3A",
+        "v1_media": 10,
+        "v2_asset": "zd-tc-textura.jpg",
+        "v2_w": 1600,
+        "v2_h": 873,
+        "v2_alt": "Detalle del terciopelo gris de TermoCalm"
+      },
+      "blocks": {
+        "b-1": {
+          "type": "feature",
+          "settings": {
+            "title": "Calor a tu medida",
+            "text": "9 niveles, desde una tibieza suave hasta un calor intenso. Tú decides cuánto mimo necesitas hoy."
+          }
+        },
+        "b-2": {
+          "type": "feature",
+          "settings": {
+            "title": "Se apaga sola",
+            "text": "Temporizador de 30, 60, 90 o 120 minutos. Relájate sin estar pendiente del reloj."
+          }
+        },
+        "b-3": {
+          "type": "feature",
+          "settings": {
+            "title": "Calienta en segundos",
+            "text": "Reparte el calor por toda la superficie, sin puntos fríos."
+          }
+        },
+        "b-4": {
+          "type": "feature",
+          "settings": {
+            "title": "Pensada para el cuerpo",
+            "text": "30 × 60 cm: lo justo para cubrir espalda, hombros y cuello a la vez."
+          }
+        },
+        "b-5": {
+          "type": "feature",
+          "settings": {
+            "title": "Fácil de limpiar",
+            "text": "Separa el mando, lávala a mano y lista para volver a usarla."
+          }
+        },
+        "b-6": {
+          "type": "feature",
+          "settings": {
+            "title": "Ligera y silenciosa",
+            "text": "Plegable, cabe en un cajón o en la maleta. Sin ruidos: solo enchufar y disfrutar."
+          }
+        },
+        "b-7": {
+          "type": "scale",
+          "settings": {
+            "steps": 9,
+            "caption": "9 niveles de calor",
+            "from": "Tibio, unos 30 °C",
+            "to": "Intenso, unos 50 °C"
+          }
+        },
+        "b-8": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cuánto tarda en calentar?",
+            "answer": "<p>Calienta en segundos y reparte el calor por toda la superficie, sin puntos fríos.</p>"
+          }
+        },
+        "b-9": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Se apaga sola?",
+            "answer": "<p>Sí: eliges un temporizador de 30, 60, 90 o 120 minutos y se apaga automáticamente. Aun así, no te duermas con ella encendida y desenchúfala cuando no la uses.</p>"
+          }
+        },
+        "b-10": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cómo se lava?",
+            "answer": "<p>Separa el mando, lávala a mano y deja que se seque del todo antes de volver a usarla.</p>"
+          }
+        },
+        "b-11": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Qué enchufe elijo?",
+            "answer": "<p>Hay tres versiones: europeo (220-240 V), británico (220-240 V) y americano (110 V). En España, elige la de enchufe europeo.</p>"
+          }
+        },
+        "b-12": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Dónde puedo usarla?",
+            "answer": "<p>Con sus 30 × 60 cm cubre espalda, hombros y cuello a la vez. También puedes usarla para templar las piernas o los pies.</p>"
+          }
+        },
+        "b-13": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Quién no debería usarla?",
+            "answer": "<p>No la uses con bebés, niños pequeños ni personas que no puedan reaccionar al calor o con poca sensibilidad en la piel. Si estás embarazada, tienes diabetes, problemas de circulación, un marcapasos o cualquier problema de salud, consulta a tu médico antes de usarla. Empieza con un nivel bajo y revisa la piel con frecuencia.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b-1",
+        "b-2",
+        "b-3",
+        "b-4",
+        "b-5",
+        "b-6",
+        "b-7",
+        "b-8",
+        "b-9",
+        "b-10",
+        "b-11",
+        "b-12",
+        "b-13"
+      ]
+    },
+    "pulsia": {
+      "type": "zd-chapter",
+      "settings": {
+        "product": "pulsia-masajeador-de-pies-ems",
+        "pattern": "parallax",
+        "anchor": "pulsia",
+        "number": "03",
+        "lede": "Te descalzas, apoyas los pies y eliges tu programa con el mando. En pocos minutos, la sensación de spa sin salir de casa.",
+        "statement": "Ultrafina. Ligera. Plegable.",
+        "specs": "Tecnología: EMS de baja frecuencia\nModos: 8\nIntensidad: 19 niveles\nControl: botones y mando a distancia\nAlimentación: batería recargable por USB\nMaterial: composite con acabado tipo piel\nIncluye: alfombrilla y mando a distancia",
+        "tint": "#F2DFE2",
+        "deep": "#6E1F3A",
+        "v1_asset": "zd-pl-ancho.jpg",
+        "v1_w": 2000,
+        "v1_h": 1125,
+        "v1_alt": "Pulsia sobre arena con piedras y eucalipto",
+        "v2_asset": "zd-pl-piedras.jpg",
+        "v2_w": 1200,
+        "v2_h": 1964,
+        "v2_alt": "Detalle del dibujo de Pulsia junto a piedras",
+        "v3_media": 3,
+        "v4_media": 4,
+        "buy_layout": "split"
+      },
+      "blocks": {
+        "b-1": {
+          "type": "feature",
+          "settings": {
+            "title": "EMS de baja frecuencia",
+            "text": "Impulsos suaves que trabajan la musculatura del pie desde dentro, no solo en la superficie."
+          }
+        },
+        "b-2": {
+          "type": "feature",
+          "settings": {
+            "title": "19 niveles de intensidad",
+            "text": "Desde un cosquilleo apenas perceptible hasta un masaje profundo. Tú decides hasta dónde.",
+            "figure": "19",
+            "unit": "niveles"
+          }
+        },
+        "b-3": {
+          "type": "feature",
+          "settings": {
+            "title": "Mando a distancia",
+            "text": "Cambia de modo y de intensidad desde el sofá, sin agacharte."
+          }
+        },
+        "b-4": {
+          "type": "feature",
+          "settings": {
+            "title": "Recargable por USB",
+            "text": "Sin cables mientras lo usas. Se carga con el cargador del móvil."
+          }
+        },
+        "b-5": {
+          "type": "feature",
+          "settings": {
+            "title": "Ultrafino y plegable",
+            "text": "Cabe en un cajón, en la mochila o en la maleta."
+          }
+        },
+        "b-6": {
+          "type": "feature",
+          "settings": {
+            "title": "Cero complicaciones",
+            "text": "Sin geles ni parches: solo apoyar los pies descalzos y encenderlo."
+          }
+        },
+        "b-7": {
+          "type": "chips",
+          "settings": {
+            "title": "8 modos de masaje",
+            "items": "Golpeteo\nAmasado\nPresión\nDigitopuntura\nTonificación",
+            "note": "Y tres modos más, para cada momento del día."
+          }
+        },
+        "b-8": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cómo funciona la tecnología EMS?",
+            "answer": "<p>EMS es estimulación muscular eléctrica. Pulsia envía impulsos suaves de baja frecuencia a la planta del pie que hacen que los músculos se contraigan y se relajen. No tiene rodillos ni piezas móviles.</p>"
+          }
+        },
+        "b-9": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Qué se siente?",
+            "answer": "<p>En los niveles bajos, un cosquilleo apenas perceptible; en los altos, un masaje más profundo. Empieza por un nivel bajo y sube poco a poco.</p>"
+          }
+        },
+        "b-10": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cuánto tiempo lo uso?",
+            "answer": "<p>Por ejemplo, 15 minutos con los pies apoyados al volver a casa. Úsalo con los pies limpios y secos.</p>"
+          }
+        },
+        "b-11": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cómo se carga?",
+            "answer": "<p>Por USB, con el cargador del móvil. Mientras lo usas no necesita cables.</p>"
+          }
+        },
+        "b-12": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Quién no debería usarlo?",
+            "answer": "<p>No lo utilices si llevas marcapasos u otro implante electrónico, si estás embarazada, si tienes epilepsia, problemas cardíacos, trombosis o heridas en los pies, ni en niños. Pulsia es un aparato de masaje y bienestar, no un producto sanitario: si tienes dolor persistente, consulta a tu médico.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b-1",
+        "b-2",
+        "b-3",
+        "b-4",
+        "b-5",
+        "b-6",
+        "b-7",
+        "b-8",
+        "b-9",
+        "b-10",
+        "b-11",
+        "b-12"
+      ]
+    },
+    "ads": {
+      "type": "zd-ads",
+      "settings": {},
+      "blocks": {
+        "ad-1": {
+          "type": "ad",
+          "settings": {
+            "product": "vortix-vaso-mezclador-electrico-proteinas",
+            "media_index": 3,
+            "fit": "cover",
+            "ratio": "r4x5",
+            "caption": "Por la mañana, Vortix",
+            "alt": "Vortix Clásico en color crema",
+            "url": "#vortix",
+            "link_label": "Ver Vortix",
+            "tint": "#DDE3D8"
+          }
+        },
+        "ad-2": {
+          "type": "ad",
+          "settings": {
+            "product": "30-60cm-electric-heating-pads-for-back-neck-shoulder-home-office-washable-winter-warm-blanket-4-timer-9-temperature-control",
+            "media_index": 13,
+            "fit": "cover",
+            "ratio": "r4x5",
+            "caption": "Por la tarde, TermoCalm",
+            "alt": "TermoCalm sobre la espalda mientras descansas en el sofá",
+            "url": "#termocalm",
+            "link_label": "Ver TermoCalm",
+            "tint": "#EBDDCB"
+          }
+        },
+        "ad-3": {
+          "type": "ad",
+          "settings": {
+            "product": "pulsia-masajeador-de-pies-ems",
+            "media_index": 3,
+            "fit": "cover",
+            "ratio": "r4x5",
+            "caption": "Por la noche, Pulsia",
+            "alt": "Pantalla de Pulsia",
+            "url": "#pulsia",
+            "link_label": "Ver Pulsia",
+            "tint": "#F2DFE2"
+          }
+        }
+      },
+      "block_order": [
+        "ad-1",
+        "ad-2",
+        "ad-3"
+      ]
+    },
+    "chooser": {
+      "type": "zd-chooser",
+      "settings": {},
+      "blocks": {
+        "pick-1": {
+          "type": "pick",
+          "settings": {
+            "product": "vortix-vaso-mezclador-electrico-proteinas",
+            "name": "Vortix",
+            "need": "Quiero mezclar",
+            "moment": "Después de entrenar, por la mañana o en la oficina.",
+            "essentials": "400 ml · hasta 7000 rpm · recargable por USB",
+            "url": "#vortix-comprar",
+            "tint": "#DDE3D8"
+          }
+        },
+        "pick-2": {
+          "type": "pick",
+          "settings": {
+            "product": "30-60cm-electric-heating-pads-for-back-neck-shoulder-home-office-washable-winter-warm-blanket-4-timer-9-temperature-control",
+            "name": "TermoCalm",
+            "need": "Quiero calor",
+            "moment": "En el sofá, en el escritorio o después de entrenar.",
+            "essentials": "30 × 60 cm · 9 niveles · apagado automático",
+            "url": "#termocalm-comprar",
+            "tint": "#EBDDCB"
+          }
+        },
+        "pick-3": {
+          "type": "pick",
+          "settings": {
+            "product": "pulsia-masajeador-de-pies-ems",
+            "name": "Pulsia",
+            "need": "Quiero descansar los pies",
+            "moment": "Al volver a casa, tras un día de pie o sentado.",
+            "essentials": "EMS · 8 modos · 19 niveles · mando",
+            "url": "#pulsia-comprar",
+            "tint": "#F2DFE2"
+          }
+        }
+      },
+      "block_order": [
+        "pick-1",
+        "pick-2",
+        "pick-3"
+      ]
+    },
+    "trust": {
+      "type": "zd-trust",
+      "settings": {},
+      "blocks": {
+        "t-1": {
+          "type": "item",
+          "settings": {
+            "title": "Envío gratis a España",
+            "text": "Con número de seguimiento para que sepas en todo momento dónde está tu pedido. Plazo de entrega: [PENDIENTE: plazo de envío]."
+          }
+        },
+        "t-2": {
+          "type": "item",
+          "settings": {
+            "title": "14 días para cambiar de opinión",
+            "text": "Desde que recibes tu pedido puedes desistir de la compra."
+          }
+        },
+        "t-3": {
+          "type": "item",
+          "settings": {
+            "title": "Garantía legal de 3 años",
+            "text": "Frente a cualquier defecto de fabricación."
+          }
+        },
+        "t-4": {
+          "type": "item",
+          "settings": {
+            "title": "Pago seguro",
+            "text": "Tus datos viajan cifrados y nunca vemos ni guardamos tu tarjeta."
+          }
+        }
+      },
+      "block_order": [
+        "t-1",
+        "t-2",
+        "t-3",
+        "t-4"
+      ]
+    },
+    "faq": {
+      "type": "zd-faq",
+      "settings": {},
+      "blocks": {
+        "q-1": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cuánto cuesta el envío?",
+            "answer": "<p>Nada: el envío es gratis a toda España y siempre con número de seguimiento.</p>"
+          }
+        },
+        "q-2": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cuánto tarda en llegar?",
+            "answer": "<p>[PENDIENTE: plazo de envío confirmado]. Recibirás el número de seguimiento de tu pedido.</p>"
+          }
+        },
+        "q-3": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Puedo devolverlo?",
+            "answer": "<p>Tienes 14 días desde que lo recibes para desistir de la compra. [PENDIENTE: enlazar la política de devoluciones e indicar quién paga el envío de vuelta].</p>"
+          }
+        },
+        "q-4": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Qué garantía tiene?",
+            "answer": "<p>Todos los productos tienen la garantía legal de 3 años frente a defectos de fabricación.</p>"
+          }
+        },
+        "q-5": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Es seguro pagar aquí?",
+            "answer": "<p>Sí. El pago es seguro: tus datos viajan cifrados y nunca vemos ni guardamos tu tarjeta.</p>"
+          }
+        },
+        "q-6": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Puedo comprar varios productos a la vez?",
+            "answer": "<p>Sí. Añade cada uno desde su sala y págalos todos en el mismo pedido.</p>"
+          }
+        },
+        "q-7": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cómo os contacto?",
+            "answer": "<p>Escríbenos a <a href=\"mailto:support@zaldori.com\">support@zaldori.com</a> antes o después de comprar.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q-1",
+        "q-2",
+        "q-3",
+        "q-4",
+        "q-5",
+        "q-6",
+        "q-7"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "rooms",
+    "vortix",
+    "termocalm",
+    "pulsia",
+    "ads",
+    "chooser",
+    "trust",
+    "faq"
+  ]
+}

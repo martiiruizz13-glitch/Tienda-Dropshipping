@@ -1,0 +1,47 @@
+{%- comment -%}
+  Cart drawer. Server-renders the current cart so it is correct before JavaScript;
+  zd.js re-renders the list from /cart.js after every change.
+{%- endcomment -%}
+<dialog class="zd-cart" id="zd-cart" aria-labelledby="zd-cart-title" data-zd-cart>
+  <div class="zd-cart__panel">
+    <header class="zd-cart__head">
+      <h2 class="zd-cart__title" id="zd-cart-title">Tu carrito <span class="zd-cart__count" data-zd-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span></h2>
+      <button class="zd-icon-btn" type="button" data-zd-cart-close>
+        <svg class="zd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        <span class="zd-visually-hidden">Cerrar carrito</span>
+      </button>
+    </header>
+
+    <p class="zd-visually-hidden" aria-live="polite" data-zd-cart-status></p>
+
+    <div class="zd-cart__body" data-zd-cart-body>
+      {%- if cart.item_count == 0 -%}
+        <p class="zd-cart__empty">Tu carrito está vacío.</p>
+      {%- else -%}
+        <ul class="zd-cart__items" role="list">
+          {%- for item in cart.items -%}
+            <li class="zd-cart__item" data-key="{{ item.key }}">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 160 | image_tag: class: 'zd-cart__img', loading: 'lazy', alt: '', width: 80, height: 80 }}
+              {%- endif -%}
+              <div class="zd-cart__info">
+                <p class="zd-cart__name">{{ item.product.title | split: ' · ' | first | escape }}</p>
+                {%- unless item.product.has_only_default_variant -%}<p class="zd-cart__variant">{{ item.variant.title | escape }}</p>{%- endunless -%}
+                <p class="zd-cart__line">{{ item.final_line_price | money }}</p>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <footer class="zd-cart__foot" data-zd-cart-foot {% if cart.item_count == 0 %}hidden{% endif %}>
+      <p class="zd-cart__subtotal"><span>Subtotal</span> <span data-zd-cart-subtotal>{{ cart.total_price | money }}</span></p>
+      <p class="zd-cart__taxes">Impuestos incluidos. Gastos de envío calculados en la pantalla de pago.</p>
+      <form action="{{ routes.cart_url }}" method="post">
+        <button class="zd-btn zd-btn--primary zd-btn--block" type="submit" name="checkout">Finalizar compra</button>
+      </form>
+      <a class="zd-link zd-cart__view" href="{{ routes.cart_url }}">Ver carrito</a>
+    </footer>
+  </div>
+</dialog>

@@ -1,0 +1,321 @@
+{%- comment -%}
+  Product chapter. One section type, three compositions:
+  - expand:    cinematic image expansion (scrubbed), staggered editorial features
+  - editorial: asymmetric sticky photo + long-form features + heat/level scale
+  - parallax:  layered photo collage at different depths + chips list
+  Every chapter ends with the real buy box and the product FAQ.
+{%- endcomment -%}
+{%- liquid
+  assign product = section.settings.product
+  assign pattern = section.settings.pattern
+  if product != blank
+    assign title_parts = product.title | split: ' · '
+    assign name = title_parts.first
+  else
+    assign name = section.settings.title
+  endif
+  if section.settings.title != blank
+    assign name = section.settings.title
+  endif
+
+  assign features = section.blocks | where: 'type', 'feature'
+  assign faqs = section.blocks | where: 'type', 'faq'
+  assign scales = section.blocks | where: 'type', 'scale'
+  assign chips = section.blocks | where: 'type', 'chips'
+
+  comment
+    Visual sources: image picker first, then a product photo by position, then a theme asset.
+  endcomment
+  assign v1_index = section.settings.v1_media | minus: 1
+  assign v2_index = section.settings.v2_media | minus: 1
+  assign v3_index = section.settings.v3_media | minus: 1
+  assign v4_index = section.settings.v4_media | minus: 1
+  assign v1 = section.settings.v1_image
+  assign v2 = section.settings.v2_image
+  assign v3 = section.settings.v3_image
+  assign v4 = section.settings.v4_image
+  if product != blank
+    if v1 == blank and section.settings.v1_asset == blank and product.media.size > v1_index
+      assign v1 = product.media[v1_index].preview_image
+    endif
+    if v2 == blank and section.settings.v2_asset == blank and product.media.size > v2_index
+      assign v2 = product.media[v2_index].preview_image
+    endif
+    if v3 == blank and section.settings.v3_asset == blank and product.media.size > v3_index
+      assign v3 = product.media[v3_index].preview_image
+    endif
+    if v4 == blank and section.settings.v4_asset == blank and product.media.size > v4_index
+      assign v4 = product.media[v4_index].preview_image
+    endif
+  endif
+-%}
+
+<section class="zd-ch zd-ch--{{ pattern }}" id="{{ section.settings.anchor }}" data-zd-chapter data-pattern="{{ pattern }}" style="--ch-tint: {{ section.settings.tint }}; --ch-deep: {{ section.settings.deep }};" aria-labelledby="zd-ch-title-{{ section.id }}">
+
+  {%- capture head -%}
+    <header class="zd-ch__head">
+      <h2 class="zd-ch__title" id="zd-ch-title-{{ section.id }}">
+        <span class="zd-ch__name zd-mask" data-zd-mask><span class="zd-mask__in">{{ name | escape }}</span></span>
+        <span class="zd-ch__num" aria-hidden="true">Nº {{ section.settings.number }}</span>
+      </h2>
+      {%- if section.settings.lede != blank -%}
+        <p class="zd-ch__lede" data-zd-fade>{{ section.settings.lede | escape }}</p>
+      {%- endif -%}
+    </header>
+  {%- endcapture -%}
+
+  {%- capture features_html -%}
+    {%- if features.size > 0 -%}
+      <ol class="zd-feats" role="list">
+        {%- for block in features -%}
+          <li class="zd-feat" {{ block.shopify_attributes }} data-zd-fade>
+            {%- if block.settings.figure != blank -%}
+              <p class="zd-feat__fig"><span class="zd-feat__val">{{ block.settings.figure | escape }}</span>{% if block.settings.unit != blank %} <span class="zd-feat__unit">{{ block.settings.unit | escape }}</span>{% endif %}</p>
+            {%- endif -%}
+            <h3 class="zd-feat__title">{{ block.settings.title | escape }}</h3>
+            <p class="zd-feat__text">{{ block.settings.text | escape }}</p>
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture specs_html -%}
+    {%- if section.settings.specs != blank -%}
+      {%- assign spec_lines = section.settings.specs | newline_to_br | split: '<br />' -%}
+      <dl class="zd-specs" data-zd-fade>
+        {%- for line in spec_lines -%}
+          {%- assign pair = line | strip | split: ':' -%}
+          {%- if pair.size > 1 -%}
+            <div class="zd-specs__row"><dt>{{ pair.first | strip | escape }}</dt><dd>{{ pair | slice: 1, 9 | join: ':' | strip | escape }}</dd></div>
+          {%- endif -%}
+        {%- endfor -%}
+      </dl>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture faq_html -%}
+    {%- if faqs.size > 0 -%}
+      <div class="zd-faq">
+        <h3 class="zd-faq__title">Preguntas sobre {{ name | escape }}</h3>
+        {%- for block in faqs -%}
+          <details class="zd-faq__item" {{ block.shopify_attributes }}>
+            <summary class="zd-faq__q"><span>{{ block.settings.question | escape }}</span><span class="zd-faq__icon" aria-hidden="true"></span></summary>
+            <div class="zd-faq__a zd-rte">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture buy_html -%}
+    {%- if product != blank -%}
+      {%- render 'zd-buybox', product: product, section_id: section.id, number: section.settings.number, note: section.settings.note, layout: section.settings.buy_layout -%}
+    {%- else -%}
+      <p class="zd-empty">Elige un producto en los ajustes de esta sección.</p>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- case pattern -%}
+    {%- when 'expand' -%}
+      <div class="zd-wrap">{{ head }}</div>
+      <div class="zd-expand" data-zd-expand>
+        <div class="zd-expand__frame zd-fit-{{ section.settings.v1_fit }}" data-zd-expand-frame>
+          <div class="zd-expand__media" data-zd-expand-media>
+            {%- if section.settings.lineup and section.settings.v1_image == blank -%}
+              <div class="zd-lineup">
+                {%- render 'zd-image', image: v2, sizes: '(min-width: 990px) 26vw, 40vw', class_name: 'zd-lineup__img' -%}
+                {%- render 'zd-image', image: v1, sizes: '(min-width: 990px) 30vw, 46vw', class_name: 'zd-lineup__img zd-lineup__img--hero' -%}
+                {%- render 'zd-image', image: v3, sizes: '(min-width: 990px) 26vw, 40vw', class_name: 'zd-lineup__img' -%}
+              </div>
+            {%- else -%}
+              {%- render 'zd-image', image: v1, asset: section.settings.v1_asset, sizes: '100vw', class_name: 'zd-expand__img', alt: section.settings.v1_alt -%}
+            {%- endif -%}
+          </div>
+          {%- if section.settings.statement != blank -%}
+            <p class="zd-expand__statement" data-zd-expand-statement>{{ section.settings.statement | escape }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="zd-wrap zd-ch__body">
+        <div class="zd-ch__features">{{ features_html }}</div>
+        <div class="zd-ch__side">{{ specs_html }}</div>
+      </div>
+      <div class="zd-wrap zd-ch__buyrow">
+        <div class="zd-ch__buy" id="{{ section.settings.anchor }}-comprar">{{ buy_html }}</div>
+        <div class="zd-ch__faq">{{ faq_html }}</div>
+      </div>
+
+    {%- when 'editorial' -%}
+      <div class="zd-wrap zd-editorial">
+        <figure class="zd-editorial__photo" data-zd-fade>
+          <div class="zd-editorial__frame" data-zd-parallax-inner>
+            {%- render 'zd-image', image: v1, asset: section.settings.v1_asset, asset_width: section.settings.v1_w, asset_height: section.settings.v1_h, sizes: '(min-width: 990px) 46vw, 100vw', class_name: 'zd-editorial__img', alt: section.settings.v1_alt -%}
+          </div>
+        </figure>
+        <div class="zd-editorial__text">
+          {{ head }}
+          {{ features_html }}
+          {%- for block in scales -%}
+            {%- assign steps = block.settings.steps -%}
+            <figure class="zd-scale" {{ block.shopify_attributes }} data-zd-scale data-zd-fade>
+              <figcaption class="zd-scale__cap">{{ block.settings.caption | escape }}</figcaption>
+              <ol class="zd-scale__steps" role="list" style="--steps: {{ steps }};">
+                {%- for i in (1..steps) -%}
+                  <li class="zd-scale__step" style="--i: {{ i }};"><span>{{ i }}</span></li>
+                {%- endfor -%}
+              </ol>
+              <p class="zd-scale__ends"><span>{{ block.settings.from | escape }}</span><span>{{ block.settings.to | escape }}</span></p>
+            </figure>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- if v2 != blank or section.settings.v2_asset != blank -%}
+        <figure class="zd-band" data-zd-band>
+          <div class="zd-band__media" data-zd-parallax-inner>
+            {%- render 'zd-image', image: v2, asset: section.settings.v2_asset, asset_width: section.settings.v2_w, asset_height: section.settings.v2_h, sizes: '100vw', class_name: 'zd-band__img', alt: section.settings.v2_alt -%}
+          </div>
+          {%- if section.settings.statement != blank -%}
+            <figcaption class="zd-band__cap zd-wrap"><span data-zd-lines>{{ section.settings.statement | escape }}</span></figcaption>
+          {%- endif -%}
+        </figure>
+      {%- endif -%}
+      <div class="zd-wrap zd-ch__buyrow zd-ch__buyrow--reverse">
+        <div class="zd-ch__faq">{{ specs_html }}{{ faq_html }}</div>
+        <div class="zd-ch__buy" id="{{ section.settings.anchor }}-comprar">{{ buy_html }}</div>
+      </div>
+
+    {%- when 'parallax' -%}
+      <div class="zd-wrap zd-collage-head">{{ head }}</div>
+      <div class="zd-collage zd-wrap" data-zd-collage>
+        <figure class="zd-collage__item zd-collage__item--a" data-zd-depth="-0.12">
+          {%- render 'zd-image', image: v1, asset: section.settings.v1_asset, asset_width: section.settings.v1_w, asset_height: section.settings.v1_h, sizes: '(min-width: 990px) 48vw, 88vw', class_name: 'zd-collage__img', alt: section.settings.v1_alt -%}
+        </figure>
+        <figure class="zd-collage__item zd-collage__item--b" data-zd-depth="0.18">
+          {%- render 'zd-image', image: v2, asset: section.settings.v2_asset, asset_width: section.settings.v2_w, asset_height: section.settings.v2_h, sizes: '(min-width: 990px) 24vw, 52vw', class_name: 'zd-collage__img', alt: section.settings.v2_alt -%}
+        </figure>
+        <figure class="zd-collage__item zd-collage__item--c" data-zd-depth="0.32">
+          {%- render 'zd-image', image: v3, asset: section.settings.v3_asset, sizes: '(min-width: 990px) 20vw, 44vw', class_name: 'zd-collage__img', alt: section.settings.v3_alt -%}
+        </figure>
+        <figure class="zd-collage__item zd-collage__item--d" data-zd-depth="0.08">
+          {%- render 'zd-image', image: v4, asset: section.settings.v4_asset, sizes: '(min-width: 990px) 16vw, 36vw', class_name: 'zd-collage__img', alt: section.settings.v4_alt -%}
+        </figure>
+        {%- if section.settings.statement != blank -%}
+          <p class="zd-collage__statement" data-zd-lines>{{ section.settings.statement | escape }}</p>
+        {%- endif -%}
+      </div>
+      <div class="zd-wrap zd-ch__body zd-ch__body--wide">
+        <div class="zd-ch__features">{{ features_html }}</div>
+        <div class="zd-ch__side">
+          {%- for block in chips -%}
+            <div class="zd-chips" {{ block.shopify_attributes }} data-zd-fade>
+              <h3 class="zd-chips__title">{{ block.settings.title | escape }}</h3>
+              <ul class="zd-chips__list" role="list">
+                {%- assign items = block.settings.items | newline_to_br | split: '<br />' -%}
+                {%- for item in items -%}
+                  {%- assign it = item | strip -%}
+                  {%- if it != blank -%}<li>{{ it | escape }}</li>{%- endif -%}
+                {%- endfor -%}
+              </ul>
+              {%- if block.settings.note != blank -%}<p class="zd-chips__note">{{ block.settings.note | escape }}</p>{%- endif -%}
+            </div>
+          {%- endfor -%}
+          {{ specs_html }}
+        </div>
+      </div>
+      <div class="zd-wrap zd-ch__buyrow zd-ch__buyrow--full">
+        <div class="zd-ch__buy" id="{{ section.settings.anchor }}-comprar">{{ buy_html }}</div>
+        <div class="zd-ch__faq">{{ faq_html }}</div>
+      </div>
+  {%- endcase -%}
+</section>
+
+{% schema %}
+{
+  "name": "Zaldori · Capítulo",
+  "tag": "div",
+  "class": "zd-section zd-section--chapter",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto" },
+    { "type": "select", "id": "pattern", "label": "Composición", "options": [
+      { "value": "expand", "label": "Expansión cinematográfica" },
+      { "value": "editorial", "label": "Editorial asimétrica" },
+      { "value": "parallax", "label": "Collage con profundidad" }
+    ], "default": "expand" },
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "vortix" },
+    { "type": "text", "id": "number", "label": "Número de sala", "default": "01" },
+    { "type": "text", "id": "title", "label": "Nombre (vacío = nombre del producto)" },
+    { "type": "textarea", "id": "lede", "label": "Entradilla" },
+    { "type": "text", "id": "statement", "label": "Frase sobre la imagen" },
+    { "type": "textarea", "id": "specs", "label": "Ficha técnica (una línea por dato, formato Dato: valor)" },
+    { "type": "text", "id": "note", "label": "Nota bajo el botón", "default": "Envío gratis a España · 14 días para cambiar de opinión" },
+    { "type": "select", "id": "buy_layout", "label": "Bloque de compra", "options": [ { "value": "split", "label": "Foto y datos" }, { "value": "stacked", "label": "Apilado" } ], "default": "split" },
+    { "type": "color", "id": "tint", "label": "Color de la sala", "default": "#DDE3D8" },
+    { "type": "color", "id": "deep", "label": "Color profundo", "default": "#3F4A3E" },
+    { "type": "header", "content": "Imágenes" },
+    { "type": "checkbox", "id": "lineup", "label": "Expansión: mostrar tres fotos del producto en fila (si no hay imagen 1)", "default": false },
+    { "type": "image_picker", "id": "v1_image", "label": "Imagen 1" },
+    { "type": "range", "id": "v1_media", "label": "Imagen 1: si está vacía, foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 1 },
+    { "type": "text", "id": "v1_asset", "label": "Imagen 1: imagen del tema (avanzado)" },
+    { "type": "number", "id": "v1_w", "label": "Imagen 1: ancho" },
+    { "type": "number", "id": "v1_h", "label": "Imagen 1: alto" },
+    { "type": "text", "id": "v1_alt", "label": "Imagen 1: texto alternativo" },
+    { "type": "select", "id": "v1_fit", "label": "Imagen 1: encaje", "options": [ { "value": "cover", "label": "Llenar" }, { "value": "contain", "label": "Objeto sobre color" } ], "default": "cover" },
+    { "type": "image_picker", "id": "v2_image", "label": "Imagen 2" },
+    { "type": "range", "id": "v2_media", "label": "Imagen 2: foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 2 },
+    { "type": "text", "id": "v2_asset", "label": "Imagen 2: imagen del tema" },
+    { "type": "number", "id": "v2_w", "label": "Imagen 2: ancho" },
+    { "type": "number", "id": "v2_h", "label": "Imagen 2: alto" },
+    { "type": "text", "id": "v2_alt", "label": "Imagen 2: texto alternativo" },
+    { "type": "image_picker", "id": "v3_image", "label": "Imagen 3" },
+    { "type": "range", "id": "v3_media", "label": "Imagen 3: foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 3 },
+    { "type": "text", "id": "v3_asset", "label": "Imagen 3: imagen del tema" },
+    { "type": "text", "id": "v3_alt", "label": "Imagen 3: texto alternativo" },
+    { "type": "image_picker", "id": "v4_image", "label": "Imagen 4" },
+    { "type": "range", "id": "v4_media", "label": "Imagen 4: foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 4 },
+    { "type": "text", "id": "v4_asset", "label": "Imagen 4: imagen del tema" },
+    { "type": "text", "id": "v4_alt", "label": "Imagen 4: texto alternativo" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Característica",
+      "settings": [
+        { "type": "text", "id": "figure", "label": "Cifra (opcional)" },
+        { "type": "text", "id": "unit", "label": "Unidad (opcional)" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Característica" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    },
+    {
+      "type": "scale",
+      "name": "Escala de niveles",
+      "limit": 1,
+      "settings": [
+        { "type": "range", "id": "steps", "label": "Niveles", "min": 3, "max": 20, "step": 1, "default": 9 },
+        { "type": "text", "id": "caption", "label": "Título", "default": "9 niveles de calor" },
+        { "type": "text", "id": "from", "label": "Primer nivel", "default": "Tibio, unos 30 °C" },
+        { "type": "text", "id": "to", "label": "Último nivel", "default": "Intenso, unos 50 °C" }
+      ]
+    },
+    {
+      "type": "chips",
+      "name": "Lista corta",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Modos" },
+        { "type": "textarea", "id": "items", "label": "Elementos (uno por línea)" },
+        { "type": "text", "id": "note", "label": "Nota" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "Pregunta" },
+        { "type": "richtext", "id": "answer", "label": "Respuesta", "default": "<p>Respuesta</p>" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Zaldori · Capítulo de producto" } ]
+}
+{% endschema %}

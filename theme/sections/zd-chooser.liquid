@@ -1,0 +1,74 @@
+{%- comment -%}
+  Quick chooser. Desktop: three columns side by side, read as one comparison.
+  Mobile: a tab list ("Quiero…") showing one product at a time. Without JS every column shows.
+{%- endcomment -%}
+<section class="zd-chooser" id="{{ section.settings.anchor }}" data-zd-chooser aria-labelledby="zd-chooser-title-{{ section.id }}">
+  <div class="zd-wrap">
+    <h2 class="zd-h2 zd-chooser__title" id="zd-chooser-title-{{ section.id }}" data-zd-lines>{{ section.settings.heading | escape }}</h2>
+
+    <div class="zd-chooser__tabs" role="tablist" aria-label="Elige según lo que buscas" data-zd-tabs hidden>
+      {%- for block in section.blocks -%}
+        <button class="zd-chooser__tab" type="button" role="tab" id="zd-tab-{{ block.id }}" aria-controls="zd-panel-{{ block.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {% unless forloop.first %}tabindex="-1"{% endunless %} style="--tab-tint: {{ block.settings.tint }};">
+          {{- block.settings.need | escape -}}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <div class="zd-chooser__cols">
+      {%- for block in section.blocks -%}
+        {%- assign p = block.settings.product -%}
+        <div class="zd-pick" id="zd-panel-{{ block.id }}" role="tabpanel" aria-labelledby="zd-tab-{{ block.id }}" style="--pick-tint: {{ block.settings.tint }};" {{ block.shopify_attributes }} data-zd-panel>
+          <p class="zd-pick__need">{{ block.settings.need | escape }}</p>
+          <h3 class="zd-pick__name">{{ block.settings.name | escape }}</h3>
+          <dl class="zd-pick__rows">
+            <div><dt>Para</dt><dd>{{ block.settings.moment | escape }}</dd></div>
+            <div><dt>Lo esencial</dt><dd>{{ block.settings.essentials | escape }}</dd></div>
+            {%- if p != blank -%}
+              <div><dt>Opciones</dt><dd>
+                {%- if p.has_only_default_variant or p.variants.size == 1 -%}
+                  {{ p.variants.first.title | escape }}
+                {%- else -%}
+                  {{ p.variants.size }} {{ p.options.first | downcase | escape }}
+                {%- endif -%}
+              </dd></div>
+              <div><dt>Precio</dt><dd class="zd-pick__price">{% if p.price_varies %}desde {% endif %}{{ p.price_min | money }}</dd></div>
+            {%- endif -%}
+          </dl>
+          <a class="zd-btn zd-btn--ink zd-pick__cta" href="{{ block.settings.url }}">
+            <span>Elegir {{ block.settings.name | escape }}</span>
+            <svg class="zd-btn__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zaldori · ¿Cuál es el tuyo?",
+  "tag": "div",
+  "class": "zd-section zd-section--chooser",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "elige" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "¿Cuál es el tuyo?" }
+  ],
+  "blocks": [
+    {
+      "type": "pick",
+      "name": "Producto",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Producto" },
+        { "type": "text", "id": "name", "label": "Nombre", "default": "Vortix" },
+        { "type": "text", "id": "need", "label": "Necesidad", "default": "Quiero mezclar" },
+        { "type": "text", "id": "moment", "label": "Momento", "default": "Después de entrenar, por la mañana o en la oficina." },
+        { "type": "text", "id": "essentials", "label": "Lo esencial", "default": "400 ml · hasta 7000 rpm · recargable por USB" },
+        { "type": "text", "id": "url", "label": "Destino", "default": "#vortix-comprar" },
+        { "type": "color", "id": "tint", "label": "Color", "default": "#DDE3D8" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Zaldori · ¿Cuál es el tuyo?" } ]
+}
+{% endschema %}

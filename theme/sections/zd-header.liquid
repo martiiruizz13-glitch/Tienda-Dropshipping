@@ -1,0 +1,89 @@
+<header class="zd-header" data-zd-header>
+  <div class="zd-header__inner zd-wrap">
+    <a class="zd-header__logo" href="{{ routes.root_url }}" aria-label="Zaldori, inicio">
+      {%- render 'zd-logo', variant: 'full' -%}
+    </a>
+
+    <nav class="zd-header__nav" aria-label="Productos">
+      <ul role="list">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}>
+            <a href="{{ block.settings.url }}" data-zd-nav-link>
+              <span class="zd-header__num" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+              {{- block.settings.label | escape -}}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="zd-header__actions">
+      <a class="zd-header__help" href="#ayuda">Ayuda</a>
+      <button class="zd-icon-btn zd-cart-btn" type="button" data-zd-cart-open aria-haspopup="dialog" aria-controls="zd-cart">
+        <svg class="zd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5.5 8.5h13l-1 11.5h-11z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="zd-visually-hidden">Carrito,</span>
+        <span class="zd-cart-count" data-zd-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+        <span class="zd-visually-hidden">artículos</span>
+      </button>
+      <button class="zd-icon-btn zd-menu-btn" type="button" data-zd-menu-open aria-haspopup="dialog" aria-controls="zd-menu">
+        <svg class="zd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9h16M4 15h16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        <span class="zd-visually-hidden">Abrir menú</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog class="zd-menu" id="zd-menu" aria-label="Menú">
+  <div class="zd-menu__panel">
+    <div class="zd-menu__top">
+      {%- render 'zd-logo', variant: 'full', class_name: 'zd-menu__logo' -%}
+      <button class="zd-icon-btn" type="button" data-zd-menu-close>
+        <svg class="zd-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        <span class="zd-visually-hidden">Cerrar menú</span>
+      </button>
+    </div>
+    <ul class="zd-menu__list" role="list">
+      {%- for block in section.blocks -%}
+        <li>
+          <a href="{{ block.settings.url }}" data-zd-menu-link>
+            <span class="zd-menu__num" aria-hidden="true">Nº {{ forloop.index | prepend: '0' }}</span>
+            <span class="zd-menu__label">{{ block.settings.label | escape }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+      <li><a href="#elige" data-zd-menu-link><span class="zd-menu__num" aria-hidden="true">—</span><span class="zd-menu__label">¿Cuál es el tuyo?</span></a></li>
+      <li><a href="#ayuda" data-zd-menu-link><span class="zd-menu__num" aria-hidden="true">—</span><span class="zd-menu__label">Ayuda</span></a></li>
+    </ul>
+    <p class="zd-menu__contact">
+      Atención al cliente<br>
+      <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+    </p>
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "Zaldori · Cabecera",
+  "class": "zd-header-section",
+  "settings": [
+    { "type": "text", "id": "email", "label": "Email de atención al cliente", "default": "support@zaldori.com" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Enlace",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "Vortix" },
+        { "type": "text", "id": "url", "label": "Destino (ancla o URL)", "default": "#vortix" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "link", "settings": { "label": "Vortix", "url": "#vortix" } },
+      { "type": "link", "settings": { "label": "TermoCalm", "url": "#termocalm" } },
+      { "type": "link", "settings": { "label": "Pulsia", "url": "#pulsia" } }
+    ]
+  }
+}
+{% endschema %}

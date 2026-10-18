@@ -1,0 +1,11 @@
+{%- comment -%}
+  First-visit intro. Shown only when <html> has .zd-intro (set inline in the layout:
+  first visit of the session, motion allowed, not in the theme editor).
+  A CSS fallback hides it even if JavaScript never runs, so it can never block the page.
+{%- endcomment -%}
+<div class="zd-preloader" data-zd-preloader aria-hidden="true">
+  <div class="zd-preloader__mark">
+    {%- render 'zd-logo', variant: 'symbol', class_name: 'zd-preloader__symbol' -%}
+    {%- render 'zd-logo', variant: 'word', class_name: 'zd-preloader__word' -%}
+  </div>
+</div>
