@@ -175,41 +175,63 @@
           }
         },
         "b-6": {
+          "type": "compare",
+          "settings": {
+            "title": "Clásico o Estilizado",
+            "text": "Los dos mezclan igual. Desliza para ver en qué se diferencian: tapa de asa y boquilla abatible, o silueta más fina con botón frontal.",
+            "note": "Fotos reales de los dos modelos en blanco.",
+            "before_label": "Clásico",
+            "after_label": "Estilizado",
+            "ratio": "square",
+            "blend": true,
+            "before_media": 1,
+            "after_media": 5,
+            "before_alt": "Vortix Clásico blanco",
+            "after_alt": "Vortix Estilizado blanco"
+          }
+        },
+        "b-7": {
+          "type": "reviews",
+          "settings": {
+            "title": "Opiniones sobre Vortix"
+          }
+        },
+        "b-8": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo se usa?",
             "answer": "<p>Añade primero el líquido (agua, leche o bebida vegetal), después el polvo, cierra la tapa y pulsa el botón de la base. En unos segundos lo tienes listo.</p>"
           }
         },
-        "b-7": {
+        "b-9": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo se carga?",
             "answer": "<p>Con el cable USB incluido (5 V / 1 A). La batería es de 1200 mAh. Cárgalo antes del primer uso.</p>"
           }
         },
-        "b-8": {
+        "b-10": {
           "type": "faq",
           "settings": {
             "question": "¿Puedo meterlo en el lavavajillas?",
             "answer": "<p>No. La base lleva el motor y la batería: limpia el vaso con agua y un paño suave, sin sumergir la base ni meterla en el lavavajillas.</p>"
           }
         },
-        "b-9": {
+        "b-11": {
           "type": "faq",
           "settings": {
             "question": "¿Qué puedo mezclar?",
             "answer": "<p>Proteína, café, cacao, avena o leche. Para una mezcla aún más fina, primero el líquido y después el polvo.</p>"
           }
         },
-        "b-10": {
+        "b-12": {
           "type": "faq",
           "settings": {
             "question": "¿Sirve para bebidas calientes?",
             "answer": "<p>Úsalo con bebidas frías o templadas, nunca hirviendo.</p>"
           }
         },
-        "b-11": {
+        "b-13": {
           "type": "faq",
           "settings": {
             "question": "¿Qué diferencia hay entre Clásico y Estilizado?",
@@ -228,7 +250,9 @@
         "b-8",
         "b-9",
         "b-10",
-        "b-11"
+        "b-11",
+        "b-12",
+        "b-13"
       ]
     },
     "termocalm": {
@@ -302,41 +326,62 @@
           }
         },
         "b-8": {
+          "type": "compare",
+          "settings": {
+            "title": "Antes y después",
+            "text": "Del frío de una tarde de invierno al calor suave de TermoCalm. Desliza para encenderla.",
+            "note": "Recreación ilustrativa del ambiente.",
+            "before_label": "Antes",
+            "after_label": "Después",
+            "ratio": "portrait",
+            "before_asset": "zd-tc-antes.jpg",
+            "after_asset": "zd-tc-despues.jpg",
+            "before_alt": "TermoCalm apagada, con luz fría de invierno",
+            "after_alt": "TermoCalm encendida, con luz cálida"
+          }
+        },
+        "b-9": {
+          "type": "reviews",
+          "settings": {
+            "title": "Opiniones sobre TermoCalm"
+          }
+        },
+        "b-10": {
           "type": "faq",
           "settings": {
             "question": "¿Cuánto tarda en calentar?",
             "answer": "<p>Calienta en segundos y reparte el calor por toda la superficie, sin puntos fríos.</p>"
           }
         },
-        "b-9": {
+        "b-11": {
           "type": "faq",
           "settings": {
             "question": "¿Se apaga sola?",
             "answer": "<p>Sí: eliges un temporizador de 30, 60, 90 o 120 minutos y se apaga automáticamente. Aun así, no te duermas con ella encendida y desenchúfala cuando no la uses.</p>"
           }
         },
-        "b-10": {
+        "b-12": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo se lava?",
             "answer": "<p>Separa el mando, lávala a mano y deja que se seque del todo antes de volver a usarla.</p>"
           }
         },
-        "b-11": {
+        "b-13": {
           "type": "faq",
           "settings": {
             "question": "¿Qué enchufe elijo?",
             "answer": "<p>Hay tres versiones: europeo (220-240 V), británico (220-240 V) y americano (110 V). En España, elige la de enchufe europeo.</p>"
           }
         },
-        "b-12": {
+        "b-14": {
           "type": "faq",
           "settings": {
             "question": "¿Dónde puedo usarla?",
             "answer": "<p>Con sus 30 × 60 cm cubre espalda, hombros y cuello a la vez. También puedes usarla para templar las piernas o los pies.</p>"
           }
         },
-        "b-13": {
+        "b-15": {
           "type": "faq",
           "settings": {
             "question": "¿Quién no debería usarla?",
@@ -357,7 +402,9 @@
         "b-10",
         "b-11",
         "b-12",
-        "b-13"
+        "b-13",
+        "b-14",
+        "b-15"
       ]
     },
     "pulsia": {
@@ -438,34 +485,55 @@
           }
         },
         "b-8": {
+          "type": "compare",
+          "settings": {
+            "title": "Antes y después",
+            "text": "Del final de un día largo a tu momento de descanso. Desliza para verlo.",
+            "note": "Recreación ilustrativa del ambiente. No muestra resultados de salud.",
+            "before_label": "Antes",
+            "after_label": "Después",
+            "ratio": "square",
+            "before_asset": "zd-pl-antes.jpg",
+            "after_asset": "zd-pl-despues.jpg",
+            "before_alt": "Pulsia con luz fría de final del día",
+            "after_alt": "Pulsia con luz cálida, momento de descanso"
+          }
+        },
+        "b-9": {
+          "type": "reviews",
+          "settings": {
+            "title": "Opiniones sobre Pulsia"
+          }
+        },
+        "b-10": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo funciona la tecnología EMS?",
             "answer": "<p>EMS es estimulación muscular eléctrica. Pulsia envía impulsos suaves de baja frecuencia a la planta del pie que hacen que los músculos se contraigan y se relajen. No tiene rodillos ni piezas móviles.</p>"
           }
         },
-        "b-9": {
+        "b-11": {
           "type": "faq",
           "settings": {
             "question": "¿Qué se siente?",
             "answer": "<p>En los niveles bajos, un cosquilleo apenas perceptible; en los altos, un masaje más profundo. Empieza por un nivel bajo y sube poco a poco.</p>"
           }
         },
-        "b-10": {
+        "b-12": {
           "type": "faq",
           "settings": {
             "question": "¿Cuánto tiempo lo uso?",
             "answer": "<p>Por ejemplo, 15 minutos con los pies apoyados al volver a casa. Úsalo con los pies limpios y secos.</p>"
           }
         },
-        "b-11": {
+        "b-13": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo se carga?",
             "answer": "<p>Por USB, con el cargador del móvil. Mientras lo usas no necesita cables.</p>"
           }
         },
-        "b-12": {
+        "b-14": {
           "type": "faq",
           "settings": {
             "question": "¿Quién no debería usarlo?",
@@ -485,7 +553,9 @@
         "b-9",
         "b-10",
         "b-11",
-        "b-12"
+        "b-12",
+        "b-13",
+        "b-14"
       ]
     },
     "ads": {

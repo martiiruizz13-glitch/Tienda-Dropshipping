@@ -22,6 +22,15 @@
   assign faqs = section.blocks | where: 'type', 'faq'
   assign scales = section.blocks | where: 'type', 'scale'
   assign chips = section.blocks | where: 'type', 'chips'
+  assign compares = section.blocks | where: 'type', 'compare'
+  assign review_heads = section.blocks | where: 'type', 'reviews'
+
+  assign rating = nil
+  assign rating_count = 0
+  if product != blank and product.metafields.reviews.rating_count.value > 0
+    assign rating = product.metafields.reviews.rating.value
+    assign rating_count = product.metafields.reviews.rating_count.value
+  endif
 
   comment
     Visual sources: image picker first, then a product photo by position, then a theme asset.
@@ -108,9 +117,81 @@
     {%- endif -%}
   {%- endcapture -%}
 
+
+  {%- capture compare_html -%}
+    {%- for block in compares -%}
+      {%- liquid
+        assign b_index = block.settings.before_media | minus: 1
+        assign a_index = block.settings.after_media | minus: 1
+        assign b_img = block.settings.before_image
+        assign a_img = block.settings.after_image
+        if product != blank
+          if b_img == blank and block.settings.before_asset == blank and block.settings.before_media > 0 and product.media.size > b_index
+            assign b_img = product.media[b_index].preview_image
+          endif
+          if a_img == blank and block.settings.after_asset == blank and block.settings.after_media > 0 and product.media.size > a_index
+            assign a_img = product.media[a_index].preview_image
+          endif
+        endif
+      -%}
+      <div class="zd-ab" {{ block.shopify_attributes }}>
+        <div class="zd-ab__text" data-zd-fade>
+          <h3 class="zd-ab__title">{{ block.settings.title | escape }}</h3>
+          {%- if block.settings.text != blank -%}<p class="zd-ab__lede">{{ block.settings.text | escape }}</p>{%- endif -%}
+          <p class="zd-ab__hint" aria-hidden="true"><span class="zd-ab__hint-line"></span>Desliza para comparar</p>
+          {%- if block.settings.note != blank -%}<p class="zd-ab__note">{{ block.settings.note | escape }}</p>{%- endif -%}
+        </div>
+        <div class="zd-ab__media">
+          {%- render 'zd-compare',
+            id: block.id,
+            before: b_img, after: a_img,
+            before_asset: block.settings.before_asset, after_asset: block.settings.after_asset,
+            before_label: block.settings.before_label, after_label: block.settings.after_label,
+            alt_before: block.settings.before_alt, alt_after: block.settings.after_alt,
+            ratio: block.settings.ratio,
+            blend: block.settings.blend
+          -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- capture reviews_html -%}
+    {%- assign app_blocks = section.blocks | where: 'type', '@app' -%}
+    {%- assign rh = review_heads.first -%}
+    {%- if rh -%}
+      {%- if rating_count > 0 or app_blocks.size > 0 or rh.settings.show_empty or request.design_mode -%}
+        <div class="zd-reviews zd-tone-day" id="{{ section.settings.anchor }}-opiniones" {{ rh.shopify_attributes }}>
+          <div class="zd-reviews__head">
+            <h3 class="zd-reviews__title">{{ rh.settings.title | escape }}</h3>
+            {%- if rating_count > 0 -%}
+              <div class="zd-reviews__score">
+                <p class="zd-reviews__value">{{ rating.rating | round: 1 | append: '' | replace: '.', ',' }}<span>/{{ rating.scale_max | round }}</span></p>
+                <div class="zd-reviews__meta">
+                  {%- render 'zd-stars', rating: rating.rating, max: rating.scale_max, size: 'lg' -%}
+                  <p>{{ rating_count }} {% if rating_count == 1 %}opinión{% else %}opiniones{% endif %} de clientes</p>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+          {%- if app_blocks.size > 0 -%}
+            <div class="zd-reviews__app">
+              {%- for block in app_blocks -%}{% render block %}{%- endfor -%}
+            </div>
+          {%- elsif rating_count == 0 -%}
+            <p class="zd-reviews__empty">
+              {{ rh.settings.empty_text | escape }}
+              {%- if request.design_mode %}<span class="zd-reviews__todo">[PENDIENTE: instala la app de reseñas y añade su bloque «Reviews widget» aquí]</span>{% endif -%}
+            </p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endcapture -%}
+
   {%- capture buy_html -%}
     {%- if product != blank -%}
-      {%- render 'zd-buybox', product: product, section_id: section.id, number: section.settings.number, note: section.settings.note, layout: section.settings.buy_layout -%}
+      {%- render 'zd-buybox', product: product, section_id: section.id, number: section.settings.number, note: section.settings.note, layout: section.settings.buy_layout, rating: rating, rating_count: rating_count, reviews_anchor: section.settings.anchor -%}
     {%- else -%}
       <p class="zd-empty">Elige un producto en los ajustes de esta sección.</p>
     {%- endif -%}
@@ -141,6 +222,7 @@
         <div class="zd-ch__features">{{ features_html }}</div>
         <div class="zd-ch__side">{{ specs_html }}</div>
       </div>
+      {%- if compare_html != blank -%}<div class="zd-wrap zd-ch__compare">{{ compare_html }}</div>{%- endif -%}
       <div class="zd-wrap zd-ch__buyrow">
         <div class="zd-ch__buy" id="{{ section.settings.anchor }}-comprar">{{ buy_html }}</div>
         <div class="zd-ch__faq">{{ faq_html }}</div>
@@ -180,6 +262,7 @@
           {%- endif -%}
         </figure>
       {%- endif -%}
+      {%- if compare_html != blank -%}<div class="zd-wrap zd-ch__compare">{{ compare_html }}</div>{%- endif -%}
       <div class="zd-wrap zd-ch__buyrow zd-ch__buyrow--reverse">
         <div class="zd-ch__faq">{{ specs_html }}{{ faq_html }}</div>
         <div class="zd-ch__buy" id="{{ section.settings.anchor }}-comprar">{{ buy_html }}</div>
@@ -223,11 +306,13 @@
           {{ specs_html }}
         </div>
       </div>
+      {%- if compare_html != blank -%}<div class="zd-wrap zd-ch__compare">{{ compare_html }}</div>{%- endif -%}
       <div class="zd-wrap zd-ch__buyrow zd-ch__buyrow--full">
         <div class="zd-ch__buy" id="{{ section.settings.anchor }}-comprar">{{ buy_html }}</div>
         <div class="zd-ch__faq">{{ faq_html }}</div>
       </div>
   {%- endcase -%}
+  {%- if reviews_html != blank -%}<div class="zd-wrap zd-ch__reviews">{{ reviews_html }}</div>{%- endif -%}
 </section>
 
 {% schema %}
@@ -307,6 +392,39 @@
         { "type": "text", "id": "note", "label": "Nota" }
       ]
     },
+    {
+      "type": "compare",
+      "name": "Antes y después",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Antes y después" },
+        { "type": "textarea", "id": "text", "label": "Texto" },
+        { "type": "text", "id": "note", "label": "Nota", "default": "Recreación ilustrativa." },
+        { "type": "text", "id": "before_label", "label": "Etiqueta izquierda", "default": "Antes" },
+        { "type": "text", "id": "after_label", "label": "Etiqueta derecha", "default": "Después" },
+        { "type": "select", "id": "ratio", "label": "Formato", "options": [ { "value": "landscape", "label": "Horizontal" }, { "value": "portrait", "label": "Vertical" }, { "value": "square", "label": "Cuadrado" } ], "default": "landscape" },
+        { "type": "checkbox", "id": "blend", "label": "Fotos con fondo blanco", "info": "Coloca el objeto sobre el color de la sala", "default": false },
+        { "type": "image_picker", "id": "before_image", "label": "Imagen izquierda" },
+        { "type": "range", "id": "before_media", "label": "Izquierda: foto del producto nº", "info": "0 = no usar", "min": 0, "max": 20, "step": 1, "default": 0 },
+        { "type": "text", "id": "before_asset", "label": "Izquierda: imagen del tema" },
+        { "type": "text", "id": "before_alt", "label": "Izquierda: texto alternativo" },
+        { "type": "image_picker", "id": "after_image", "label": "Imagen derecha" },
+        { "type": "range", "id": "after_media", "label": "Derecha: foto del producto nº", "info": "0 = no usar", "min": 0, "max": 20, "step": 1, "default": 0 },
+        { "type": "text", "id": "after_asset", "label": "Derecha: imagen del tema" },
+        { "type": "text", "id": "after_alt", "label": "Derecha: texto alternativo" }
+      ]
+    },
+    {
+      "type": "reviews",
+      "name": "Opiniones",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Opiniones" },
+        { "type": "text", "id": "empty_text", "label": "Texto sin opiniones", "default": "Todavía no hay opiniones publicadas. Cuando lleguen, aparecerán aquí tal cual nos las envíen." },
+        { "type": "checkbox", "id": "show_empty", "label": "Mostrar aunque no haya opiniones", "default": false }
+      ]
+    },
+    { "type": "@app" },
     {
       "type": "faq",
       "name": "Pregunta",

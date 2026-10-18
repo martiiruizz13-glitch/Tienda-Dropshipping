@@ -63,3 +63,17 @@ Vortix es el único producto sin foto de ambiente. Una cuarta pieza mejoraría l
 ```
 Still life advertising photograph, horizontal 3:2. Three electric protein mixing cups (pink, white and sage green, exactly like the reference "Estilizado" model) standing on a pale sage-green plinth against a matching sage wall, soft shadowless daylight, one cup slightly forward with a gentle liquid vortex visible. Minimal museum-like composition, generous negative space on the left for typography. No text, no logos, no watermark.
 ```
+
+---
+
+## Antes y después (deslizadores de cada capítulo)
+
+Los deslizadores ya funcionan (ratón, dedo y teclado). Son **recreaciones ilustrativas**, no resultados: cada uno lleva la nota «Recreación ilustrativa». No los conviertas en promesas de salud (dolor, circulación, etc.): TermoCalm y Pulsia son productos de bienestar, no sanitarios.
+
+- **TermoCalm:** usa el par que ya tenías (`zd-tc-antes.jpg` / `zd-tc-despues.jpg`: la misma escena con luz fría y con luz cálida).
+- **Pulsia:** par creado a partir de su foto real, con luz fría frente a luz cálida (`zd-pl-antes.jpg` / `zd-pl-despues.jpg`).
+- **Vortix:** de momento compara los dos modelos reales (Clásico / Estilizado). Para un antes/después de verdad, genera estas dos imágenes con **el mismo encuadre exacto** (misma cámara, mismo fondo) y súbelas en Capítulo Vortix → bloque «Antes y después»; cambia las etiquetas a «Agitado a mano» y «Con Vortix».
+
+```
+Product comparison photograph, square 1:1, identical framing in both images. A transparent shaker cup with a chocolate protein shake on a pale sage surface, soft daylight, close-up of the liquid surface. IMAGE A: shaken by hand, visible dry powder clumps floating and stuck to the wall of the cup, uneven foam. IMAGE B: the same scene mixed with the electric Vortix cup (reference attached), smooth and homogeneous creamy shake, no clumps, fine even foam. Same camera, same light, same position. No text, no logos, no watermark.
+```

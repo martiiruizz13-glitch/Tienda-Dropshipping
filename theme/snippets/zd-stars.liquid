@@ -1,0 +1,12 @@
+{%- comment -%}
+  Star rating from a real value (e.g. product.metafields.reviews.rating). Params: rating, max (default 5), size ('sm' | 'lg')
+{%- endcomment -%}
+{%- liquid
+  assign max = max | default: 5
+  assign pct = rating | times: 100.0 | divided_by: max
+  assign shown = rating | round: 1 | append: '' | replace: '.', ','
+-%}
+<span class="zd-stars zd-stars--{{ size | default: 'sm' }}" role="img" aria-label="Valoración {{ shown }} de {{ max }}" style="--fill: {{ pct }}%;">
+  <span class="zd-stars__track" aria-hidden="true">★★★★★</span>
+  <span class="zd-stars__fill" aria-hidden="true">★★★★★</span>
+</span>

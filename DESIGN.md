@@ -6,6 +6,18 @@ Código: `theme/assets/zd.css` (tokens en `:root`), `theme/assets/zd.js` (movimi
 
 ## Paleta
 
+**Tono de página: «Noche frambuesa».** Fondo `#1A0912` con una capa fija abstracta (`.zd-aura`): tres brillos radiales frambuesa/ciruela que derivan muy despacio (46–58 s, solo `transform`) y grano fino. Las superficies claras (salas, tarjetas del selector, opiniones, carrito y menú) usan el tono día (`.zd-tone-day`). Los tokens se redefinen por tono, así los componentes no cambian.
+
+| Tono noche | Valor | Contraste sobre `#1A0912` |
+| --- | --- | --- |
+| Texto | `#F6EEE8` | 16,8:1 |
+| Texto secundario | `#CDBDC3` | 10,7:1 |
+| Acento de texto («Descansa.», estrellas) | `#E2638F` | 5,9:1 |
+| Botón principal | `#B7355E` con texto `#F6EEE8` | 5,0:1 |
+| Bloque «Confianza» | campo `#B7355E`, texto crema | 5,0:1 |
+
+Tono día (valores originales):
+
 | Token | Valor | Uso |
 | --- | --- | --- |
 | `--zd-paper` | `#FAF7F2` | Fondo principal (blanco cálido) |

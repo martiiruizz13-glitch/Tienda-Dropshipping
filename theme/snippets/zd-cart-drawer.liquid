@@ -2,7 +2,7 @@
   Cart drawer. Server-renders the current cart so it is correct before JavaScript;
   zd.js re-renders the list from /cart.js after every change.
 {%- endcomment -%}
-<dialog class="zd-cart" id="zd-cart" aria-labelledby="zd-cart-title" data-zd-cart>
+<dialog class="zd-cart zd-tone-day" id="zd-cart" aria-labelledby="zd-cart-title" data-zd-cart>
   <div class="zd-cart__panel">
     <header class="zd-cart__head">
       <h2 class="zd-cart__title" id="zd-cart-title">Tu carrito <span class="zd-cart__count" data-zd-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span></h2>

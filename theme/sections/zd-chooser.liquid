@@ -17,7 +17,7 @@
     <div class="zd-chooser__cols">
       {%- for block in section.blocks -%}
         {%- assign p = block.settings.product -%}
-        <div class="zd-pick" id="zd-panel-{{ block.id }}" role="tabpanel" aria-labelledby="zd-tab-{{ block.id }}" style="--pick-tint: {{ block.settings.tint }};" {{ block.shopify_attributes }} data-zd-panel>
+        <div class="zd-pick zd-tone-day" id="zd-panel-{{ block.id }}" role="tabpanel" aria-labelledby="zd-tab-{{ block.id }}" style="--pick-tint: {{ block.settings.tint }};" {{ block.shopify_attributes }} data-zd-panel>
           <p class="zd-pick__need">{{ block.settings.need | escape }}</p>
           <h3 class="zd-pick__name">{{ block.settings.name | escape }}</h3>
           <dl class="zd-pick__rows">

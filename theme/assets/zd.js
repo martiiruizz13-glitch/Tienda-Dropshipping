@@ -635,6 +635,98 @@
     });
   }
 
+  /* ------------------------------------------------------- Before / after */
+  $$('[data-zd-compare]').forEach((root) => {
+    const stage = $('[data-zd-compare-stage]', root);
+    const after = $('[data-zd-compare-after]', root);
+    const handle = $('[data-zd-compare-handle]', root);
+    const range = $('[data-zd-compare-range]', root);
+    const labels = $$('.zd-compare__tag', root).map((t) => t.textContent.trim());
+    if (!stage || !after || !handle || !range) return;
+    let pos = 50;
+    let width = stage.clientWidth;
+    let dragging = false;
+    let touched = false;
+
+    const render = () => {
+      after.style.clipPath = `inset(0 0 0 ${pos}%)`;
+      handle.style.transform = `translateX(${(width * pos) / 100}px)`;
+    };
+    const set = (value, fromRange) => {
+      pos = Math.min(100, Math.max(0, value));
+      render();
+      if (!fromRange) range.value = Math.round(pos);
+      range.setAttribute('aria-valuetext', `${Math.round(pos)} % ${labels[0] || ''}, ${Math.round(100 - pos)} % ${labels[1] || ''}`);
+    };
+    const fromEvent = (e) => {
+      const r = stage.getBoundingClientRect();
+      return ((e.clientX - r.left) / r.width) * 100;
+    };
+
+    // Mouse: grab immediately. Touch/pen: only once the gesture is clearly horizontal,
+    // so a vertical swipe across the slider still scrolls the page untouched.
+    let start = null;
+    const begin = (e) => {
+      dragging = true;
+      touched = true;
+      root.classList.add('is-dragging');
+      try { stage.setPointerCapture(e.pointerId); } catch (err) { /* already released */ }
+      set(fromEvent(e));
+    };
+    stage.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0) return;
+      if (e.pointerType === 'mouse') begin(e);
+      else start = { x: e.clientX, y: e.clientY, id: e.pointerId };
+    });
+    stage.addEventListener('pointermove', (e) => {
+      if (dragging) return set(fromEvent(e));
+      if (!start || e.pointerId !== start.id) return;
+      const dx = Math.abs(e.clientX - start.x);
+      const dy = Math.abs(e.clientY - start.y);
+      if (dx > 6 && dx > dy) begin(e);
+      else if (dy > 6) start = null;
+    });
+    const end = (e) => {
+      // A clean tap (no movement) moves the handle there.
+      if (!dragging && start && e && e.type === 'pointerup' && e.pointerId === start.id) {
+        touched = true;
+        set(fromEvent(e));
+      }
+      start = null;
+      dragging = false;
+      root.classList.remove('is-dragging');
+    };
+    stage.addEventListener('pointerup', end);
+    stage.addEventListener('pointercancel', end);
+    range.addEventListener('input', () => {
+      touched = true;
+      set(Number(range.value), true);
+    });
+    new ResizeObserver(() => {
+      width = stage.clientWidth;
+      render();
+    }).observe(stage);
+    set(50);
+
+    // One gentle hint the first time it comes into view, so people know it moves.
+    if (!mqReduce.matches) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (!entries[0].isIntersecting) return;
+          io.disconnect();
+          if (touched || typeof window.gsap === 'undefined') return;
+          const state = { p: 50 };
+          window.gsap
+            .timeline({ delay: 0.3, onUpdate: () => !touched && set(state.p) })
+            .to(state, { p: 34, duration: 0.7, ease: 'power2.inOut' })
+            .to(state, { p: 50, duration: 0.8, ease: 'expo.out' });
+        },
+        { threshold: 0.6 }
+      );
+      io.observe(stage);
+    }
+  });
+
   /* ================================================================ Motion */
   const hasGsap = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
 

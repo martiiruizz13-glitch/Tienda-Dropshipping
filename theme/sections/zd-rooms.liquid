@@ -3,7 +3,7 @@
   full-height panels. zd.js pins the stage and choreographs the room-to-room
   transition (tint crossfade, framed image growing, title revealed by line mask).
 {%- endcomment -%}
-<section class="zd-rooms" id="{{ section.settings.anchor }}" data-zd-rooms aria-label="{{ section.settings.label | escape }}">
+<section class="zd-rooms zd-tone-day" id="{{ section.settings.anchor }}" data-zd-rooms aria-label="{{ section.settings.label | escape }}">
   <div class="zd-rooms__stage" data-zd-rooms-stage>
     <div class="zd-rooms__tints" aria-hidden="true">
       {%- for block in section.blocks -%}

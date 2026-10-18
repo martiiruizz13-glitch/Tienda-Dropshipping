@@ -1,7 +1,8 @@
 {%- comment -%}
   Buy box ("cartela"). Works without JavaScript (plain POST to /cart/add);
   zd.js upgrades it to /cart/add.js with the selected variant and the cart drawer.
-  Params: product, section_id, number, note, layout ('split' | 'stacked')
+  Params: product, section_id, number, note, layout ('split' | 'stacked'),
+  rating + rating_count (from product.metafields.reviews, only when real reviews exist), reviews_anchor
 {%- endcomment -%}
 {%- liquid
   assign current = product.selected_or_first_available_variant
@@ -51,6 +52,13 @@
       <span data-zd-price>{{ current.price | money }}</span>
       <s class="zd-buy__compare" data-zd-compare {% unless current.compare_at_price > current.price %}hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
     </p>
+
+    {%- if rating_count > 0 -%}
+      <a class="zd-buy__rating" href="#{{ reviews_anchor }}-opiniones">
+        {%- render 'zd-stars', rating: rating.rating, max: rating.scale_max -%}
+        <span>{{ rating.rating | round: 1 | append: '' | replace: '.', ',' }} · {{ rating_count }} {% if rating_count == 1 %}opinión{% else %}opiniones{% endif %}</span>
+      </a>
+    {%- endif -%}
 
     {%- unless product.has_only_default_variant -%}
       {%- for option in product.options_with_values -%}
