@@ -1,0 +1,11 @@
+{%- comment -%}
+  First-visit intro. Shown only when <html> has .zn-intro (set inline in the layout:
+  first visit of the session, motion allowed, not in the theme editor).
+  A CSS fallback hides it even if JavaScript never runs, so it can never block the page.
+{%- endcomment -%}
+<div class="zn-preloader" data-zn-preloader aria-hidden="true">
+  <div class="zn-preloader__mark">
+    {%- render 'zn-logo', variant: 'symbol', class_name: 'zn-preloader__symbol' -%}
+    {%- render 'zn-logo', variant: 'word', class_name: 'zn-preloader__word' -%}
+  </div>
+</div>

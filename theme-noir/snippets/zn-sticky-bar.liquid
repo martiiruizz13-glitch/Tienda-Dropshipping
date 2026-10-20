@@ -1,0 +1,17 @@
+{%- comment -%}
+  Mobile buy bar. zn.js fills it with the product whose chapter is on screen
+  (and whose buy box is not), and adds that product's selected variant to the cart.
+{%- endcomment -%}
+<div class="zn-bar" data-zn-bar aria-hidden="true" inert>
+  <div class="zn-bar__inner">
+    <div class="zn-bar__info">
+      <p class="zn-bar__name" data-zn-bar-name></p>
+      <p class="zn-bar__meta"><span data-zn-bar-variant></span> <span class="zn-bar__price" data-zn-bar-price></span></p>
+    </div>
+    <button class="zn-btn zn-btn--primary zn-bar__btn" type="button" data-zn-bar-add>
+      <span class="zn-btn__label" data-zn-bar-label>Añadir</span>
+      <span class="zn-btn__spinner" aria-hidden="true"></span>
+      <svg class="zn-btn__check" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" stroke-width="1.75"/></svg>
+    </button>
+  </div>
+</div>

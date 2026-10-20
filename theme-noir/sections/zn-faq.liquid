@@ -1,0 +1,43 @@
+<section class="zn-gfaq" id="{{ section.settings.anchor }}" aria-labelledby="zn-gfaq-title-{{ section.id }}">
+  <div class="zn-wrap zn-gfaq__grid">
+    <div class="zn-gfaq__head">
+      <h2 class="zn-h2" id="zn-gfaq-title-{{ section.id }}" data-zn-lines>{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.text != blank -%}
+        <p class="zn-gfaq__text" data-zn-fade>{{ section.settings.text | escape }} <a class="zn-link" href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></p>
+      {%- endif -%}
+    </div>
+    <div class="zn-faq zn-faq--general">
+      {%- for block in section.blocks -%}
+        <details class="zn-faq__item" {{ block.shopify_attributes }}>
+          <summary class="zn-faq__q"><span>{{ block.settings.question | escape }}</span><span class="zn-faq__icon" aria-hidden="true"></span></summary>
+          <div class="zn-faq__a zn-rte">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Noir · FAQ",
+  "tag": "div",
+  "class": "zn-section zn-section--faq",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "ayuda" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Preguntas frecuentes" },
+    { "type": "text", "id": "text", "label": "Texto", "default": "¿No encuentras tu respuesta? Escríbenos a" },
+    { "type": "text", "id": "email", "label": "Email", "default": "support@zaldori.com" }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "Pregunta" },
+        { "type": "richtext", "id": "answer", "label": "Respuesta", "default": "<p>Respuesta</p>" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Noir · FAQ" } ]
+}
+{% endschema %}

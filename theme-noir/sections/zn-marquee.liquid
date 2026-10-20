@@ -1,0 +1,45 @@
+{%- comment -%}
+  Moving information band between chapters. CSS runs it on its own; zn.js takes over with
+  GSAP so it follows the scroll (faster when you scroll fast, reverses when you scroll up).
+  Screen readers get the list once; the moving copies are aria-hidden.
+  Reduced motion: a still, wrapped line.
+{%- endcomment -%}
+{%- liquid
+  assign items = section.settings.items | newline_to_br | split: '<br />'
+-%}
+<div class="zn-marquee zn-marquee--{{ section.settings.style }}{% if section.settings.tilt %} zn-marquee--tilt{% endif %}" data-zn-marquee data-direction="{{ section.settings.direction }}" style="--zn-marquee-speed: {{ section.settings.speed }}s;">
+  <ul class="zn-visually-hidden">
+    {%- for item in items -%}{%- assign t = item | strip -%}{%- if t != blank -%}<li>{{ t | escape }}</li>{%- endif -%}{%- endfor -%}
+  </ul>
+  <div class="zn-marquee__track" aria-hidden="true" data-zn-marquee-track>
+    {%- for copy in (1..2) -%}
+      <div class="zn-marquee__group">
+        {%- for rep in (1..2) -%}
+          {%- for item in items -%}
+            {%- assign t = item | strip -%}
+            {%- if t != blank -%}
+              <span class="zn-marquee__item">{{ t | escape }}</span>
+              {%- render 'zn-logo', variant: 'symbol', class_name: 'zn-marquee__sep' -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Noir · Banda",
+  "tag": "div",
+  "class": "zn-section zn-section--marquee",
+  "settings": [
+    { "type": "textarea", "id": "items", "label": "Mensajes (uno por línea)", "default": "Envío gratis a España\n14 días para cambiar de opinión\nGarantía legal de 3 años\nPago seguro" },
+    { "type": "select", "id": "style", "label": "Estilo", "options": [ { "value": "steel", "label": "Negro" }, { "value": "paper", "label": "Blanco" }, { "value": "outline", "label": "Grande" } ], "default": "steel" },
+    { "type": "select", "id": "direction", "label": "Dirección", "options": [ { "value": "-1", "label": "Hacia la izquierda" }, { "value": "1", "label": "Hacia la derecha" } ], "default": "-1" },
+    { "type": "range", "id": "speed", "label": "Duración de una vuelta (s)", "min": 20, "max": 90, "step": 5, "default": 45 },
+    { "type": "checkbox", "id": "tilt", "label": "Ligeramente inclinada", "default": false }
+  ],
+  "presets": [ { "name": "Noir · Banda" } ]
+}
+{% endschema %}

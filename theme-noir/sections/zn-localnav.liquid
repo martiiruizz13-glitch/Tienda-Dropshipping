@@ -1,0 +1,122 @@
+{%- comment -%}
+  Local product bar (52px, sticky). Title on the left; chapter links, the search pill
+  (it appears once the hero has scrolled away) and the single blue purchase pill on the right.
+{%- endcomment -%}
+<div class="zn-lnav" data-zn-header>
+  <div class="zn-lnav__inner">
+    <a class="zn-lnav__title" href="#MainContent">{{ section.settings.title | escape }}</a>
+    <nav class="zn-lnav__nav" aria-label="Productos">
+      <ul role="list">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}><a href="{{ block.settings.url }}" data-zn-nav-link>{{ block.settings.label | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+    <button class="zn-lnav__search" type="button" data-zn-search-open aria-haspopup="dialog" aria-controls="zn-search">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M15.2 15.2 20 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span class="zn-lnav__search-text">Buscar<span class="zn-lnav__search-long"> en Zaldori</span></span>
+      <kbd class="zn-lnav__kbd" aria-hidden="true">/</kbd>
+    </button>
+    <button class="zn-lnav__bag zn-cart-btn" type="button" data-zn-cart-open aria-haspopup="dialog" aria-controls="zn-cart">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5.5 8.5h13l-1 11.5h-11z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+      <span class="zn-visually-hidden">Carrito,</span>
+      <span class="zn-cart-count" data-zn-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+      <span class="zn-visually-hidden">artículos</span>
+    </button>
+    <a class="zn-pill zn-pill--buy zn-lnav__buy" href="{{ section.settings.buy_url }}">{{ section.settings.buy_label | escape }}</a>
+  </div>
+</div>
+
+{%- comment -%}
+  Search palette. Instant results from the store's products (index below, built by Liquid),
+  enriched by Shopify's predictive search when it answers. Enter on free text goes to /search.
+{%- endcomment -%}
+{%- liquid
+  assign suggest_list = section.settings.suggestions | split: ','
+-%}
+<dialog class="zn-search" id="zn-search" aria-label="Buscar productos" data-zn-search>
+  <div class="zn-search__panel">
+    <form class="zn-search__form" action="{{ routes.search_url }}" method="get" role="search" data-zn-search-form>
+      <svg class="zn-icon zn-search__glass" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <label class="zn-visually-hidden" for="zn-search-input">Buscar productos</label>
+      <input class="zn-search__input" id="zn-search-input" type="search" name="q" placeholder="{{ section.settings.placeholder | escape }}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"
+        role="combobox" aria-expanded="true" aria-controls="zn-search-list" aria-autocomplete="list" data-zn-search-input>
+      <input type="hidden" name="type" value="product">
+      <button class="zn-search__close" type="button" data-zn-search-close>
+        <span aria-hidden="true">Esc</span><span class="zn-visually-hidden">Cerrar búsqueda</span>
+      </button>
+    </form>
+
+    {%- if suggest_list.size > 0 -%}
+      <div class="zn-search__chips">
+        <p class="zn-search__k" id="zn-search-chips-label">Búsquedas rápidas</p>
+        <ul role="list" aria-labelledby="zn-search-chips-label">
+          {%- for chip in suggest_list -%}
+            {%- assign c = chip | strip -%}
+            {%- if c != blank -%}<li><button type="button" class="zn-search__chip" data-zn-search-chip="{{ c | escape }}">{{ c | escape }}</button></li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    <p class="zn-search__k" id="zn-search-list-label" data-zn-search-heading>Nuestros objetos</p>
+    <ul class="zn-search__list" id="zn-search-list" role="listbox" aria-labelledby="zn-search-list-label" data-zn-search-list></ul>
+    <p class="zn-search__empty" data-zn-search-empty hidden></p>
+    <p class="zn-visually-hidden" aria-live="polite" data-zn-search-status></p>
+    <a class="zn-search__all" href="{{ routes.search_url }}" data-zn-search-all hidden>
+      <span data-zn-search-all-text>Ver todos los resultados</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</dialog>
+
+<script type="application/json" data-zn-search-index>
+  [
+    {%- for p in collections.all.products limit: 24 -%}
+      {%- assign p_name = p.title | split: ' · ' | first -%}
+      {%- assign p_sub = p.title | split: ' · ' | last -%}
+      {%- capture p_words -%}{{ p.title }} {{ p.type }} {{ p.vendor }} {{ p.tags | join: ' ' }} {% for o in p.options_with_values %}{{ o.values | join: ' ' }} {% endfor %}{{ p.description | strip_html | truncatewords: 80, '' }}{%- endcapture -%}
+      {
+        "handle": {{ p.handle | json }},
+        "name": {{ p_name | json }},
+        "sub": {% if p_sub != p_name %}{{ p_sub | json }}{% else %}{{ p.type | json }}{% endif %},
+        "url": {{ p.url | json }},
+        "price": {{ p.price | money | json }},
+        "from": {% if p.price_varies %}true{% else %}false{% endif %},
+        "image": {% if p.featured_image %}{{ p.featured_image | image_url: width: 160 | json }}{% else %}null{% endif %},
+        "words": {{ p_words | strip_newlines | json }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+</script>
+
+{% schema %}
+{
+  "name": "Noir · Barra local",
+  "class": "zn-lnav-section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Título", "default": "Zaldori" },
+    { "type": "text", "id": "buy_label", "label": "Botón", "default": "Comprar" },
+    { "type": "text", "id": "buy_url", "label": "Destino del botón", "default": "#elige" },
+    { "type": "text", "id": "placeholder", "label": "Texto del buscador", "default": "Busca un producto, una zona, un color…" },
+    { "type": "text", "id": "suggestions", "label": "Búsquedas rápidas", "info": "Separadas por comas.", "default": "Proteínas, Espalda, Pies, Rosa" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Enlace",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "Vortix" },
+        { "type": "text", "id": "url", "label": "Destino", "default": "#vortix" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "link", "settings": { "label": "Vortix", "url": "#vortix" } },
+      { "type": "link", "settings": { "label": "TermoCalm", "url": "#termocalm" } },
+      { "type": "link", "settings": { "label": "Pulsia", "url": "#pulsia" } }
+    ]
+  }
+}
+{% endschema %}

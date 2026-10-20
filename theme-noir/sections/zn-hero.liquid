@@ -1,0 +1,70 @@
+{%- comment -%}
+  Hero product stage: full-bleed black, the three products as one isolated lineup,
+  the launch line low on the left and a dark price capsule with the blue purchase pill.
+{%- endcomment -%}
+{%- liquid
+  assign from_price = nil
+  for p in collections.all.products limit: 24
+    if from_price == nil or p.price_min < from_price
+      assign from_price = p.price_min
+    endif
+  endfor
+-%}
+<section class="zn-hero" data-zn-hero aria-labelledby="zn-hero-title-{{ section.id }}">
+  <div class="zn-hero__visual" data-zn-hero-visual>
+    {%- if section.settings.image != blank -%}
+      {%- render 'zn-image', image: section.settings.image, sizes: '(min-width: 1068px) 78vw, 100vw', alt: section.settings.alt, class_name: 'zn-hero__img', priority: true -%}
+    {%- else -%}
+      <picture>
+        {%- if section.settings.asset_mobile != blank -%}
+          <source media="(max-width: 733px)" srcset="{{ section.settings.asset_mobile | asset_img_url: '600x' }} 600w, {{ section.settings.asset_mobile | asset_img_url: '900x' }} 900w, {{ section.settings.asset_mobile | asset_img_url: '1200x' }} 1200w" sizes="100vw" width="1200" height="1320">
+        {%- endif -%}
+        <img class="zn-hero__img" src="{{ section.settings.asset | asset_img_url: '1600x' }}"
+          srcset="{{ section.settings.asset | asset_img_url: '900x' }} 900w, {{ section.settings.asset | asset_img_url: '1200x' }} 1200w, {{ section.settings.asset | asset_img_url: '1600x' }} 1600w, {{ section.settings.asset | asset_img_url: '2000x' }} 2000w, {{ section.settings.asset | asset_img_url: '2400x' }} 2400w"
+          sizes="(min-width: 1068px) 78vw, 100vw" width="2400" height="1100" alt="{{ section.settings.alt | escape }}" fetchpriority="high" decoding="async">
+      </picture>
+    {%- endif -%}
+  </div>
+  <div class="zn-hero__copy zn-wrap">
+    {%- if section.settings.badge != blank -%}<p class="zn-badge" data-zn-fade>{{ section.settings.badge | escape }}</p>{%- endif -%}
+    <p class="zn-hero__eyebrow" data-zn-fade>{{ section.settings.eyebrow | escape }}</p>
+    <h1 class="zn-hero__title" id="zn-hero-title-{{ section.id }}" data-zn-hero-title>
+      {%- for i in (1..3) -%}
+        {%- capture key %}line_{{ i }}{% endcapture -%}
+        {%- if section.settings[key] != blank %}<span class="zn-mask"><span class="zn-mask__in">{{ section.settings[key] | escape }}</span></span>{% unless forloop.last %} {% endunless %}{% endif -%}
+      {%- endfor -%}
+    </h1>
+    {%- if section.settings.text != blank -%}<p class="zn-hero__lede" data-zn-fade>{{ section.settings.text | escape }}</p>{%- endif -%}
+  </div>
+  <div class="zn-capsule zn-hero__capsule" data-zn-fade>
+    <p class="zn-capsule__text">
+      {%- if from_price -%}<span>Desde {{ from_price | money }}</span>{%- endif -%}
+      <span class="zn-capsule__sub">{{ section.settings.capsule | escape }}</span>
+    </p>
+    <a class="zn-pill zn-pill--buy" href="{{ section.settings.cta_url }}" data-zn-magnetic>{{ section.settings.cta_label | escape }}</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Noir · Portada",
+  "tag": "div",
+  "class": "zn-section zn-section--hero",
+  "settings": [
+    { "type": "text", "id": "badge", "label": "Etiqueta", "default": "Disponible" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Vortix · TermoCalm · Pulsia" },
+    { "type": "text", "id": "line_1", "label": "Titular, línea 1", "default": "Mezcla." },
+    { "type": "text", "id": "line_2", "label": "Titular, línea 2", "default": "Calienta." },
+    { "type": "text", "id": "line_3", "label": "Titular, línea 3", "default": "Descansa." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Tres objetos para tu día. Elige el tuyo y llévatelo desde aquí." },
+    { "type": "text", "id": "capsule", "label": "Texto de la cápsula", "default": "Envío gratis a España" },
+    { "type": "text", "id": "cta_label", "label": "Botón", "default": "Comprar" },
+    { "type": "text", "id": "cta_url", "label": "Destino del botón", "default": "#elige" },
+    { "type": "image_picker", "id": "image", "label": "Imagen" },
+    { "type": "text", "id": "asset", "label": "Imagen del tema", "default": "zn-familia.jpg" },
+    { "type": "text", "id": "asset_mobile", "label": "Imagen del tema en móvil", "default": "zn-familia-movil.jpg" },
+    { "type": "text", "id": "alt", "label": "Texto alternativo", "default": "TermoCalm, Pulsia y Vortix sobre fondo negro" }
+  ],
+  "presets": [ { "name": "Noir · Portada" } ]
+}
+{% endschema %}

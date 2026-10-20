@@ -1,0 +1,70 @@
+<footer class="zn-footer" aria-labelledby="zn-footer-title">
+  <div class="zn-wrap">
+    <h2 class="zn-visually-hidden" id="zn-footer-title">Pie de página</h2>
+    <div class="zn-footer__top">
+      <a class="zn-footer__logo" href="{{ routes.root_url }}" aria-label="Zaldori, inicio">
+        {%- render 'zn-logo', variant: 'full' -%}
+      </a>
+      <p class="zn-footer__claim">{{ section.settings.claim | escape }}</p>
+    </div>
+
+    <div class="zn-footer__cols">
+      <nav class="zn-footer__col" aria-label="Productos en el pie de página">
+        <h3 class="zn-footer__h">Productos</h3>
+        <ul role="list">
+          {%- for p in collections.all.products limit: 8 -%}
+            <li><a href="{{ p.url }}">{{ p.title | split: ' · ' | first | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+      <nav class="zn-footer__col" aria-label="Ayuda">
+        <h3 class="zn-footer__h">Ayuda</h3>
+        <ul role="list">
+          <li><a href="#ayuda">Preguntas frecuentes</a></li>
+          <li><a href="#confianza">Envíos y devoluciones</a></li>
+          <li><a href="{{ routes.cart_url }}">Carrito</a></li>
+          {%- if section.settings.contact_page != blank -%}
+            <li><a href="{{ section.settings.contact_page.url }}">Contacto</a></li>
+          {%- endif -%}
+        </ul>
+      </nav>
+      <nav class="zn-footer__col" aria-label="Legal">
+        <h3 class="zn-footer__h">Legal</h3>
+        <ul role="list">
+          {%- for policy in shop.policies -%}
+            {%- if policy != blank -%}
+              <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+      <div class="zn-footer__col">
+        <h3 class="zn-footer__h">Atención al cliente</h3>
+        <p><a class="zn-footer__mail" href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></p>
+      </div>
+    </div>
+
+    <div class="zn-footer__bottom">
+      <p>© {{ 'now' | date: '%Y' }} Zaldori</p>
+      {%- if shop.enabled_payment_types.size > 0 -%}
+        <ul class="zn-payments" role="list" aria-label="Métodos de pago aceptados">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'zn-payments__icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Noir · Pie",
+  "class": "zn-footer-section",
+  "settings": [
+    { "type": "text", "id": "claim", "label": "Frase", "default": "Mezcla. Calienta. Descansa." },
+    { "type": "text", "id": "email", "label": "Email", "default": "support@zaldori.com" },
+    { "type": "page", "id": "contact_page", "label": "Página de contacto" }
+  ]
+}
+{% endschema %}

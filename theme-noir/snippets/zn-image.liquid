@@ -1,0 +1,41 @@
+{%- comment -%}
+  Responsive image for Zaldori sections.
+  Params:
+  - image: image object (setting, media.preview_image, variant.featured_media.preview_image)
+  - asset: theme asset filename, used when image is blank (e.g. 'zn-tc-hero.jpg')
+  - asset_width / asset_height: intrinsic size of the asset, for width/height attributes
+  - sizes: sizes attribute
+  - alt: alt text (falls back to image.alt)
+  - class_name, loading ('lazy' default), priority (true for LCP image)
+{%- endcomment -%}
+{%- liquid
+  assign loading = loading | default: 'lazy'
+  assign sizes = sizes | default: '100vw'
+  if priority
+    assign loading = 'eager'
+  endif
+-%}
+{%- if image -%}
+  {%- liquid
+    assign img_alt = alt | default: image.alt | escape
+    if priority
+      assign fp = 'high'
+    else
+      assign fp = 'auto'
+    endif
+  -%}
+  {{- image | image_url: width: 2400 | image_tag: widths: '360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2400', sizes: sizes, loading: loading, fetchpriority: fp, decoding: 'async', class: class_name, alt: img_alt -}}
+{%- elsif asset != blank -%}
+  <img
+    src="{{ asset | asset_img_url: '1200x' }}"
+    srcset="{{ asset | asset_img_url: '540x' }} 540w, {{ asset | asset_img_url: '900x' }} 900w, {{ asset | asset_img_url: '1200x' }} 1200w, {{ asset | asset_img_url: '1600x' }} 1600w, {{ asset | asset_img_url: '2000x' }} 2000w"
+    sizes="{{ sizes }}"
+    width="{{ asset_width | default: 1600 }}"
+    height="{{ asset_height | default: 1600 }}"
+    alt="{{ alt | escape }}"
+    loading="{{ loading }}"
+    decoding="async"
+    {% if priority %}fetchpriority="high"{% endif %}
+    {% if class_name != blank %}class="{{ class_name }}"{% endif %}
+  >
+{%- endif -%}

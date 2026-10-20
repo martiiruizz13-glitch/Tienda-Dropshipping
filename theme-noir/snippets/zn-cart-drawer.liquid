@@ -1,0 +1,47 @@
+{%- comment -%}
+  Cart drawer. Server-renders the current cart so it is correct before JavaScript;
+  zn.js re-renders the list from /cart.js after every change.
+{%- endcomment -%}
+<dialog class="zn-cart " id="zn-cart" aria-labelledby="zn-cart-title" data-zn-cart>
+  <div class="zn-cart__panel">
+    <header class="zn-cart__head">
+      <h2 class="zn-cart__title" id="zn-cart-title">Tu carrito <span class="zn-cart__count" data-zn-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span></h2>
+      <button class="zn-icon-btn" type="button" data-zn-cart-close>
+        <svg class="zn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        <span class="zn-visually-hidden">Cerrar carrito</span>
+      </button>
+    </header>
+
+    <p class="zn-visually-hidden" aria-live="polite" data-zn-cart-status></p>
+
+    <div class="zn-cart__body" data-zn-cart-body>
+      {%- if cart.item_count == 0 -%}
+        <p class="zn-cart__empty">Tu carrito está vacío.</p>
+      {%- else -%}
+        <ul class="zn-cart__items" role="list">
+          {%- for item in cart.items -%}
+            <li class="zn-cart__item" data-key="{{ item.key }}">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 160 | image_tag: class: 'zn-cart__img', loading: 'lazy', alt: '', width: 80, height: 80 }}
+              {%- endif -%}
+              <div class="zn-cart__info">
+                <p class="zn-cart__name">{{ item.product.title | split: ' · ' | first | escape }}</p>
+                {%- unless item.product.has_only_default_variant -%}<p class="zn-cart__variant">{{ item.variant.title | escape }}</p>{%- endunless -%}
+                <p class="zn-cart__line">{{ item.final_line_price | money }}</p>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <footer class="zn-cart__foot" data-zn-cart-foot {% if cart.item_count == 0 %}hidden{% endif %}>
+      <p class="zn-cart__subtotal"><span>Subtotal</span> <span data-zn-cart-subtotal>{{ cart.total_price | money }}</span></p>
+      <p class="zn-cart__taxes">Impuestos incluidos. Gastos de envío calculados en la pantalla de pago.</p>
+      <form action="{{ routes.cart_url }}" method="post">
+        <button class="zn-btn zn-btn--primary zn-btn--block" type="submit" name="checkout">Finalizar compra</button>
+      </form>
+      <a class="zn-link zn-cart__view" href="{{ routes.cart_url }}">Ver carrito</a>
+    </footer>
+  </div>
+</dialog>

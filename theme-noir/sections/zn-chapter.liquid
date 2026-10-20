@@ -1,0 +1,462 @@
+{%- comment -%}
+  Product chapter. One section type, three compositions:
+  - expand:    cinematic image expansion (scrubbed), staggered editorial features
+  - editorial: asymmetric sticky photo + long-form features + heat/level scale
+  - parallax:  layered photo collage at different depths + chips list
+  Every chapter ends with the real buy box and the product FAQ.
+{%- endcomment -%}
+{%- liquid
+  assign product = section.settings.product
+  assign pattern = section.settings.pattern
+  if product != blank
+    assign title_parts = product.title | split: ' · '
+    assign name = title_parts.first
+  else
+    assign name = section.settings.title
+  endif
+  if section.settings.title != blank
+    assign name = section.settings.title
+  endif
+
+  assign features = section.blocks | where: 'type', 'feature'
+  assign faqs = section.blocks | where: 'type', 'faq'
+  assign scales = section.blocks | where: 'type', 'scale'
+  assign chips = section.blocks | where: 'type', 'chips'
+  assign compares = section.blocks | where: 'type', 'compare'
+  assign tensions = section.blocks | where: 'type', 'tension'
+  assign review_heads = section.blocks | where: 'type', 'reviews'
+
+  assign rating = nil
+  assign rating_count = 0
+  if product != blank and product.metafields.reviews.rating_count.value > 0
+    assign rating = product.metafields.reviews.rating.value
+    assign rating_count = product.metafields.reviews.rating_count.value
+  endif
+
+  comment
+    Visual sources: image picker first, then a product photo by position, then a theme asset.
+  endcomment
+  assign v1_index = section.settings.v1_media | minus: 1
+  assign v2_index = section.settings.v2_media | minus: 1
+  assign v3_index = section.settings.v3_media | minus: 1
+  assign v4_index = section.settings.v4_media | minus: 1
+  assign v1 = section.settings.v1_image
+  assign v2 = section.settings.v2_image
+  assign v3 = section.settings.v3_image
+  assign v4 = section.settings.v4_image
+  if product != blank
+    if v1 == blank and section.settings.v1_asset == blank and product.media.size > v1_index
+      assign v1 = product.media[v1_index].preview_image
+    endif
+    if v2 == blank and section.settings.v2_asset == blank and product.media.size > v2_index
+      assign v2 = product.media[v2_index].preview_image
+    endif
+    if v3 == blank and section.settings.v3_asset == blank and product.media.size > v3_index
+      assign v3 = product.media[v3_index].preview_image
+    endif
+    if v4 == blank and section.settings.v4_asset == blank and product.media.size > v4_index
+      assign v4 = product.media[v4_index].preview_image
+    endif
+  endif
+-%}
+
+<section class="zn-ch zn-ch--{{ pattern }}" id="{{ section.settings.anchor }}" data-zn-chapter{% if product != blank %} data-zn-handle="{{ product.handle }}"{% endif %} data-pattern="{{ pattern }}" style="--ch-tint: {{ section.settings.tint }}; --ch-deep: {{ section.settings.deep }};" aria-labelledby="zn-ch-title-{{ section.id }}">
+
+  {%- capture head -%}
+    <header class="zn-ch__head zn-wrap">
+      <p class="zn-ch__eyebrow" data-zn-fade>Nº {{ section.settings.number }}</p>
+      <h2 class="zn-ch__title" id="zn-ch-title-{{ section.id }}"><span class="zn-mask" data-zn-mask><span class="zn-mask__in">{{ name | escape }}</span></span></h2>
+      {%- if section.settings.lede != blank -%}
+        <p class="zn-ch__lede" data-zn-fade>{{ section.settings.lede | escape }}</p>
+      {%- endif -%}
+      <div class="zn-ch__cta" data-zn-fade>
+        <a class="zn-pill zn-pill--buy" href="#{{ section.settings.anchor }}-comprar">Comprar<span class="zn-visually-hidden"> {{ name | escape }}</span></a>
+        {%- if product != blank -%}<span class="zn-ch__from">{% if product.price_varies %}Desde {% endif %}{{ product.price_min | money }}</span>{%- endif -%}
+      </div>
+    </header>
+  {%- endcapture -%}
+
+  {%- capture tiles_html -%}
+    {%- if features.size > 0 or scales.size > 0 or chips.size > 0 -%}
+      <div class="zn-wrap">
+        <div class="zn-module zn-tiles-module">
+          <h3 class="zn-module__title" data-zn-lines>{{ section.settings.tiles_heading | default: 'Lo esencial.' | escape }}</h3>
+          <ul class="zn-tiles" role="list">
+            {%- for block in features -%}
+              <li class="zn-tile{% if block.settings.figure != blank %} zn-tile--metric{% endif %}" {{ block.shopify_attributes }} data-zn-fade>
+                {%- if block.settings.figure != blank -%}
+                  {%- assign unit = block.settings.unit | downcase -%}
+                  <p class="zn-tile__fig{% if unit == 'mah' %} zn-tile__fig--vital{% endif %}"><span class="zn-feat__val">{{ block.settings.figure | escape }}</span>{% if block.settings.unit != blank %} <span class="zn-tile__unit">{{ block.settings.unit | escape }}</span>{% endif %}</p>
+                {%- endif -%}
+                <h4 class="zn-tile__title">{{ block.settings.title | escape }}</h4>
+                <p class="zn-tile__text">{{ block.settings.text | escape }}</p>
+              </li>
+            {%- endfor -%}
+            {%- for block in scales -%}
+              {%- assign steps = block.settings.steps -%}
+              <li class="zn-tile zn-tile--wide" {{ block.shopify_attributes }} data-zn-fade>
+                <figure class="zn-scale" data-zn-scale>
+                  <figcaption class="zn-tile__title">{{ block.settings.caption | escape }}</figcaption>
+                  <ol class="zn-scale__steps" role="list" style="--steps: {{ steps }};">
+                    {%- for i in (1..steps) -%}<li class="zn-scale__step" style="--i: {{ i }};"><span>{{ i }}</span></li>{%- endfor -%}
+                  </ol>
+                  <p class="zn-scale__ends"><span>{{ block.settings.from | escape }}</span><span>{{ block.settings.to | escape }}</span></p>
+                </figure>
+              </li>
+            {%- endfor -%}
+            {%- for block in chips -%}
+              <li class="zn-tile zn-tile--wide" {{ block.shopify_attributes }} data-zn-fade>
+                <h4 class="zn-tile__title">{{ block.settings.title | escape }}</h4>
+                <ul class="zn-chips" role="list">
+                  {%- assign items = block.settings.items | newline_to_br | split: '<br />' -%}
+                  {%- for item in items -%}{%- assign it = item | strip -%}{%- if it != blank -%}<li>{{ it | escape }}</li>{%- endif -%}{%- endfor -%}
+                </ul>
+                {%- if block.settings.note != blank -%}<p class="zn-tile__text">{{ block.settings.note | escape }}</p>{%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture specs_html -%}
+    {%- if section.settings.specs != blank -%}
+      {%- assign spec_lines = section.settings.specs | newline_to_br | split: '<br />' -%}
+      <h3 class="zn-specs__title">Ficha técnica</h3>
+      <dl class="zn-specs" data-zn-fade>
+        {%- for line in spec_lines -%}
+          {%- assign pair = line | strip | split: ':' -%}
+          {%- if pair.size > 1 -%}
+            <div class="zn-specs__row"><dt>{{ pair.first | strip | escape }}</dt><dd>{{ pair | slice: 1, 9 | join: ':' | strip | escape }}</dd></div>
+          {%- endif -%}
+        {%- endfor -%}
+      </dl>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture faq_html -%}
+    {%- if faqs.size > 0 -%}
+      <div class="zn-faq">
+        <h3 class="zn-faq__title">Preguntas sobre {{ name | escape }}</h3>
+        {%- for block in faqs -%}
+          <details class="zn-faq__item" {{ block.shopify_attributes }}>
+            <summary class="zn-faq__q"><span>{{ block.settings.question | escape }}</span><span class="zn-faq__icon" aria-hidden="true"></span></summary>
+            <div class="zn-faq__a zn-rte">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  {%- endcapture -%}
+
+
+  {%- capture compare_html -%}
+    {%- for block in compares -%}
+      {%- liquid
+        assign b_index = block.settings.before_media | minus: 1
+        assign a_index = block.settings.after_media | minus: 1
+        assign b_img = block.settings.before_image
+        assign a_img = block.settings.after_image
+        if product != blank
+          if b_img == blank and block.settings.before_asset == blank and block.settings.before_media > 0 and product.media.size > b_index
+            assign b_img = product.media[b_index].preview_image
+          endif
+          if a_img == blank and block.settings.after_asset == blank and block.settings.after_media > 0 and product.media.size > a_index
+            assign a_img = product.media[a_index].preview_image
+          endif
+        endif
+      -%}
+      <div class="zn-card zn-ab" {{ block.shopify_attributes }}>
+        <div class="zn-ab__text" data-zn-fade>
+          <h3 class="zn-ab__title">{{ block.settings.title | escape }}</h3>
+          {%- if block.settings.text != blank -%}<p class="zn-ab__lede">{{ block.settings.text | escape }}</p>{%- endif -%}
+          <p class="zn-ab__hint" aria-hidden="true">Desliza para comparar</p>
+          {%- if block.settings.note != blank -%}<p class="zn-ab__note">{{ block.settings.note | escape }}</p>{%- endif -%}
+        </div>
+        <div class="zn-ab__media">
+          {%- render 'zn-compare',
+            id: block.id,
+            before: b_img, after: a_img,
+            before_asset: block.settings.before_asset, after_asset: block.settings.after_asset,
+            before_label: block.settings.before_label, after_label: block.settings.after_label,
+            alt_before: block.settings.before_alt, alt_after: block.settings.after_alt,
+            ratio: block.settings.ratio,
+            blend: block.settings.blend
+          -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- capture tension_html -%}
+    {%- for block in tensions -%}
+      <div class="zn-card zn-ab zn-ab--tension" {{ block.shopify_attributes }}>
+        <div class="zn-ab__text" data-zn-fade>
+          <h3 class="zn-ab__title">{{ block.settings.title | escape }}</h3>
+          {%- if block.settings.text != blank -%}<p class="zn-ab__lede">{{ block.settings.text | escape }}</p>{%- endif -%}
+          <p class="zn-ab__hint" aria-hidden="true">Desliza para encenderla</p>
+          {%- if block.settings.note != blank -%}<p class="zn-ab__note">{{ block.settings.note | escape }}</p>{%- endif -%}
+        </div>
+        <div class="zn-ab__media">
+          {%- render 'zn-tension', id: block.id, before_label: block.settings.before_label, after_label: block.settings.after_label, levels: block.settings.levels, from_label: block.settings.from_label, to_label: block.settings.to_label, states: block.settings.states -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- capture compare_html -%}{{ tension_html }}{{ compare_html }}{%- endcapture -%}
+
+  {%- capture reviews_html -%}
+    {%- assign app_blocks = section.blocks | where: 'type', '@app' -%}
+    {%- assign rh = review_heads.first -%}
+    {%- if rh -%}
+      {%- if rating_count > 0 or app_blocks.size > 0 or rh.settings.show_empty or request.design_mode -%}
+        <div class="zn-reviews" id="{{ section.settings.anchor }}-opiniones" {{ rh.shopify_attributes }}>
+          <div class="zn-reviews__head">
+            <h3 class="zn-reviews__title">{{ rh.settings.title | escape }}</h3>
+            {%- if rating_count > 0 -%}
+              <div class="zn-reviews__score">
+                <p class="zn-reviews__value">{{ rating.rating | round: 1 | append: '' | replace: '.', ',' }}<span>/{{ rating.scale_max | round }}</span></p>
+                <div class="zn-reviews__meta">
+                  {%- render 'zn-stars', rating: rating.rating, max: rating.scale_max, size: 'lg' -%}
+                  <p>{{ rating_count }} {% if rating_count == 1 %}opinión{% else %}opiniones{% endif %} de clientes</p>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+          {%- if app_blocks.size > 0 -%}
+            <div class="zn-reviews__app">
+              {%- for block in app_blocks -%}{% render block %}{%- endfor -%}
+            </div>
+          {%- elsif rating_count == 0 -%}
+            <p class="zn-reviews__empty">
+              {{ rh.settings.empty_text | escape }}
+              {%- if request.design_mode %}<span class="zn-reviews__todo">[PENDIENTE: instala la app de reseñas y añade su bloque «Reviews widget» aquí]</span>{% endif -%}
+            </p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture buy_html -%}
+    {%- if product != blank -%}
+      {%- render 'zn-buybox', product: product, section_id: section.id, number: section.settings.number, note: section.settings.note, layout: section.settings.buy_layout, rating: rating, rating_count: rating_count, reviews_anchor: section.settings.anchor -%}
+    {%- else -%}
+      <p class="zn-empty">Elige un producto en los ajustes de esta sección.</p>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {{ head }}
+
+  {%- case pattern -%}
+    {%- when 'expand' -%}
+      <div class="zn-expand" data-zn-expand>
+        <div class="zn-expand__frame" data-zn-expand-frame>
+          <div class="zn-expand__media" data-zn-expand-media>
+            {%- render 'zn-image', image: v1, asset: section.settings.v1_asset, asset_width: section.settings.v1_w, asset_height: section.settings.v1_h, sizes: '100vw', class_name: 'zn-expand__img', alt: section.settings.v1_alt -%}
+          </div>
+          {%- if section.settings.statement != blank -%}
+            <p class="zn-expand__statement" data-zn-expand-statement>{{ section.settings.statement | escape }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+
+    {%- when 'editorial' -%}
+      <div class="zn-wrap">
+        <div class="zn-card zn-duo" data-zn-fade>
+          <figure class="zn-duo__media">
+            <div class="zn-duo__frame" data-zn-parallax-inner>
+              {%- render 'zn-image', image: v1, asset: section.settings.v1_asset, asset_width: section.settings.v1_w, asset_height: section.settings.v1_h, sizes: '(min-width: 990px) 50vw, 100vw', class_name: 'zn-duo__img', alt: section.settings.v1_alt -%}
+            </div>
+          </figure>
+          <div class="zn-duo__copy">
+            {%- if section.settings.statement != blank -%}<p class="zn-duo__statement" data-zn-lines>{{ section.settings.statement | escape }}</p>{%- endif -%}
+            {%- if v2 != blank or section.settings.v2_asset != blank -%}
+              <div class="zn-duo__thumb">
+                {%- render 'zn-image', image: v2, asset: section.settings.v2_asset, asset_width: section.settings.v2_w, asset_height: section.settings.v2_h, sizes: '(min-width: 990px) 22vw, 60vw', class_name: 'zn-duo__thumb-img', alt: section.settings.v2_alt -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+    {%- when 'parallax' -%}
+      <div class="zn-wrap">
+        <div class="zn-bento" data-zn-collage>
+          <figure class="zn-card zn-bento__item zn-bento__item--a" data-zn-depth="-0.06">
+            {%- render 'zn-image', image: v1, asset: section.settings.v1_asset, asset_width: section.settings.v1_w, asset_height: section.settings.v1_h, sizes: '(min-width: 990px) 60vw, 100vw', class_name: 'zn-bento__img', alt: section.settings.v1_alt -%}
+          </figure>
+          <figure class="zn-card zn-bento__item zn-bento__item--b" data-zn-depth="0.08">
+            {%- render 'zn-image', image: v2, asset: section.settings.v2_asset, asset_width: section.settings.v2_w, asset_height: section.settings.v2_h, sizes: '(min-width: 990px) 30vw, 50vw', class_name: 'zn-bento__img', alt: section.settings.v2_alt -%}
+          </figure>
+          <figure class="zn-card zn-bento__item zn-bento__item--c" data-zn-depth="0.14">
+            {%- render 'zn-image', image: v3, asset: section.settings.v3_asset, sizes: '(min-width: 990px) 30vw, 50vw', class_name: 'zn-bento__img', alt: section.settings.v3_alt -%}
+          </figure>
+          {%- if section.settings.statement != blank -%}
+            <div class="zn-card zn-bento__item zn-bento__item--d zn-bento__statement" data-zn-depth="0.04"><p data-zn-lines>{{ section.settings.statement | escape }}</p></div>
+          {%- endif -%}
+        </div>
+      </div>
+  {%- endcase -%}
+
+  {{ tiles_html }}
+
+  {%- if compare_html != blank -%}<div class="zn-wrap zn-ch__compare">{{ compare_html }}</div>{%- endif -%}
+
+  <div class="zn-commerce" id="{{ section.settings.anchor }}-comprar">
+    <div class="zn-wrap">
+      <div class="zn-commerce__head">
+        <h3 class="zn-commerce__title" data-zn-lines>Compra {{ name | escape }}.</h3>
+      </div>
+      <div class="zn-module zn-commerce__module">{{ buy_html }}</div>
+      {%- if reviews_html != blank -%}<div class="zn-commerce__reviews">{{ reviews_html }}</div>{%- endif -%}
+    </div>
+  </div>
+
+  {%- if specs_html != blank or faq_html != blank -%}
+    <div class="zn-wrap zn-ch__info">
+      <div class="zn-ch__specs">{{ specs_html }}</div>
+      <div class="zn-ch__faq">{{ faq_html }}</div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Noir · Capítulo",
+  "tag": "div",
+  "class": "zn-section zn-section--chapter",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto" },
+    { "type": "select", "id": "pattern", "label": "Composición", "options": [
+      { "value": "expand", "label": "Expansión cinematográfica" },
+      { "value": "editorial", "label": "Editorial asimétrica" },
+      { "value": "parallax", "label": "Collage con profundidad" }
+    ], "default": "expand" },
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "vortix" },
+    { "type": "text", "id": "number", "label": "Número de sala", "default": "01" },
+    { "type": "text", "id": "title", "label": "Nombre (vacío = nombre del producto)" },
+    { "type": "textarea", "id": "lede", "label": "Entradilla" },
+    { "type": "text", "id": "statement", "label": "Frase sobre la imagen" },
+    { "type": "text", "id": "tiles_heading", "label": "Título de las claves", "default": "Lo esencial." },
+    { "type": "textarea", "id": "specs", "label": "Ficha técnica", "info": "Una línea por dato, con el formato Dato: valor" },
+    { "type": "text", "id": "note", "label": "Nota bajo el botón", "default": "Envío gratis a España · 14 días para cambiar de opinión" },
+    { "type": "select", "id": "buy_layout", "label": "Bloque de compra", "options": [ { "value": "split", "label": "Foto y datos" }, { "value": "stacked", "label": "Apilado" } ], "default": "split" },
+    { "type": "color", "id": "tint", "label": "Color de la sala", "default": "#DDE3D8" },
+    { "type": "color", "id": "deep", "label": "Color profundo", "default": "#3F4A3E" },
+    { "type": "header", "content": "Imágenes" },
+    { "type": "checkbox", "id": "lineup", "label": "Mostrar tres fotos en fila", "info": "Solo en la composición de expansión y si la imagen 1 está vacía", "default": false },
+    { "type": "image_picker", "id": "v1_image", "label": "Imagen 1" },
+    { "type": "range", "id": "v1_media", "label": "Imagen 1: si está vacía, foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 1 },
+    { "type": "text", "id": "v1_asset", "label": "Imagen 1: imagen del tema (avanzado)" },
+    { "type": "number", "id": "v1_w", "label": "Imagen 1: ancho" },
+    { "type": "number", "id": "v1_h", "label": "Imagen 1: alto" },
+    { "type": "text", "id": "v1_alt", "label": "Imagen 1: texto alternativo" },
+    { "type": "select", "id": "v1_fit", "label": "Imagen 1: encaje", "options": [ { "value": "cover", "label": "Llenar" }, { "value": "contain", "label": "Objeto sobre color" } ], "default": "cover" },
+    { "type": "image_picker", "id": "v2_image", "label": "Imagen 2" },
+    { "type": "range", "id": "v2_media", "label": "Imagen 2: foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 2 },
+    { "type": "text", "id": "v2_asset", "label": "Imagen 2: imagen del tema" },
+    { "type": "number", "id": "v2_w", "label": "Imagen 2: ancho" },
+    { "type": "number", "id": "v2_h", "label": "Imagen 2: alto" },
+    { "type": "text", "id": "v2_alt", "label": "Imagen 2: texto alternativo" },
+    { "type": "image_picker", "id": "v3_image", "label": "Imagen 3" },
+    { "type": "range", "id": "v3_media", "label": "Imagen 3: foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 3 },
+    { "type": "text", "id": "v3_asset", "label": "Imagen 3: imagen del tema" },
+    { "type": "text", "id": "v3_alt", "label": "Imagen 3: texto alternativo" },
+    { "type": "image_picker", "id": "v4_image", "label": "Imagen 4" },
+    { "type": "range", "id": "v4_media", "label": "Imagen 4: foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 4 },
+    { "type": "text", "id": "v4_asset", "label": "Imagen 4: imagen del tema" },
+    { "type": "text", "id": "v4_alt", "label": "Imagen 4: texto alternativo" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Característica",
+      "settings": [
+        { "type": "text", "id": "figure", "label": "Cifra (opcional)" },
+        { "type": "text", "id": "unit", "label": "Unidad (opcional)" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Característica" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    },
+    {
+      "type": "scale",
+      "name": "Escala de niveles",
+      "limit": 1,
+      "settings": [
+        { "type": "range", "id": "steps", "label": "Niveles", "min": 3, "max": 20, "step": 1, "default": 9 },
+        { "type": "text", "id": "caption", "label": "Título", "default": "9 niveles de calor" },
+        { "type": "text", "id": "from", "label": "Primer nivel", "default": "Tibio, unos 30 °C" },
+        { "type": "text", "id": "to", "label": "Último nivel", "default": "Intenso, unos 50 °C" }
+      ]
+    },
+    {
+      "type": "chips",
+      "name": "Lista corta",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Modos" },
+        { "type": "textarea", "id": "items", "label": "Elementos (uno por línea)" },
+        { "type": "text", "id": "note", "label": "Nota" }
+      ]
+    },
+    {
+      "type": "compare",
+      "name": "Antes y después",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Antes y después" },
+        { "type": "textarea", "id": "text", "label": "Texto" },
+        { "type": "text", "id": "note", "label": "Nota", "default": "Recreación ilustrativa." },
+        { "type": "text", "id": "before_label", "label": "Etiqueta izquierda", "default": "Antes" },
+        { "type": "text", "id": "after_label", "label": "Etiqueta derecha", "default": "Después" },
+        { "type": "select", "id": "ratio", "label": "Formato", "options": [ { "value": "landscape", "label": "Horizontal" }, { "value": "portrait", "label": "Vertical" }, { "value": "square", "label": "Cuadrado" } ], "default": "landscape" },
+        { "type": "checkbox", "id": "blend", "label": "Fotos con fondo blanco", "info": "Coloca el objeto sobre el color de la sala", "default": false },
+        { "type": "image_picker", "id": "before_image", "label": "Imagen izquierda" },
+        { "type": "range", "id": "before_media", "label": "Izquierda: foto del producto nº", "info": "0 = no usar", "min": 0, "max": 20, "step": 1, "default": 0 },
+        { "type": "text", "id": "before_asset", "label": "Izquierda: imagen del tema" },
+        { "type": "text", "id": "before_alt", "label": "Izquierda: texto alternativo" },
+        { "type": "image_picker", "id": "after_image", "label": "Imagen derecha" },
+        { "type": "range", "id": "after_media", "label": "Derecha: foto del producto nº", "info": "0 = no usar", "min": 0, "max": 20, "step": 1, "default": 0 },
+        { "type": "text", "id": "after_asset", "label": "Derecha: imagen del tema" },
+        { "type": "text", "id": "after_alt", "label": "Derecha: texto alternativo" }
+      ]
+    },
+    {
+      "type": "tension",
+      "name": "Calor y tensión",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Siente cómo se suelta" },
+        { "type": "textarea", "id": "text", "label": "Texto" },
+        { "type": "text", "id": "note", "label": "Nota", "default": "Ilustración de la sensación de calor. No es una medición ni un tratamiento médico." },
+        { "type": "text", "id": "before_label", "label": "Etiqueta izquierda", "default": "Antes" },
+        { "type": "text", "id": "after_label", "label": "Etiqueta derecha", "default": "Con TermoCalm" },
+        { "type": "range", "id": "levels", "label": "Niveles de calor", "min": 3, "max": 12, "step": 1, "default": 9 },
+        { "type": "text", "id": "from_label", "label": "Primer nivel", "default": "Tibio, unos 30 °C" },
+        { "type": "text", "id": "to_label", "label": "Último nivel", "default": "Intenso, unos 50 °C" },
+        { "type": "text", "id": "states", "label": "Sensaciones", "info": "Tres frases separadas por |", "default": "Rigidez en cuello y hombros|El calor empieza a envolver la espalda|Músculos relajados" }
+      ]
+    },
+    {
+      "type": "reviews",
+      "name": "Opiniones",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Opiniones" },
+        { "type": "text", "id": "empty_text", "label": "Texto sin opiniones", "default": "Todavía no hay opiniones publicadas. Cuando lleguen, aparecerán aquí tal cual nos las envíen." },
+        { "type": "checkbox", "id": "show_empty", "label": "Mostrar aunque no haya opiniones", "default": false }
+      ]
+    },
+    { "type": "@app" },
+    {
+      "type": "faq",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "Pregunta" },
+        { "type": "richtext", "id": "answer", "label": "Respuesta", "default": "<p>Respuesta</p>" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Noir · Capítulo" } ]
+}
+{% endschema %}

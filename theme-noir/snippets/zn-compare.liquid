@@ -1,0 +1,26 @@
+{%- comment -%}
+  Before/after slider. Drag (mouse or touch), click anywhere, or use the arrow keys
+  on the hidden range input, which also gives screen readers a real control.
+  Params: before, after (image objects), before_asset, after_asset (theme asset names),
+  before_label, after_label, ratio ('landscape' | 'portrait' | 'square'), id, alt_before, alt_after,
+  blend (true for product photos on white: they sit on the room tint)
+{%- endcomment -%}
+<div class="zn-compare zn-compare--{{ ratio | default: 'landscape' }}{% if blend %} zn-compare--blend{% endif %}" data-zn-compare>
+  <div class="zn-compare__stage" data-zn-compare-stage>
+    <div class="zn-compare__layer zn-compare__layer--before">
+      {%- render 'zn-image', image: before, asset: before_asset, asset_width: 1600, asset_height: 1000, sizes: '(min-width: 990px) 58vw, 92vw', class_name: 'zn-compare__img', alt: alt_before -%}
+    </div>
+    <div class="zn-compare__layer zn-compare__layer--after" data-zn-compare-after>
+      {%- render 'zn-image', image: after, asset: after_asset, asset_width: 1600, asset_height: 1000, sizes: '(min-width: 990px) 58vw, 92vw', class_name: 'zn-compare__img', alt: alt_after -%}
+    </div>
+    <span class="zn-compare__tag zn-compare__tag--before" aria-hidden="true">{{ before_label | escape }}</span>
+    <span class="zn-compare__tag zn-compare__tag--after" aria-hidden="true">{{ after_label | escape }}</span>
+    <div class="zn-compare__handle" data-zn-compare-handle aria-hidden="true">
+      <span class="zn-compare__knob">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </div>
+    <label class="zn-visually-hidden" for="zn-compare-{{ id }}">Desliza para comparar: {{ before_label | escape }} y {{ after_label | escape }}</label>
+    <input class="zn-compare__range" id="zn-compare-{{ id }}" type="range" min="0" max="100" value="50" step="1" data-zn-compare-range aria-valuetext="50 % {{ after_label | escape }}">
+  </div>
+</div>

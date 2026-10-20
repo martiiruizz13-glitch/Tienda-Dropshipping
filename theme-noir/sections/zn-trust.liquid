@@ -1,0 +1,53 @@
+{%- comment -%}
+  Store promises. Only content the store can back; anything unconfirmed is written
+  as [PENDIENTE: …] in the settings so the owner sees it before publishing.
+{%- endcomment -%}
+<section class="zn-trust" id="{{ section.settings.anchor }}" aria-labelledby="zn-trust-title-{{ section.id }}">
+  <div class="zn-wrap zn-trust__grid">
+    <h2 class="zn-h2 zn-trust__title" id="zn-trust-title-{{ section.id }}" data-zn-lines>{{ section.settings.heading | escape }}</h2>
+    <dl class="zn-trust__list">
+      {%- for block in section.blocks -%}
+        <div class="zn-trust__item" {{ block.shopify_attributes }} data-zn-fade>
+          <dt>{{ block.settings.title | escape }}</dt>
+          <dd>{{ block.settings.text | escape }}</dd>
+        </div>
+      {%- endfor -%}
+    </dl>
+    <div class="zn-trust__contact" data-zn-fade>
+      <p>{{ section.settings.contact_text | escape }}</p>
+      <a class="zn-trust__mail" href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+      {%- if shop.enabled_payment_types.size > 0 -%}
+        <ul class="zn-payments" role="list" aria-label="Métodos de pago aceptados">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'zn-payments__icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Noir · Confianza",
+  "tag": "div",
+  "class": "zn-section zn-section--trust",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "confianza" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Comprar aquí, sin dudas." },
+    { "type": "text", "id": "contact_text", "label": "Texto de contacto", "default": "¿Alguna pregunta antes o después de comprar? Escríbenos y te responde una persona." },
+    { "type": "text", "id": "email", "label": "Email", "default": "support@zaldori.com" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Promesa",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Envío gratis a España" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Noir · Confianza" } ]
+}
+{% endschema %}

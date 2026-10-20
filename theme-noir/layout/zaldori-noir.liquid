@@ -1,0 +1,105 @@
+<!doctype html>
+<html class="no-js{% if request.design_mode %} zn-design-mode{% endif %}" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <meta name="color-scheme" content="dark">
+    <meta name="format-detection" content="telephone=no">
+    {%- liquid
+      assign brand = 'Zaldori'
+      if request.page_type == 'index'
+        assign zn_title = 'Zaldori · Vortix, TermoCalm y Pulsia'
+        assign zn_description = 'Tres objetos para tu día: Vortix, vaso mezclador eléctrico; TermoCalm, almohadilla térmica; y Pulsia, alfombrilla de masaje EMS para pies. Envío gratis a España.'
+      else
+        assign zn_title = page_title | append: ' · ' | append: brand
+        assign zn_description = page_description | default: shop.description
+      endif
+    -%}
+    <title>{{ zn_title }}</title>
+    {%- if zn_description != blank %}
+      <meta name="description" content="{{ zn_description | strip_html | escape }}">
+    {%- endif %}
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta property="og:site_name" content="{{ brand }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:title" content="{{ zn_title | escape }}">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="{{ zn_description | strip_html | escape }}">
+    {%- if page_image %}
+      <meta property="og:image" content="https:{{ page_image | image_url: width: 1200 }}">
+    {%- else %}
+      <meta property="og:image" content="https:{{ 'zaldori-logo.png' | asset_url }}">
+    {%- endif %}
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" type="image/png" href="{{ 'zaldori-favicon.png' | asset_url }}">
+    <link rel="icon" type="image/svg+xml" href="{{ 'zaldori-symbol.svg' | asset_url }}">
+    <link rel="apple-touch-icon" href="{{ 'zaldori-apple-touch.png' | asset_url }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+
+    {{ 'zn.css' | asset_url | stylesheet_tag: preload: true }}
+
+    <script>
+      (function () {
+        var d = document.documentElement;
+        d.className = d.className.replace('no-js', 'js');
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var seen = false;
+        try { seen = sessionStorage.getItem('zn-intro') === '1'; } catch (e) {}
+        var editor = d.classList.contains('zn-design-mode');
+        if (!reduce && !editor) d.classList.add('zn-hero-pending');
+        if (!seen && !reduce && !editor) d.classList.add('zn-intro');
+      })();
+      window.ZN = {
+        moneyFormat: {{ shop.money_format | json }},
+        routes: {
+          cart: {{ routes.cart_url | json }},
+          cartAdd: {{ routes.cart_add_url | json }},
+          cartChange: {{ routes.cart_change_url | json }},
+          predictiveSearch: {{ routes.predictive_search_url | json }}
+        },
+        strings: {
+          add: 'Añadir al carrito',
+          adding: 'Añadiendo…',
+          added: 'Añadido',
+          soldOut: 'Agotado',
+          unavailable: 'No disponible',
+          error: 'No hemos podido añadirlo. Inténtalo de nuevo.',
+          empty: 'Tu carrito está vacío.',
+          remove: 'Quitar',
+          available: 'Disponible',
+          lastUnits: 'Disponible · pocas unidades'
+        }
+      };
+    </script>
+    <script src="{{ 'gsap.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'ScrollTrigger.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'SplitText.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'lenis.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'zn.js' | asset_url }}" defer></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="zn">
+    <a class="zn-skip" href="#MainContent">Saltar al contenido</a>
+
+    {%- render 'zn-preloader' -%}
+
+    {% section 'zn-globalnav' %}
+    {% section 'zn-localnav' %}
+
+    <main id="MainContent" class="zn-main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'zn-footer' %}
+
+    {%- render 'zn-cart-drawer' -%}
+    {%- render 'zn-sticky-bar' -%}
+  </body>
+</html>

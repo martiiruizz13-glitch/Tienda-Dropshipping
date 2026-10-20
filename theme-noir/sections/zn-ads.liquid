@@ -1,0 +1,113 @@
+{%- comment -%}
+  Campaign pieces (advertising, not testimonials). Each slot takes a Shopify-hosted
+  video or an image; until one is uploaded it shows the best real product photo.
+  Videos: muted, looping, playsinline, poster, no preload, paused off-screen (zn.js).
+{%- endcomment -%}
+<section class="zn-ads" id="{{ section.settings.anchor }}" aria-labelledby="zn-ads-title-{{ section.id }}">
+  <div class="zn-wrap">
+    <div class="zn-ads__head">
+      <h2 class="zn-h2" id="zn-ads-title-{{ section.id }}" data-zn-lines>{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.text != blank -%}
+        <p class="zn-ads__text" data-zn-fade>{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <ul class="zn-ads__grid" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign p = block.settings.product
+          assign media_index = block.settings.media_index | minus: 1
+          assign still = block.settings.image
+          assign is_placeholder = false
+          if still == blank and block.settings.video == blank
+            assign is_placeholder = true
+            if p != blank and p.media.size > media_index
+              assign still = p.media[media_index].preview_image
+            endif
+          endif
+          if block.settings.video != blank and still == blank
+            assign still = block.settings.video.preview_image
+          endif
+        -%}
+        <li class="zn-ad zn-ad--{{ block.settings.ratio }}" {{ block.shopify_attributes }} data-zn-fade>
+          <figure class="zn-ad__figure">
+            <div class="zn-ad__media{% if is_placeholder %} zn-fit-{{ block.settings.fit }}{% endif %}" style="--ad-tint: {{ block.settings.tint }};">
+              {%- if block.settings.video != blank -%}
+                {%- liquid
+                  assign best = nil
+                  for source in block.settings.video.sources
+                    if source.mime_type == 'video/mp4' and source.height <= 1080
+                      assign best = source
+                    endif
+                  endfor
+                -%}
+                <video class="zn-ad__video" muted loop playsinline preload="none" disablepictureinpicture
+                  {% if still %}poster="{{ still | image_url: width: 1080 }}"{% endif %}
+                  data-zn-video aria-label="{{ block.settings.caption | escape }}">
+                  {%- if best -%}<source src="{{ best.url }}" type="video/mp4">{%- endif -%}
+                </video>
+              {%- elsif block.settings.video_url != blank -%}
+                <video class="zn-ad__video" muted loop playsinline preload="none" disablepictureinpicture
+                  {% if still %}poster="{{ still | image_url: width: 1080 }}"{% endif %}
+                  data-zn-video aria-label="{{ block.settings.caption | escape }}">
+                  <source src="{{ block.settings.video_url }}" type="video/mp4">
+                </video>
+              {%- else -%}
+                {%- render 'zn-image', image: still, asset: block.settings.asset, sizes: '(min-width: 990px) 30vw, 84vw', class_name: 'zn-ad__img', alt: block.settings.alt -%}
+              {%- endif -%}
+              {%- if is_placeholder and request.design_mode -%}
+                <span class="zn-ad__todo">[PENDIENTE: pieza IA · {{ block.settings.ratio | replace: 'r', '' | replace: 'x', ':' }}]</span>
+              {%- endif -%}
+            </div>
+            <figcaption class="zn-ad__cap">
+              <span class="zn-ad__name">{{ block.settings.caption | escape }}</span>
+              {%- if block.settings.url != blank -%}
+                <a class="zn-link" href="{{ block.settings.url }}">{{ block.settings.link_label | escape }}</a>
+              {%- endif -%}
+            </figcaption>
+          </figure>
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- if section.settings.disclaimer != blank -%}
+      <p class="zn-ads__note">{{ section.settings.disclaimer | escape }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Noir · Campaña",
+  "tag": "div",
+  "class": "zn-section zn-section--ads",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "campana" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Zaldori, a lo largo del día" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Por la mañana, por la tarde, por la noche. Tres momentos, tres objetos." },
+    { "type": "text", "id": "disclaimer", "label": "Nota", "default": "Imágenes de campaña con fines publicitarios." }
+  ],
+  "blocks": [
+    {
+      "type": "ad",
+      "name": "Pieza",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Producto" },
+        { "type": "video", "id": "video", "label": "Vídeo (subido a Shopify)" },
+        { "type": "url", "id": "video_url", "label": "O URL de un MP4" },
+        { "type": "image_picker", "id": "image", "label": "Imagen (o póster del vídeo)" },
+        { "type": "range", "id": "media_index", "label": "Provisional: foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 1 },
+        { "type": "text", "id": "asset", "label": "Provisional: imagen del tema" },
+        { "type": "select", "id": "fit", "label": "Provisional: encaje", "options": [ { "value": "cover", "label": "Llenar" }, { "value": "contain", "label": "Objeto sobre color" } ], "default": "cover" },
+        { "type": "color", "id": "tint", "label": "Color de fondo", "default": "#EFE8DD" },
+        { "type": "select", "id": "ratio", "label": "Formato", "options": [ { "value": "r4x5", "label": "4:5" }, { "value": "r9x16", "label": "9:16" }, { "value": "r1x1", "label": "1:1" } ], "default": "r4x5" },
+        { "type": "text", "id": "caption", "label": "Pie", "default": "Por la mañana, Vortix" },
+        { "type": "text", "id": "alt", "label": "Texto alternativo" },
+        { "type": "text", "id": "url", "label": "Enlace", "default": "#vortix" },
+        { "type": "text", "id": "link_label", "label": "Texto del enlace", "default": "Ver Vortix" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Noir · Campaña" } ]
+}
+{% endschema %}
