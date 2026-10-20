@@ -1,0 +1,88 @@
+{%- comment -%}
+  Data section: a paragraph whose key phrase is set in red (write it between [[ and ]]),
+  beside large red figures. Only real product data. Then an optional three-step strip.
+{%- endcomment -%}
+{%- liquid
+  assign stats = section.blocks | where: 'type', 'stat'
+  assign steps = section.blocks | where: 'type', 'step'
+  assign product = section.settings.product
+  assign body = section.settings.text | escape | replace: '[[', '<strong class="zn-stats__hl">' | replace: ']]', '</strong>'
+-%}
+<section class="zn-stats" id="{{ section.settings.anchor }}" aria-labelledby="zn-stats-title-{{ section.id }}">
+  <div class="zn-wrap">
+    <h2 class="zn-visually-hidden" id="zn-stats-title-{{ section.id }}">{{ section.settings.label | escape }}</h2>
+    <div class="zn-stats__grid">
+      <p class="zn-stats__text" data-zn-fade>{{ body }}</p>
+      <ul class="zn-stats__list" role="list">
+        {%- for block in stats -%}
+          <li class="zn-stats__item" {{ block.shopify_attributes }} data-zn-fade>
+            <p class="zn-stats__fig"><span class="zn-feat__val">{{ block.settings.figure | escape }}</span><span class="zn-stats__unit">{{ block.settings.unit | escape }}</span></p>
+            <p class="zn-stats__cap">{{ block.settings.caption | escape }}</p>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    {%- if steps.size > 0 -%}
+      <h3 class="zn-stats__steps-title" data-zn-lines>{{ section.settings.steps_heading | escape }}</h3>
+      {%- if section.settings.steps_text != blank -%}<p class="zn-stats__steps-text" data-zn-fade>{{ section.settings.steps_text | escape }}</p>{%- endif -%}
+      <ol class="zn-stats__steps" role="list">
+        {%- for block in steps -%}
+          {%- liquid
+            assign img = nil
+            assign mi = block.settings.media | minus: 1
+            if product != blank and product.media.size > mi
+              assign img = product.media[mi].preview_image
+            endif
+          -%}
+          <li class="zn-step" {{ block.shopify_attributes }} data-zn-fade>
+            <div class="zn-step__media">
+              {%- render 'zn-image', image: img, sizes: '(min-width: 990px) 30vw, 84vw', alt: block.settings.alt, class_name: 'zn-step__img' -%}
+            </div>
+            <p class="zn-step__num">{{ forloop.index }}</p>
+            <h4 class="zn-step__title">{{ block.settings.title | escape }}</h4>
+            <p class="zn-step__text">{{ block.settings.text | escape }}</p>
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Noir · Cifras",
+  "tag": "div",
+  "class": "zn-section zn-section--stats",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (fotos de los pasos)" },
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "termocalm-cifras" },
+    { "type": "text", "id": "label", "label": "Nombre accesible", "default": "TermoCalm en cifras" },
+    { "type": "textarea", "id": "text", "label": "Texto", "info": "Escribe entre [[ y ]] la frase que va en rojo." },
+    { "type": "text", "id": "steps_heading", "label": "Título de los pasos", "default": "Enchufa. Elige. Relájate." },
+    { "type": "textarea", "id": "steps_text", "label": "Texto de los pasos" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Cifra",
+      "settings": [
+        { "type": "text", "id": "figure", "label": "Cifra", "default": "9" },
+        { "type": "text", "id": "unit", "label": "Unidad" },
+        { "type": "text", "id": "caption", "label": "Explicación" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Paso",
+      "settings": [
+        { "type": "range", "id": "media", "label": "Foto del producto nº", "min": 1, "max": 20, "step": 1, "default": 1 },
+        { "type": "text", "id": "alt", "label": "Texto alternativo" },
+        { "type": "text", "id": "title", "label": "Título" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Noir · Cifras" } ]
+}
+{% endschema %}

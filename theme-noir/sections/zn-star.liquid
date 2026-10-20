@@ -1,0 +1,63 @@
+{%- comment -%}
+  Star product hero (TermoCalm). The product fills a black stage and slowly "warms up":
+  a tinted copy of the same cut-out glows over it like a lit screen. Name and line low on the
+  left, a floating price capsule with the blue purchase pill low on the right, and a pause
+  control for the looping glow.
+{%- endcomment -%}
+{%- liquid
+  assign p = section.settings.product
+  assign src = section.settings.render | asset_url
+-%}
+<section class="zn-star" data-zn-star data-zn-hero aria-labelledby="zn-star-title-{{ section.id }}">
+  <div class="zn-star__stage" data-zn-star-stage>
+    <figure class="zn-star__render" data-zn-star-render style="--zn-ratio: {{ section.settings.render_w }} / {{ section.settings.render_h }};">
+      <span class="zn-star__floor" aria-hidden="true"></span>
+      <img class="zn-star__img" src="{{ src }}" width="{{ section.settings.render_w }}" height="{{ section.settings.render_h }}" alt="{{ section.settings.alt | escape }}" fetchpriority="high" decoding="async">
+      <img class="zn-star__heat" src="{{ src }}" width="{{ section.settings.render_w }}" height="{{ section.settings.render_h }}" alt="" aria-hidden="true" decoding="async">
+    </figure>
+  </div>
+
+  <button class="zn-star__pause" type="button" data-zn-star-pause aria-pressed="false">
+    <svg class="zn-star__icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 7v10M15 7v10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    <svg class="zn-star__icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 7.5v9l7.5-4.5z" fill="currentColor"/></svg>
+    <span class="zn-visually-hidden" data-zn-star-pause-label>Pausar la animación</span>
+  </button>
+
+  <div class="zn-star__bottom zn-wrap">
+    <div class="zn-star__copy">
+      <p class="zn-star__label" data-zn-fade>
+        <span class="zn-star__mark">{%- render 'zn-logo', variant: 'symbol' -%}</span>
+        {{ section.settings.label | escape }}
+      </p>
+      <h1 class="zn-star__title" id="zn-star-title-{{ section.id }}" data-zn-hero-title><span class="zn-mask"><span class="zn-mask__in">{{ section.settings.headline | escape }}</span></span></h1>
+    </div>
+    <div class="zn-capsule zn-star__capsule" data-zn-fade>
+      <p class="zn-capsule__text">
+        {%- if p != blank -%}<span>{% if p.price_varies %}Desde {% endif %}{{ p.price_min | money }}</span>{%- endif -%}
+        <span class="zn-capsule__sub">{{ section.settings.capsule | escape }}</span>
+      </p>
+      <a class="zn-pill zn-pill--buy" href="{{ section.settings.cta_url }}">{{ section.settings.cta_label | escape }}<span class="zn-visually-hidden"> {{ section.settings.label | escape }}</span></a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Noir · Producto estrella",
+  "tag": "div",
+  "class": "zn-section zn-section--star",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto" },
+    { "type": "text", "id": "label", "label": "Nombre", "default": "TERMOCALM" },
+    { "type": "text", "id": "headline", "label": "Titular", "default": "Calor a tu medida." },
+    { "type": "text", "id": "capsule", "label": "Texto de la cápsula", "default": "Envío gratis a España" },
+    { "type": "text", "id": "cta_label", "label": "Botón", "default": "Comprar" },
+    { "type": "text", "id": "cta_url", "label": "Destino del botón", "default": "#termocalm-comprar" },
+    { "type": "text", "id": "render", "label": "Producto sin fondo (tema)", "default": "zn-c-termocalm.webp" },
+    { "type": "number", "id": "render_w", "label": "Ancho", "default": 1203 },
+    { "type": "number", "id": "render_h", "label": "Alto", "default": 1353 },
+    { "type": "text", "id": "alt", "label": "Texto alternativo", "default": "TermoCalm, almohadilla térmica gris de terciopelo con su mando" }
+  ],
+  "presets": [ { "name": "Noir · Producto estrella" } ]
+}
+{% endschema %}

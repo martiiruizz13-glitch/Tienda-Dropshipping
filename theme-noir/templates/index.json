@@ -1,19 +1,93 @@
 {
   "layout": "zaldori-noir",
   "sections": {
-    "hero": {
-      "type": "zn-hero",
+    "star": {
+      "type": "zn-star",
       "settings": {
-        "layer_1": "zn-c-termocalm.webp",
-        "layer_2": "zn-c-pulsia-piedras.webp",
-        "layer_3": "zn-c-vortix-rosa.webp",
-        "layer_1_w": 1203,
-        "layer_2_w": 1175,
-        "layer_3_w": 833,
-        "layer_1_h": 1353,
-        "layer_2_h": 1228,
-        "layer_3_h": 1403
+        "product": "30-60cm-electric-heating-pads-for-back-neck-shoulder-home-office-washable-winter-warm-blanket-4-timer-9-temperature-control",
+        "label": "TERMOCALM",
+        "headline": "Calor a tu medida.",
+        "render": "zn-c-termocalm.webp",
+        "render_w": 1203,
+        "render_h": 1353
       }
+    },
+    "horizon": {
+      "type": "zn-horizon",
+      "settings": {
+        "eyebrow": "Almohadilla térmica · 30 × 60 cm",
+        "heading": "Calor que envuelve.",
+        "text": "Calienta en segundos y reparte el calor por toda la superficie, sin puntos fríos."
+      }
+    },
+    "stats": {
+      "type": "zn-stats",
+      "settings": {
+        "product": "30-60cm-electric-heating-pads-for-back-neck-shoulder-home-office-washable-winter-warm-blanket-4-timer-9-temperature-control",
+        "text": "TermoCalm cubre espalda, hombros y cuello a la vez con [[un calor suave y uniforme, sin puntos fríos]]. Eliges entre 9 niveles y el temporizador la apaga sola, para que te relajes sin mirar el reloj.",
+        "steps_heading": "Enchufa. Elige. Relájate."
+      },
+      "blocks": {
+        "s-1": {
+          "type": "stat",
+          "settings": {
+            "figure": "9",
+            "unit": "",
+            "caption": "niveles de calor, desde una tibieza suave hasta un calor intenso"
+          }
+        },
+        "s-2": {
+          "type": "stat",
+          "settings": {
+            "figure": "120",
+            "unit": "min",
+            "caption": "de temporizador como máximo: 30, 60, 90 o 120 minutos"
+          }
+        },
+        "s-3": {
+          "type": "stat",
+          "settings": {
+            "figure": "50",
+            "unit": "°C",
+            "caption": "aproximadamente, en el nivel más intenso"
+          }
+        },
+        "s-4": {
+          "type": "step",
+          "settings": {
+            "media": 12,
+            "alt": "Conectando el mando a la almohadilla TermoCalm",
+            "title": "Conecta el mando",
+            "text": "Une el mando a la almohadilla y enchúfala."
+          }
+        },
+        "s-5": {
+          "type": "step",
+          "settings": {
+            "media": 11,
+            "alt": "Mando de TermoCalm con 9 niveles de calor",
+            "title": "Elige tu nivel",
+            "text": "9 niveles de calor y un temporizador de 30, 60, 90 o 120 minutos."
+          }
+        },
+        "s-6": {
+          "type": "step",
+          "settings": {
+            "media": 13,
+            "alt": "TermoCalm sobre la espalda mientras descansas en el sofá",
+            "title": "Relájate",
+            "text": "Colócala sobre la espalda, el cuello o los hombros. Se apaga sola."
+          }
+        }
+      },
+      "block_order": [
+        "s-1",
+        "s-2",
+        "s-3",
+        "s-4",
+        "s-5",
+        "s-6"
+      ]
     },
     "highlights": {
       "type": "zn-highlights",
@@ -978,7 +1052,9 @@
     }
   },
   "order": [
-    "hero",
+    "star",
+    "horizon",
+    "stats",
     "highlights",
     "band-trust",
     "vortix",

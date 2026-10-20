@@ -993,6 +993,18 @@
     }
   });
 
+  /* ------------------------------------------------------- Star pause */
+  $$('[data-zn-star]').forEach((star) => {
+    const btn = $('[data-zn-star-pause]', star);
+    const label = $('[data-zn-star-pause-label]', star);
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const paused = star.classList.toggle('is-paused');
+      btn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      if (label) label.textContent = paused ? 'Reanudar la animación' : 'Pausar la animación';
+    });
+  });
+
   /* ------------------------------------------------------------ Close look */
   // Selector pills beside an oversized crop: one pill open at a time, the crop moves to its detail.
   $$('[data-zn-look]').forEach((root) => {
@@ -1239,6 +1251,34 @@
           });
         }
 
+        const tilts = [];
+        /* ---------- Star hero: the product rises in, then recedes as you scroll ---------- */
+        const star = $('[data-zn-star]');
+        if (star) {
+          const render = $('[data-zn-star-render]', star);
+          gsap.fromTo(render, { opacity: 0, scale: 1.12, y: 40, rotationX: 12 }, { opacity: 1, scale: 1, y: 0, rotationX: 0, duration: 2, ease: 'expo.out', delay: 0.1 });
+          gsap.to(render, { scale: 0.82, y: isDesktop ? -60 : -30, opacity: 0.3, ease: 'none', scrollTrigger: { trigger: star, start: 'top top', end: 'bottom top', scrub: 0.6 } });
+          if (isDesktop && mqFine.matches) {
+            gsap.set(render, { transformPerspective: 1600 });
+            const rx = gsap.quickTo(render, 'rotationX', { duration: 1.1, ease: 'power3.out' });
+            const ry = gsap.quickTo(render, 'rotationY', { duration: 1.1, ease: 'power3.out' });
+            const mv = (e) => { const r = star.getBoundingClientRect(); ry(((e.clientX - r.left) / r.width - 0.5) * 12); rx(-((e.clientY - r.top) / r.height - 0.5) * 8); };
+            const lv = () => { rx(0); ry(0); };
+            star.addEventListener('pointermove', mv); star.addEventListener('pointerleave', lv);
+            tilts.push(() => { star.removeEventListener('pointermove', mv); star.removeEventListener('pointerleave', lv); });
+          }
+        }
+
+        /* ---------- Horizon: the light rises and warmth travels along the edge ---------- */
+        $$('[data-zn-horizon]').forEach((hz) => {
+          const arc = $('[data-zn-horizon-arc]', hz);
+          const glow = $('[data-zn-horizon-glow]', hz);
+          const tl = gsap.timeline({ defaults: { ease: 'none' } });
+          tl.fromTo(arc, { yPercent: 18, opacity: 0.2 }, { yPercent: 0, opacity: 1, duration: 1 }, 0)
+            .fromTo(glow, { xPercent: -260, opacity: 0, scale: 0.6 }, { xPercent: 0, opacity: 1, scale: 1.2, duration: 1 }, 0);
+          ScrollTrigger.create({ trigger: hz, start: 'top 85%', end: 'bottom 40%', scrub: 0.8, animation: tl });
+        });
+
         /* ---------- Hero scene: layers open in depth on scroll ---------- */
         const scene = $('[data-zn-scene]');
         if (scene) {
@@ -1444,7 +1484,6 @@
           });
 
         /* ---------- Hero lineup leans towards the pointer (desktop, mouse) ---------- */
-        const tilts = [];
         const heroVisual = isDesktop && mqFine.matches && $('[data-zn-scene]');
         if (heroVisual) {
           gsap.set(heroVisual, { transformPerspective: 1800, transformStyle: 'preserve-3d' });

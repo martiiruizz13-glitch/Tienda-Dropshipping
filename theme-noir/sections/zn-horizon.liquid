@@ -1,0 +1,31 @@
+{%- comment -%}
+  "Heartcore"-style intro: a coloured eyebrow, one centred statement and a glowing horizon,
+  the curved edge of the product seen from the side, with warmth spreading along it as you scroll.
+{%- endcomment -%}
+<section class="zn-horizon" data-zn-horizon aria-labelledby="zn-horizon-title-{{ section.id }}">
+  <div class="zn-wrap zn-horizon__head">
+    <p class="zn-horizon__eyebrow" data-zn-fade>{{ section.settings.eyebrow | escape }}</p>
+    <h2 class="zn-horizon__title" id="zn-horizon-title-{{ section.id }}" data-zn-lines>{{ section.settings.heading | escape }}</h2>
+  </div>
+  <div class="zn-horizon__scene" aria-hidden="true">
+    <span class="zn-horizon__arc" data-zn-horizon-arc></span>
+    <span class="zn-horizon__glow" data-zn-horizon-glow></span>
+  </div>
+  {%- if section.settings.text != blank -%}
+    <p class="zn-wrap zn-horizon__text" data-zn-fade>{{ section.settings.text | escape }}</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Noir · Horizonte",
+  "tag": "div",
+  "class": "zn-section zn-section--horizon",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "9 niveles de calor · Apagado automático" },
+    { "type": "text", "id": "heading", "label": "Titular", "default": "Calor que envuelve." },
+    { "type": "textarea", "id": "text", "label": "Texto" }
+  ],
+  "presets": [ { "name": "Noir · Horizonte" } ]
+}
+{% endschema %}
