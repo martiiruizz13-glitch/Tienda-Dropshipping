@@ -20,7 +20,11 @@
         -%}
         <article class="zn-hl__card" data-zn-hl-card aria-labelledby="zn-hl-{{ block.id }}" {{ block.shopify_attributes }}>
           <div class="zn-hl__media" data-zn-hl-media>
-            {%- render 'zn-image', image: img, asset: block.settings.asset, asset_width: 1600, asset_height: 1600, sizes: '(min-width: 990px) 46vw, 84vw', alt: block.settings.alt, class_name: 'zn-hl__img' -%}
+            {%- if block.settings.render != blank -%}
+              {%- render 'zn-render', asset: block.settings.render, width: block.settings.render_w, height: block.settings.render_h, alt: block.settings.alt, class_name: 'zn-hl__render' -%}
+            {%- else -%}
+              {%- render 'zn-image', image: img, asset: block.settings.asset, asset_width: 1600, asset_height: 1600, sizes: '(min-width: 990px) 46vw, 84vw', alt: block.settings.alt, class_name: 'zn-hl__img' -%}
+            {%- endif -%}
           </div>
           <div class="zn-hl__copy" data-zn-hl-copy>
             <p class="zn-hl__num">Nº {{ block.settings.number }}</p>
@@ -66,6 +70,9 @@
         { "type": "image_picker", "id": "image", "label": "Imagen" },
         { "type": "range", "id": "media_index", "label": "Si no hay imagen: foto nº", "min": 1, "max": 20, "step": 1, "default": 1 },
         { "type": "text", "id": "asset", "label": "Imagen del tema" },
+        { "type": "text", "id": "render", "label": "Producto sin fondo (tema)" },
+        { "type": "number", "id": "render_w", "label": "Ancho", "default": 1200 },
+        { "type": "number", "id": "render_h", "label": "Alto", "default": 1200 },
         { "type": "text", "id": "alt", "label": "Texto alternativo" }
       ]
     }

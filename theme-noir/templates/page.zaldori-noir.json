@@ -3,7 +3,17 @@
   "sections": {
     "hero": {
       "type": "zn-hero",
-      "settings": {}
+      "settings": {
+        "layer_1": "zn-c-termocalm.webp",
+        "layer_2": "zn-c-pulsia-piedras.webp",
+        "layer_3": "zn-c-vortix-rosa.webp",
+        "layer_1_w": 1203,
+        "layer_2_w": 1175,
+        "layer_3_w": 833,
+        "layer_1_h": 1353,
+        "layer_2_h": 1228,
+        "layer_3_h": 1403
+      }
     },
     "highlights": {
       "type": "zn-highlights",
@@ -19,6 +29,9 @@
             "specs": "400 ml · hasta 7000 rpm · recargable por USB",
             "url": "#vortix",
             "asset": "zn-vortix-rosa.jpg",
+            "render": "zn-c-vortix-rosa.webp",
+            "render_w": 833,
+            "render_h": 1403,
             "alt": "Vortix Estilizado en rosa"
           }
         },
@@ -32,6 +45,9 @@
             "specs": "30 × 60 cm · 9 niveles · apagado automático",
             "url": "#termocalm",
             "asset": "zn-termocalm-kit.jpg",
+            "render": "zn-c-termocalm.webp",
+            "render_w": 1203,
+            "render_h": 1353,
             "alt": "TermoCalm, almohadilla gris con su mando"
           }
         },
@@ -45,6 +61,9 @@
             "specs": "8 modos · 19 niveles · mando a distancia",
             "url": "#pulsia",
             "asset": "zn-pulsia.jpg",
+            "render": "zn-c-pulsia-piedras.webp",
+            "render_w": 1175,
+            "render_h": 1228,
             "alt": "Pulsia, alfombrilla EMS negra con su mando"
           }
         }
@@ -77,10 +96,10 @@
         "specs": "Capacidad: 400 ml\nVelocidad de mezcla: hasta 7000 rpm\nBatería: 1200 mAh, recargable por USB (5 V / 1 A)\nPotencia: 2,2 W\nMateriales: ABS + PP + PC\nMedidas (Clásico): 10,5 × 8,6 × 19 cm\nIncluye: vaso con base motorizada, tapa, cable USB y manual",
         "tint": "#DDE3D8",
         "deep": "#3F4A3E",
-        "v1_asset": "zn-vortix-duo.jpg",
-        "v1_w": 2400,
-        "v1_h": 1350,
-        "v1_alt": "Vortix Estilizado en rosa y en verde"
+        "render": "zn-c-vortix-rosa.webp",
+        "render_w": 833,
+        "render_h": 1403,
+        "render_alt": "Vortix Estilizado en rosa"
       },
       "blocks": {
         "b-1": {
@@ -147,41 +166,116 @@
           }
         },
         "b-8": {
+          "type": "look",
+          "settings": {
+            "title": "Efecto vórtice",
+            "text": "Mezcla a alta velocidad, hasta 7000 rpm, para conseguir batidos cremosos, sin grumos y sin esfuerzo.",
+            "asset": "zn-c-vortix-rosa.webp",
+            "w": 833,
+            "h": 1403,
+            "zoom": 210,
+            "x": 50,
+            "y": 58,
+            "rotate": 0,
+            "alt": "Interior del vaso Vortix con el remolino"
+          }
+        },
+        "b-9": {
+          "type": "look",
+          "settings": {
+            "title": "Un solo botón",
+            "text": "Añades el líquido y el polvo, cierras la tapa y pulsas el botón de la base. En unos segundos lo tienes listo.",
+            "asset": "zn-c-vortix-rosa.webp",
+            "w": 833,
+            "h": 1403,
+            "zoom": 260,
+            "x": 50,
+            "y": 90,
+            "rotate": 0,
+            "alt": "Botón de encendido en la base de Vortix"
+          }
+        },
+        "b-10": {
+          "type": "look",
+          "settings": {
+            "title": "Tapa con apertura en un clic",
+            "text": "Bebes directamente del vaso, sin desenroscar nada.",
+            "asset": "zn-c-vortix-rosa.webp",
+            "w": 833,
+            "h": 1403,
+            "zoom": 220,
+            "x": 46,
+            "y": 12,
+            "rotate": -8,
+            "alt": "Tapa de Vortix con asa"
+          }
+        },
+        "b-11": {
+          "type": "look",
+          "settings": {
+            "title": "Clásico o Estilizado",
+            "text": "Clásico, con tapa de asa y boquilla abatible. Estilizado, de silueta más fina y botón frontal.",
+            "asset": "zn-c-vortix-clasico.webp",
+            "w": 748,
+            "h": 1370,
+            "zoom": 100,
+            "x": 50,
+            "y": 50,
+            "rotate": 10,
+            "alt": "Vortix Clásico en blanco"
+          }
+        },
+        "b-12": {
+          "type": "look",
+          "settings": {
+            "title": "Tu color",
+            "text": "Estilizado en blanco, rosa o verde. Clásico en negro, blanco o crema.",
+            "asset": "zn-c-vortix-verde.webp",
+            "w": 842,
+            "h": 1389,
+            "zoom": 100,
+            "x": 50,
+            "y": 50,
+            "rotate": -10,
+            "alt": "Vortix Estilizado en verde"
+          }
+        },
+        "b-13": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo se usa?",
             "answer": "<p>Añade primero el líquido (agua, leche o bebida vegetal), después el polvo, cierra la tapa y pulsa el botón de la base. En unos segundos lo tienes listo.</p>"
           }
         },
-        "b-9": {
+        "b-14": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo se carga?",
             "answer": "<p>Con el cable USB incluido (5 V / 1 A). La batería es de 1200 mAh. Cárgalo antes del primer uso.</p>"
           }
         },
-        "b-10": {
+        "b-15": {
           "type": "faq",
           "settings": {
             "question": "¿Puedo meterlo en el lavavajillas?",
             "answer": "<p>No. La base lleva el motor y la batería: limpia el vaso con agua y un paño suave, sin sumergir la base ni meterla en el lavavajillas.</p>"
           }
         },
-        "b-11": {
+        "b-16": {
           "type": "faq",
           "settings": {
             "question": "¿Qué puedo mezclar?",
             "answer": "<p>Proteína, café, cacao, avena o leche. Para una mezcla aún más fina, primero el líquido y después el polvo.</p>"
           }
         },
-        "b-12": {
+        "b-17": {
           "type": "faq",
           "settings": {
             "question": "¿Sirve para bebidas calientes?",
             "answer": "<p>Úsalo con bebidas frías o templadas, nunca hirviendo.</p>"
           }
         },
-        "b-13": {
+        "b-18": {
           "type": "faq",
           "settings": {
             "question": "¿Qué diferencia hay entre Clásico y Estilizado?",
@@ -202,7 +296,12 @@
         "b-10",
         "b-11",
         "b-12",
-        "b-13"
+        "b-13",
+        "b-14",
+        "b-15",
+        "b-16",
+        "b-17",
+        "b-18"
       ]
     },
     "band-specs": {
@@ -225,6 +324,10 @@
         "lede": "Horas frente al ordenador, el coche, el frío del invierno… TermoCalm envuelve la espalda con un calor suave y uniforme para que los músculos se relajen y vuelvas a sentirte a gusto.",
         "statement": "Terciopelo suave por las dos caras.",
         "specs": "Tamaño: 30 × 60 cm\nColor: gris\nTejido: terciopelo por ambas caras\nNiveles de calor: 9 (de unos 30 °C a unos 50 °C)\nTemporizador: 30 / 60 / 90 / 120 min\nPotencia: 75 W\nIncluye: almohadilla con mando y manual",
+        "render": "zn-c-termocalm.webp",
+        "render_w": 1203,
+        "render_h": 1353,
+        "render_alt": "TermoCalm, almohadilla gris de terciopelo con su mando",
         "tint": "#EBDDCB",
         "deep": "#6E1F3A",
         "v1_media": 10,
@@ -304,41 +407,101 @@
           }
         },
         "b-10": {
+          "type": "look",
+          "settings": {
+            "title": "Mando con 9 niveles",
+            "text": "Desde una tibieza suave hasta un calor intenso. Tú decides cuánto mimo necesitas hoy.",
+            "asset": "zn-c-termocalm-remote.webp",
+            "w": 245,
+            "h": 701,
+            "zoom": 100,
+            "x": 50,
+            "y": 50,
+            "rotate": -8,
+            "alt": "Mando de TermoCalm con pantalla"
+          }
+        },
+        "b-11": {
+          "type": "look",
+          "settings": {
+            "title": "Se apaga sola",
+            "text": "Temporizador de 30, 60, 90 o 120 minutos. Relájate sin estar pendiente del reloj.",
+            "asset": "zn-c-termocalm-remote.webp",
+            "w": 245,
+            "h": 701,
+            "zoom": 190,
+            "x": 50,
+            "y": 30,
+            "rotate": 0,
+            "alt": "Pantalla del mando de TermoCalm"
+          }
+        },
+        "b-12": {
+          "type": "look",
+          "settings": {
+            "title": "Terciopelo por las dos caras",
+            "text": "Suave al tacto por ambos lados. Separa el mando, lávala a mano y lista para volver a usarla.",
+            "asset": "zn-c-termocalm-pad.webp",
+            "w": 1768,
+            "h": 952,
+            "zoom": 280,
+            "x": 42,
+            "y": 40,
+            "rotate": 0,
+            "alt": "Detalle del terciopelo de TermoCalm"
+          }
+        },
+        "b-13": {
+          "type": "look",
+          "settings": {
+            "title": "30 × 60 cm",
+            "text": "Lo justo para cubrir espalda, hombros y cuello a la vez.",
+            "asset": "zn-c-termocalm-pad.webp",
+            "w": 1768,
+            "h": 952,
+            "zoom": 100,
+            "x": 50,
+            "y": 50,
+            "rotate": -12,
+            "alt": "TermoCalm completa"
+          }
+        },
+        "b-14": {
           "type": "faq",
           "settings": {
             "question": "¿Cuánto tarda en calentar?",
             "answer": "<p>Calienta en segundos y reparte el calor por toda la superficie, sin puntos fríos.</p>"
           }
         },
-        "b-11": {
+        "b-15": {
           "type": "faq",
           "settings": {
             "question": "¿Se apaga sola?",
             "answer": "<p>Sí: eliges un temporizador de 30, 60, 90 o 120 minutos y se apaga automáticamente. Aun así, no te duermas con ella encendida y desenchúfala cuando no la uses.</p>"
           }
         },
-        "b-12": {
+        "b-16": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo se lava?",
             "answer": "<p>Separa el mando, lávala a mano y deja que se seque del todo antes de volver a usarla.</p>"
           }
         },
-        "b-13": {
+        "b-17": {
           "type": "faq",
           "settings": {
             "question": "¿Qué enchufe elijo?",
             "answer": "<p>Hay tres versiones: europeo (220-240 V), británico (220-240 V) y americano (110 V). En España, elige la de enchufe europeo.</p>"
           }
         },
-        "b-14": {
+        "b-18": {
           "type": "faq",
           "settings": {
             "question": "¿Dónde puedo usarla?",
             "answer": "<p>Con sus 30 × 60 cm cubre espalda, hombros y cuello a la vez. También puedes usarla para templar las piernas o los pies.</p>"
           }
         },
-        "b-15": {
+        "b-19": {
           "type": "faq",
           "settings": {
             "question": "¿Quién no debería usarla?",
@@ -361,7 +524,11 @@
         "b-12",
         "b-13",
         "b-14",
-        "b-15"
+        "b-15",
+        "b-16",
+        "b-17",
+        "b-18",
+        "b-19"
       ]
     },
     "pulsia": {
@@ -374,6 +541,10 @@
         "lede": "Te descalzas, apoyas los pies y eliges tu programa con el mando. En pocos minutos, la sensación de spa sin salir de casa.",
         "statement": "Ultrafina. Ligera. Plegable.",
         "specs": "Tecnología: EMS de baja frecuencia\nModos: 8\nIntensidad: 19 niveles\nControl: botones y mando a distancia\nAlimentación: batería recargable por USB\nMaterial: composite con acabado tipo piel\nIncluye: alfombrilla y mando a distancia",
+        "render": "zn-c-pulsia-hero.webp",
+        "render_w": 1175,
+        "render_h": 1227,
+        "render_alt": "Pulsia, alfombrilla EMS negra con su mando",
         "tint": "#F2DFE2",
         "deep": "#6E1F3A",
         "v1_asset": "zd-pl-ancho.jpg",
@@ -463,34 +634,94 @@
           }
         },
         "b-10": {
+          "type": "look",
+          "settings": {
+            "title": "19 niveles de intensidad",
+            "text": "Desde un cosquilleo apenas perceptible hasta un masaje profundo. La pantalla te muestra el nivel.",
+            "asset": "zn-c-pulsia.webp",
+            "w": 1100,
+            "h": 1142,
+            "zoom": 280,
+            "x": 50,
+            "y": 14,
+            "rotate": 0,
+            "alt": "Pantalla de Pulsia"
+          }
+        },
+        "b-11": {
+          "type": "look",
+          "settings": {
+            "title": "Mando a distancia",
+            "text": "Cambia de modo y de intensidad desde el sofá, sin agacharte.",
+            "asset": "zn-c-pulsia-mando.webp",
+            "w": 622,
+            "h": 1270,
+            "zoom": 100,
+            "x": 50,
+            "y": 50,
+            "rotate": -8,
+            "alt": "Mando a distancia de Pulsia"
+          }
+        },
+        "b-12": {
+          "type": "look",
+          "settings": {
+            "title": "EMS de baja frecuencia",
+            "text": "Impulsos suaves que trabajan la musculatura del pie desde dentro. Sin rodillos ni piezas móviles.",
+            "asset": "zn-c-pulsia.webp",
+            "w": 1100,
+            "h": 1142,
+            "zoom": 190,
+            "x": 32,
+            "y": 55,
+            "rotate": 6,
+            "alt": "Zona para el pie de Pulsia"
+          }
+        },
+        "b-13": {
+          "type": "look",
+          "settings": {
+            "title": "Ultrafino y plegable",
+            "text": "Cabe en un cajón, en la mochila o en la maleta.",
+            "asset": "zn-c-pulsia.webp",
+            "w": 1100,
+            "h": 1142,
+            "zoom": 100,
+            "x": 50,
+            "y": 50,
+            "rotate": -12,
+            "alt": "Pulsia completa con su mando"
+          }
+        },
+        "b-14": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo funciona la tecnología EMS?",
             "answer": "<p>EMS es estimulación muscular eléctrica. Pulsia envía impulsos suaves de baja frecuencia a la planta del pie que hacen que los músculos se contraigan y se relajen. No tiene rodillos ni piezas móviles.</p>"
           }
         },
-        "b-11": {
+        "b-15": {
           "type": "faq",
           "settings": {
             "question": "¿Qué se siente?",
             "answer": "<p>En los niveles bajos, un cosquilleo apenas perceptible; en los altos, un masaje más profundo. Empieza por un nivel bajo y sube poco a poco.</p>"
           }
         },
-        "b-12": {
+        "b-16": {
           "type": "faq",
           "settings": {
             "question": "¿Cuánto tiempo lo uso?",
             "answer": "<p>Por ejemplo, 15 minutos con los pies apoyados al volver a casa. Úsalo con los pies limpios y secos.</p>"
           }
         },
-        "b-13": {
+        "b-17": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo se carga?",
             "answer": "<p>Por USB, con el cargador del móvil. Mientras lo usas no necesita cables.</p>"
           }
         },
-        "b-14": {
+        "b-18": {
           "type": "faq",
           "settings": {
             "question": "¿Quién no debería usarlo?",
@@ -512,7 +743,11 @@
         "b-11",
         "b-12",
         "b-13",
-        "b-14"
+        "b-14",
+        "b-15",
+        "b-16",
+        "b-17",
+        "b-18"
       ]
     },
     "band-trio": {
@@ -592,7 +827,10 @@
             "essentials": "400 ml · hasta 7000 rpm · recargable por USB",
             "url": "#vortix-comprar",
             "tint": "#DDE3D8",
-            "asset": "zn-vortix-rosa.jpg"
+            "asset": "zn-vortix-rosa.jpg",
+            "render": "zn-c-vortix-rosa.webp",
+            "render_w": 833,
+            "render_h": 1403
           }
         },
         "pick-2": {
@@ -605,7 +843,10 @@
             "essentials": "30 × 60 cm · 9 niveles · apagado automático",
             "url": "#termocalm-comprar",
             "tint": "#EBDDCB",
-            "asset": "zn-termocalm.jpg"
+            "asset": "zn-termocalm.jpg",
+            "render": "zn-c-termocalm.webp",
+            "render_w": 1203,
+            "render_h": 1353
           }
         },
         "pick-3": {
@@ -618,7 +859,10 @@
             "essentials": "EMS · 8 modos · 19 niveles · mando",
             "url": "#pulsia-comprar",
             "tint": "#F2DFE2",
-            "asset": "zn-pulsia.jpg"
+            "asset": "zn-pulsia.jpg",
+            "render": "zn-c-pulsia.webp",
+            "render_w": 1100,
+            "render_h": 1142
           }
         }
       },

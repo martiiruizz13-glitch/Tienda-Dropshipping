@@ -26,7 +26,11 @@
                 assign pimg = p.featured_media.preview_image
               endif
             -%}
-            {%- render 'zn-image', image: pimg, asset: block.settings.asset, asset_width: 1600, asset_height: 1600, sizes: '(min-width: 990px) 26vw, 70vw', alt: '', class_name: 'zn-pick__img' -%}
+            {%- if block.settings.render != blank -%}
+              {%- render 'zn-render', asset: block.settings.render, width: block.settings.render_w, height: block.settings.render_h, alt: '', class_name: 'zn-pick__render' -%}
+            {%- else -%}
+              {%- render 'zn-image', image: pimg, asset: block.settings.asset, asset_width: 1600, asset_height: 1600, sizes: '(min-width: 990px) 26vw, 70vw', alt: '', class_name: 'zn-pick__img' -%}
+            {%- endif -%}
           </div>
           <p class="zn-pick__need">{{ block.settings.need | escape }}</p>
           <h3 class="zn-pick__name">{{ block.settings.name | escape }}</h3>
@@ -78,7 +82,10 @@
         { "type": "text", "id": "url", "label": "Destino", "default": "#vortix-comprar" },
         { "type": "color", "id": "tint", "label": "Color", "default": "#DDE3D8" },
         { "type": "image_picker", "id": "image", "label": "Imagen" },
-        { "type": "text", "id": "asset", "label": "Imagen del tema" }
+        { "type": "text", "id": "asset", "label": "Imagen del tema" },
+        { "type": "text", "id": "render", "label": "Producto sin fondo (tema)" },
+        { "type": "number", "id": "render_w", "label": "Ancho", "default": 1200 },
+        { "type": "number", "id": "render_h", "label": "Alto", "default": 1200 }
       ]
     }
   ],

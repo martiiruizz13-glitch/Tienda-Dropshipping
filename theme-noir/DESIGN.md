@@ -473,3 +473,17 @@ Tema de Shopify **Zaldori Noir (Claude)**. Usa el mismo contenido, los mismos pr
 - **Tarjetas:** las tarjetas de imagen son `#111111` sobre la página `#000000`, porque negro sobre negro no se distinguiría (es el «salto de superficie» del documento). Las fichas de cifras son negras dentro de módulos `#111111`.
 - **Colores de datos:** verde vital solo para la batería (mAh); rojo pulso solo en la demostración de calor de TermoCalm; naranja para la etiqueta «Disponible» y los avisos.
 - **Imágenes de producto:** recortadas sobre negro a partir de las fotos reales de producto, sin reescalar por encima de su resolución original.
+
+---
+
+## Versión 2 · «Midnight instrument» y productos en 3D
+
+Segunda referencia aplicada encima de la primera:
+
+- **Superficies:** la página pasa a ser carbón `#111111`; el hero, las tarjetas de imagen y las fichas son negras `#000000`. Las bandas claras solo aparecen al final (compra, pie).
+- **Portada:** el logo y la marca pequeños y centrados, el titular en mayúsculas (SF Pro Display 600, tracking −0,009 em) y debajo los tres productos flotando. Bajo ellos, el botón azul y el precio en 14 px/600.
+- **Productos sin fondo:** las fotos reales se recortan con BiRefNet (IA de segmentación) y se amplían ×2 con Real-ESRGAN para que se vean nítidas en pantallas retina. Se guardan como WebP transparente (`zn-c-*.webp`).
+- **Efecto 3D (2,5D):** no son modelos 3D, sino capas de fotos reales en una escena CSS con perspectiva. La escena gira con el puntero y se abre en profundidad al hacer scroll. Cada producto lleva su reflejo en el suelo negro y un barrido de luz que solo afecta al objeto.
+- **«Míralo de cerca»:** a la izquierda, píldoras selectoras `rgba(66,66,69,.72)` con radio de 36 px y un más dentro de un círculo; a la derecha, un recorte grande que se mueve hasta el detalle elegido.
+- **Preguntas frecuentes:** filas en píldora `#333336` (abiertas `#424245`) con el más dentro de un círculo.
+- **Movimiento reducido:** sin giros, profundidad ni barridos de luz; solo fundidos.

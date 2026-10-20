@@ -25,6 +25,7 @@
   assign compares = section.blocks | where: 'type', 'compare'
   assign tensions = section.blocks | where: 'type', 'tension'
   assign review_heads = section.blocks | where: 'type', 'reviews'
+  assign looks = section.blocks | where: 'type', 'look'
 
   assign rating = nil
   assign rating_count = 0
@@ -248,6 +249,44 @@
 
   {{ head }}
 
+  {%- if section.settings.render != blank -%}
+    <div class="zn-stage" data-zn-stage>
+      <div class="zn-stage__rig" data-zn-stage-rig>
+        {%- render 'zn-render', asset: section.settings.render, width: section.settings.render_w, height: section.settings.render_h, alt: section.settings.render_alt, class_name: 'zn-stage__render' -%}
+      </div>
+      {%- if section.settings.statement != blank -%}<p class="zn-stage__statement" data-zn-lines>{{ section.settings.statement | escape }}</p>{%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if looks.size > 0 -%}
+    <div class="zn-wrap">
+      <div class="zn-look" data-zn-look>
+        <h3 class="zn-look__title" data-zn-lines>{{ section.settings.look_heading | default: 'Míralo de cerca.' | escape }}</h3>
+        <div class="zn-look__body">
+          <div class="zn-look__stage">
+            {%- for block in looks -%}
+              <div class="zn-look__view{% if forloop.first %} is-active{% endif %}" data-zn-look-view style="--zoom: {{ block.settings.zoom | divided_by: 100.0 }}; --x: {{ block.settings.x }}%; --y: {{ block.settings.y }}%; --rot: {{ block.settings.rotate }}deg;" {{ block.shopify_attributes }}>
+                {%- render 'zn-render', asset: block.settings.asset, width: block.settings.w, height: block.settings.h, alt: block.settings.alt, reflect: false, class_name: 'zn-look__render' -%}
+              </div>
+            {%- endfor -%}
+          </div>
+          <ul class="zn-look__pills" role="list">
+            {%- for block in looks -%}
+              <li class="zn-look__item{% if forloop.first %} is-active{% endif %}" data-zn-look-item>
+                <button class="zn-look__pill" type="button" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="zn-look-{{ block.id }}" data-zn-look-pill>
+                  <span class="zn-look__plus" aria-hidden="true"></span>
+                  <span>{{ block.settings.title | escape }}</span>
+                </button>
+                <p class="zn-look__text" id="zn-look-{{ block.id }}">{{ block.settings.text | escape }}</p>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- unless section.settings.render != blank -%}
   {%- case pattern -%}
     {%- when 'expand' -%}
       <div class="zn-expand" data-zn-expand>
@@ -298,6 +337,7 @@
         </div>
       </div>
   {%- endcase -%}
+  {%- endunless -%}
 
   {{ tiles_html }}
 
@@ -339,6 +379,11 @@
     { "type": "textarea", "id": "lede", "label": "Entradilla" },
     { "type": "text", "id": "statement", "label": "Frase sobre la imagen" },
     { "type": "text", "id": "tiles_heading", "label": "Título de las claves", "default": "Lo esencial." },
+    { "type": "text", "id": "look_heading", "label": "Título de «de cerca»", "default": "Míralo de cerca." },
+    { "type": "text", "id": "render", "label": "Producto sin fondo (tema)", "info": "Imagen WebP con transparencia. Sustituye a la composición." },
+    { "type": "number", "id": "render_w", "label": "Producto: ancho", "default": 1200 },
+    { "type": "number", "id": "render_h", "label": "Producto: alto", "default": 1200 },
+    { "type": "text", "id": "render_alt", "label": "Producto: texto alternativo" },
     { "type": "textarea", "id": "specs", "label": "Ficha técnica", "info": "Una línea por dato, con el formato Dato: valor" },
     { "type": "text", "id": "note", "label": "Nota bajo el botón", "default": "Envío gratis a España · 14 días para cambiar de opinión" },
     { "type": "select", "id": "buy_layout", "label": "Bloque de compra", "options": [ { "value": "split", "label": "Foto y datos" }, { "value": "stacked", "label": "Apilado" } ], "default": "split" },
@@ -445,6 +490,22 @@
         { "type": "text", "id": "title", "label": "Título", "default": "Opiniones" },
         { "type": "text", "id": "empty_text", "label": "Texto sin opiniones", "default": "Todavía no hay opiniones publicadas. Cuando lleguen, aparecerán aquí tal cual nos las envíen." },
         { "type": "checkbox", "id": "show_empty", "label": "Mostrar aunque no haya opiniones", "default": false }
+      ]
+    },
+    {
+      "type": "look",
+      "name": "De cerca",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Detalle" },
+        { "type": "textarea", "id": "text", "label": "Texto" },
+        { "type": "text", "id": "asset", "label": "Producto sin fondo (tema)" },
+        { "type": "number", "id": "w", "label": "Ancho", "default": 1200 },
+        { "type": "number", "id": "h", "label": "Alto", "default": 1200 },
+        { "type": "text", "id": "alt", "label": "Texto alternativo" },
+        { "type": "range", "id": "zoom", "label": "Zoom (%)", "min": 100, "max": 320, "step": 10, "default": 100 },
+        { "type": "range", "id": "x", "label": "Foco horizontal (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "y", "label": "Foco vertical (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "rotate", "label": "Giro (grados)", "min": -30, "max": 30, "step": 1, "default": 0 }
       ]
     },
     { "type": "@app" },

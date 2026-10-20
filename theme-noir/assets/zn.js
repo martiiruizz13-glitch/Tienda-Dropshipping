@@ -993,6 +993,38 @@
     }
   });
 
+  /* ------------------------------------------------------------ Close look */
+  // Selector pills beside an oversized crop: one pill open at a time, the crop moves to its detail.
+  $$('[data-zn-look]').forEach((root) => {
+    const items = $$('[data-zn-look-item]', root);
+    const views = $$('[data-zn-look-view]', root);
+    const pick = (i) => {
+      items.forEach((it, n) => {
+        const on = n === i;
+        it.classList.toggle('is-active', on);
+        $('[data-zn-look-pill]', it).setAttribute('aria-expanded', on ? 'true' : 'false');
+      });
+      views.forEach((v, n) => v.classList.toggle('is-active', n === i));
+      const r = views[i] && $('[data-zn-render]', views[i]);
+      if (r && !mqReduce.matches) { r.classList.remove('is-sweeping'); void r.offsetWidth; r.classList.add('is-sweeping'); }
+    };
+    items.forEach((it, i) => $('[data-zn-look-pill]', it).addEventListener('click', () => pick(i)));
+  });
+
+  /* ------------------------------------------------------- Light sweep */
+  // A soft highlight crosses each product render once, the first time it comes into view.
+  if (!mqReduce.matches && typeof IntersectionObserver !== 'undefined') {
+    const sweepIO = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-sweeping');
+        sweepIO.unobserve(e.target);
+      }),
+      { threshold: 0.55 }
+    );
+    $$('[data-zn-render]').forEach((r) => { if (!r.closest('[data-zn-look-view]')) sweepIO.observe(r); });
+  }
+
   /* ------------------------------------------------------- Highlights dots */
   // Carousel mode (phones, tablets, reduced motion): the dots follow the card in view.
   $$('[data-zn-hl]').forEach((section) => {
@@ -1162,6 +1194,10 @@
                 .fromTo(card, { opacity: 0, scale: 1.03 }, { opacity: 1, scale: 1, duration: 0.5, pointerEvents: 'auto' }, at + 0.45)
                 .fromTo($('[data-zn-hl-media] img', card), { yPercent: 5 }, { yPercent: 0, duration: 0.6, ease: 'expo.out' }, at + 0.45)
                 .fromTo($('[data-zn-hl-copy]', card).children, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.03, ease: 'expo.out' }, at + 0.55);
+              const rPrev = $('.zn-hl__render', prev);
+              const rCard = $('.zn-hl__render', card);
+              if (rPrev) tl.to(rPrev, { rotationY: -40, x: -60, duration: 0.5 }, at + 0.25);
+              if (rCard) tl.fromTo(rCard, { rotationY: 40, x: 60 }, { rotationY: 0, x: 0, duration: 0.7, ease: 'expo.out' }, at + 0.45);
             });
             tl.to({}, { duration: 0.25 });
             const setDots = (p) => {
@@ -1202,6 +1238,40 @@
             });
           });
         }
+
+        /* ---------- Hero scene: layers open in depth on scroll ---------- */
+        const scene = $('[data-zn-scene]');
+        if (scene) {
+          const rig = $('[data-zn-scene-rig]', scene);
+          const layers = $$('[data-zn-layer]', scene);
+          gsap.from(layers, { opacity: 0, y: 60, rotationX: -18, duration: 1.6, ease: 'expo.out', stagger: 0.12, delay: 0.25 });
+          const spread = gsap.timeline({ defaults: { ease: 'none' } });
+          spread
+            .to(rig, { rotationX: 14, y: isDesktop ? -40 : -20, duration: 1 }, 0)
+            .to(layers[0] || {}, { x: isDesktop ? -80 : -30, z: isDesktop ? -260 : -120, rotationY: 28, duration: 1 }, 0)
+            .to(layers[1] || {}, { z: isDesktop ? 90 : 40, duration: 1 }, 0)
+            .to(layers[2] || {}, { x: isDesktop ? 80 : 30, z: isDesktop ? 240 : 120, rotationY: -26, duration: 1 }, 0)
+            .to(rig, { opacity: 0.25, duration: 0.4 }, 0.6);
+          ScrollTrigger.create({ trigger: $('[data-zn-hero]'), start: 'top top', end: 'bottom top', scrub: 0.8, animation: spread });
+        }
+
+        /* ---------- Chapter stage: the product turns as it crosses the screen ---------- */
+        $$('[data-zn-stage]').forEach((stage) => {
+          const rig = $('[data-zn-stage-rig]', stage);
+          gsap.fromTo(
+            rig,
+            { rotationY: -32, rotationX: 10, scale: 0.86, y: 60 },
+            { rotationY: 26, rotationX: -6, scale: 1.04, y: -30, ease: 'none', scrollTrigger: { trigger: stage, start: 'top bottom', end: 'bottom top', scrub: 0.8 } }
+          );
+        });
+
+        /* ---------- Highlight tiles: each render swings into place ---------- */
+        $$('[data-zn-hl-card] .zn-hl__render').forEach((r) => {
+          gsap.set(r, { transformPerspective: 1200 });
+          if (!isDesktop) {
+            gsap.fromTo(r, { rotationY: -24, scale: 0.92 }, { rotationY: 18, scale: 1, ease: 'none', scrollTrigger: { trigger: r, start: 'top bottom', end: 'bottom top', scrub: 0.8 } });
+          }
+        });
 
         /* ---------- Pattern: expand ---------- */
         $$('[data-zn-expand]').forEach((wrap) => {
@@ -1375,9 +1445,9 @@
 
         /* ---------- Hero lineup leans towards the pointer (desktop, mouse) ---------- */
         const tilts = [];
-        const heroVisual = isDesktop && mqFine.matches && $('[data-zn-hero-visual]');
+        const heroVisual = isDesktop && mqFine.matches && $('[data-zn-scene]');
         if (heroVisual) {
-          gsap.set(heroVisual, { transformPerspective: 1400, transformOrigin: '50% 60%' });
+          gsap.set(heroVisual, { transformPerspective: 1800, transformStyle: 'preserve-3d' });
           const rx = gsap.quickTo(heroVisual, 'rotationX', { duration: 1, ease: 'power3.out' });
           const ry = gsap.quickTo(heroVisual, 'rotationY', { duration: 1, ease: 'power3.out' });
           const hx = gsap.quickTo(heroVisual, 'x', { duration: 1, ease: 'power3.out' });
@@ -1386,9 +1456,9 @@
             const r = heroEl.getBoundingClientRect();
             const px = (e.clientX - r.left) / r.width - 0.5;
             const py = (e.clientY - r.top) / r.height - 0.5;
-            ry(px * 5);
-            rx(-py * 4);
-            hx(px * 14);
+            ry(px * 14);
+            rx(-py * 8);
+            hx(px * 18);
           };
           const leave = () => { rx(0); ry(0); hx(0); };
           heroEl.addEventListener('pointermove', move);

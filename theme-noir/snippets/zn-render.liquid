@@ -1,0 +1,24 @@
+{%- comment -%}
+  Isolated product render: a real product photo with its background removed (transparent WebP),
+  floating on the black stage. A mirrored copy fades into the floor and a light sweep can run
+  across the object (zn.js). The reflection and sweep are decorative and hidden from assistive tech.
+  Params: asset (theme asset filename), width, height, alt, class_name, reflect (default true),
+  priority (true for the LCP image), sizes
+{%- endcomment -%}
+{%- liquid
+  assign src = asset | asset_url
+  assign w = width | default: 1200
+  assign h = height | default: 1200
+  if priority
+    assign loading = 'eager'
+  else
+    assign loading = 'lazy'
+  endif
+-%}
+<figure class="zn-render {{ class_name }}{% if reflect == false %} zn-render--flat{% endif %}" data-zn-render style="--zn-render-src: url('{{ src }}'); --zn-ratio: {{ w }} / {{ h }};">
+  <img class="zn-render__img" src="{{ src }}" width="{{ w }}" height="{{ h }}" alt="{{ alt | escape }}" loading="{{ loading }}" decoding="async"{% if priority %} fetchpriority="high"{% endif %}>
+  <span class="zn-render__sheen" aria-hidden="true"></span>
+  {%- unless reflect == false -%}
+    <img class="zn-render__reflect" src="{{ src }}" width="{{ w }}" height="{{ h }}" alt="" aria-hidden="true" loading="lazy" decoding="async">
+  {%- endunless -%}
+</figure>
