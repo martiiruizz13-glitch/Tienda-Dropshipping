@@ -1,0 +1,63 @@
+<footer class="zp-footer" aria-labelledby="zp-footer-title">
+  <div class="zp-footer__garland" aria-hidden="true">
+    {%- for i in (1..18) -%}<span style="--i: {{ i }};"></span>{%- endfor -%}
+  </div>
+  <div class="zp-wrap">
+    <h2 class="zp-visually-hidden" id="zp-footer-title">Pie de página</h2>
+    <div class="zp-footer__top">
+      <a class="zp-footer__logo" href="{{ routes.root_url }}" aria-label="Zaldori, inicio">
+        {%- render 'zd-logo', variant: 'full', class_name: 'zp-logo' -%}
+      </a>
+      <p class="zp-footer__claim">{{ section.settings.claim | escape }}</p>
+    </div>
+
+    <div class="zp-footer__cols">
+      <nav class="zp-footer__col" aria-label="Ayuda">
+        <h3 class="zp-footer__h">Ayuda</h3>
+        <ul role="list">
+          <li><a href="{% unless request.page_type == 'index' or request.page_type == 'product' %}{{ routes.root_url }}{% endunless %}#faq">Preguntas frecuentes</a></li>
+          <li><a href="{% unless request.page_type == 'index' or request.page_type == 'product' %}{{ routes.root_url }}{% endunless %}#comprar">Comprar Zarpa</a></li>
+          <li><a href="{{ routes.cart_url }}">Carrito</a></li>
+        </ul>
+      </nav>
+      <nav class="zp-footer__col" aria-label="Legal">
+        <h3 class="zp-footer__h">Legal</h3>
+        <ul role="list">
+          {%- for policy in shop.policies -%}
+            {%- if policy != blank -%}
+              <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+      <div class="zp-footer__col">
+        <h3 class="zp-footer__h">Atención al cliente</h3>
+        <p><a class="zp-footer__mail" href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></p>
+        <p class="zp-footer__small">{{ section.settings.note | escape }}</p>
+      </div>
+    </div>
+
+    <div class="zp-footer__bottom">
+      <p>© {{ 'now' | date: '%Y' }} Zaldori</p>
+      {%- if shop.enabled_payment_types.size > 0 -%}
+        <ul class="zp-payments" role="list" aria-label="Métodos de pago aceptados">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'zp-payments__icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Zarpa · Pie",
+  "class": "zp-footer-section",
+  "settings": [
+    { "type": "text", "id": "claim", "label": "Frase", "default": "Pasitos suaves, huellas que se recuerdan." },
+    { "type": "text", "id": "email", "label": "Email", "default": "support@zaldori.com" },
+    { "type": "text", "id": "note", "label": "Nota", "default": "Te respondemos en menos de 24 horas laborables." }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,87 @@
+{%- liquid
+  assign items = section.settings.announcement | newline_to_br | split: '<br />'
+-%}
+{%- if section.settings.show_announcement and section.settings.announcement != blank -%}
+  <div class="zp-announce" style="--zp-a-bg: {{ section.settings.announce_bg }}; --zp-a-fg: {{ section.settings.announce_fg }}; --zp-speed: {{ section.settings.speed }}s;">
+    <div class="zp-announce__track">
+      {%- for round in (1..2) -%}
+        <ul class="zp-announce__list" role="list"{% if round == 2 %} aria-hidden="true"{% endif %}>
+          {%- for it in items -%}
+            {%- assign t = it | strip -%}
+            {%- if t != blank -%}
+              <li><span class="zp-announce__star" aria-hidden="true">✦</span>{{ t | escape }}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+<header class="zp-header" data-zp-header>
+  <div class="zp-wrap zp-header__inner">
+    <a class="zp-header__logo" href="{{ routes.root_url }}" aria-label="Zaldori, inicio">
+      {%- render 'zd-logo', variant: 'full', class_name: 'zp-logo' -%}
+    </a>
+
+    <nav class="zp-header__nav" aria-label="Secciones">
+      <ul role="list">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}>
+            <a href="{% if request.page_type != 'index' and request.page_type != 'product' and block.settings.url contains '#' %}{{ routes.root_url }}{% endif %}{{ block.settings.url }}">{{ block.settings.label | escape }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="zp-header__actions">
+      {%- if section.settings.show_countdown -%}
+        <p class="zp-chip zp-header__count" data-zp-days="{{ section.settings.christmas_date }}" hidden>
+          <span aria-hidden="true">🎄</span> <span data-zp-days-text></span>
+        </p>
+      {%- endif -%}
+      <button class="zp-cart-btn" type="button" data-zp-cart-open aria-haspopup="dialog" aria-controls="zp-cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5.5 8.5h13l-1 11.5h-11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span class="zp-visually-hidden">Carrito,</span>
+        <span class="zp-cart-btn__count" data-zp-cart-count data-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+        <span class="zp-visually-hidden">artículos</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Zarpa · Cabecera",
+  "class": "zp-header-section",
+  "settings": [
+    { "type": "header", "content": "Barra de avisos" },
+    { "type": "checkbox", "id": "show_announcement", "label": "Mostrar barra de avisos", "default": true },
+    { "type": "textarea", "id": "announcement", "label": "Avisos", "info": "Uno por línea", "default": "Envío gratis a toda España\nPide antes del 10 de diciembre y llega para Navidad\n14 días para cambiar de opinión\nPago 100 % seguro" },
+    { "type": "range", "id": "speed", "label": "Velocidad (segundos por vuelta)", "min": 10, "max": 80, "step": 2, "default": 34 },
+    { "type": "color", "id": "announce_bg", "label": "Fondo de la barra", "default": "#C8243B" },
+    { "type": "color", "id": "announce_fg", "label": "Texto de la barra", "default": "#FFF8EC" },
+    { "type": "header", "content": "Cuenta atrás" },
+    { "type": "checkbox", "id": "show_countdown", "label": "Mostrar días que faltan para Navidad", "default": true },
+    { "type": "text", "id": "christmas_date", "label": "Fecha objetivo", "info": "Formato AAAA-MM-DD", "default": "2026-12-25" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Enlace",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "Huellas" },
+        { "type": "text", "id": "url", "label": "Destino (ancla o URL)", "default": "#huellas" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "link", "settings": { "label": "Huellas", "url": "#huellas" } },
+      { "type": "link", "settings": { "label": "5 capas", "url": "#capas" } },
+      { "type": "link", "settings": { "label": "Para regalar", "url": "#regalo" } },
+      { "type": "link", "settings": { "label": "Comprar", "url": "#comprar" } }
+    ]
+  }
+}
+{% endschema %}

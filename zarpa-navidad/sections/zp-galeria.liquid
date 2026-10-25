@@ -1,0 +1,55 @@
+{%- assign p = section.settings.product | default: product -%}
+<section class="zp-galeria" id="galeria" style="--zp-pt: {{ section.settings.padding_top }}px; --zp-pb: {{ section.settings.padding_bottom }}px; --zp-sec-bg: {{ section.settings.bg }}; --zp-speed: {{ section.settings.speed }}s;" aria-labelledby="zp-galeria-title-{{ section.id }}">
+  <div class="zp-wrap">
+    <header class="zp-sec-head zp-sec-head--center">
+      {%- if section.settings.eyebrow != blank -%}<p class="zp-eyebrow zp-reveal">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="zp-h2 zp-reveal" id="zp-galeria-title-{{ section.id }}">
+        {{- section.settings.heading | escape -}}
+        {%- if section.settings.highlight != blank %} <em>{{ section.settings.highlight | escape }}</em>{% endif -%}
+      </h2>
+    </header>
+  </div>
+  {%- if p != blank and p.media.size > 0 -%}
+    <div class="zp-galeria__rail">
+      <div class="zp-galeria__track">
+        {%- for round in (1..2) -%}
+          <ul class="zp-galeria__list" role="list"{% if round == 2 %} aria-hidden="true"{% endif %}>
+            {%- assign start = section.settings.from | minus: 1 -%}
+            {%- for media in p.media offset: start -%}
+              {%- if media.media_type == 'image' -%}
+                <li class="zp-galeria__item" style="--r: {% cycle '-3deg', '2deg', '-1deg', '3deg', '-2deg' %};">
+                  {%- if round == 1 -%}
+                    {%- render 'zp-img', image: media.preview_image, sizes: '(min-width: 990px) 22vw, 60vw', class_name: 'zp-galeria__img' -%}
+                  {%- else -%}
+                    {{ media.preview_image | image_url: width: 720 | image_tag: loading: 'lazy', alt: '', class: 'zp-galeria__img' }}
+                  {%- endif -%}
+                  <span class="zp-galeria__cap">{{ media.alt | split: 'Zarpa ' | last | escape }}</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Zarpa · Galería",
+  "tag": "div",
+  "class": "zp-section zp-section--galeria",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (vacío = el de la página)" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "7 caritas, 2 tonos" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Elige tu" },
+    { "type": "text", "id": "highlight", "label": "Final destacado", "default": "Zarpa favorita." },
+    { "type": "range", "id": "from", "label": "Empezar en la foto nº", "min": 1, "max": 13, "step": 1, "default": 8 },
+    { "type": "range", "id": "speed", "label": "Velocidad (segundos por vuelta)", "min": 20, "max": 120, "step": 5, "default": 40 },
+    { "type": "color", "id": "bg", "label": "Fondo", "default": "#FFF8EC" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 200, "step": 4, "default": 96, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 200, "step": 4, "default": 104, "unit": "px" }
+  ],
+  "presets": [ { "name": "Zarpa · Galería" } ]
+}
+{% endschema %}

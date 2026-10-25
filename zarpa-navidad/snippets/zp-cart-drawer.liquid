@@ -1,0 +1,22 @@
+<dialog class="zp-cart" id="zp-cart" aria-labelledby="zp-cart-title" data-zp-cart>
+  <div class="zp-cart__panel">
+    <header class="zp-cart__head">
+      <h2 class="zp-cart__title" id="zp-cart-title">Tu carrito <span aria-hidden="true">🎄</span></h2>
+      <button class="zp-cart__close" type="button" data-zp-cart-close>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+        <span class="zp-visually-hidden">Cerrar carrito</span>
+      </button>
+    </header>
+    <p class="zp-cart__ship"><span aria-hidden="true">🚚</span> Envío gratis a toda España</p>
+    <ul class="zp-cart__items" role="list" data-zp-cart-items></ul>
+    <p class="zp-cart__empty" data-zp-cart-empty hidden>Tu carrito está vacío. ¡Tus futuras Zarpa te esperan!</p>
+    <footer class="zp-cart__foot">
+      <p class="zp-cart__total"><span>Total</span><strong data-zp-cart-total>{{ cart.total_price | money }}</strong></p>
+      <p class="zp-cart__tax">Impuestos incluidos. Envío gratis.</p>
+      <form action="{{ routes.cart_url }}" method="post">
+        <button class="zp-btn zp-btn--primary zp-btn--block" type="submit" name="checkout" data-zp-checkout>Finalizar compra</button>
+      </form>
+      <a class="zp-cart__link" href="{{ routes.cart_url }}">Ver carrito completo</a>
+    </footer>
+  </div>
+</dialog>

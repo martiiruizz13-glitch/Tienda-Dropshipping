@@ -1,0 +1,233 @@
+{%- liquid
+  assign p = section.settings.product | default: product
+  if p != blank
+    assign current = p.selected_or_first_available_variant
+    assign title_parts = p.title | split: ' · '
+    assign name = title_parts.first
+    assign subtitle = title_parts | slice: 1, 9 | join: ' · '
+    assign main_image = current.featured_media.preview_image | default: p.featured_media.preview_image
+    assign form_id = 'zp-buy-' | append: section.id
+  endif
+-%}
+<section class="zp-compra" id="comprar" data-zp-buy-section style="--zp-pt: {{ section.settings.padding_top }}px; --zp-pb: {{ section.settings.padding_bottom }}px; --zp-sec-bg: {{ section.settings.bg }};" aria-labelledby="zp-compra-title-{{ section.id }}">
+  <div class="zp-wrap">
+    {%- if p != blank -%}
+      {%- if request.page_type == 'product' -%}
+        <nav class="zp-crumbs" aria-label="Estás aquí">
+          <a href="{{ routes.root_url }}">Zaldori</a><span aria-hidden="true">/</span><span aria-current="page">{{ name | escape }}</span>
+        </nav>
+      {%- endif -%}
+
+      <div class="zp-buy" data-zp-buy>
+        <div class="zp-buy__gallery">
+          <div class="zp-buy__main">
+            {%- render 'zp-img', image: main_image, sizes: '(min-width: 990px) 46vw, 92vw', class_name: 'zp-buy__img', eager: section.settings.eager -%}
+            {%- if current.compare_at_price > current.price -%}
+              {%- assign pct = current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price -%}
+              <span class="zp-buy__flag" data-zp-flag>-{{ pct }}%</span>
+            {%- endif -%}
+          </div>
+          {%- if p.media.size > 1 -%}
+            <ul class="zp-buy__thumbs" role="list" aria-label="Fotos de {{ name | escape }}">
+              {%- for media in p.media limit: 13 -%}
+                {%- if media.media_type == 'image' -%}
+                  <li>
+                    <button class="zp-buy__thumb{% if media.preview_image.src == main_image.src %} is-active{% endif %}" type="button" data-zp-thumb
+                      data-src="{{ media.preview_image | image_url: width: 1200 }}"
+                      data-srcset="{{ media.preview_image | image_url: width: 540 }} 540w, {{ media.preview_image | image_url: width: 900 }} 900w, {{ media.preview_image | image_url: width: 1200 }} 1200w"
+                      data-alt="{{ media.alt | escape }}"
+                      aria-label="Ver foto {{ forloop.index }}">
+                      {{- media.preview_image | image_url: width: 180 | image_tag: loading: 'lazy', alt: '', width: 90, height: 90 -}}
+                    </button>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+
+        <form class="zp-buy__form" id="{{ form_id }}" method="post" action="{{ routes.cart_add_url }}" accept-charset="UTF-8" enctype="multipart/form-data" data-zp-buy-form novalidate>
+          <input type="hidden" name="form_type" value="product">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="id" value="{{ current.id }}" data-zp-variant-id>
+
+          {%- if section.settings.eyebrow != blank -%}<p class="zp-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          <h2 class="zp-buy__name" id="zp-compra-title-{{ section.id }}">
+            {%- if request.page_type == 'product' -%}<span class="zp-visually-hidden">{{ p.title | escape }}</span><span aria-hidden="true">{{ name | escape }}</span>{%- else -%}{{ name | escape }}{%- endif -%}
+          </h2>
+          {%- if subtitle != blank -%}<p class="zp-buy__sub">{{ subtitle | escape }}</p>{%- endif -%}
+
+          <p class="zp-buy__price" aria-live="polite">
+            <span class="zp-visually-hidden">Precio</span>
+            <span class="zp-buy__now" data-zp-price>{{ current.price | money }}</span>
+            <s class="zp-buy__compare" data-zp-compare {% unless current.compare_at_price > current.price %}hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
+            <span class="zp-chip zp-chip--red" data-zp-save {% unless current.compare_at_price > current.price %}hidden{% endunless %}>Precio especial Navidad</span>
+          </p>
+
+          {%- assign hl_lines = section.settings.highlights | newline_to_br | split: '<br />' -%}
+          <ul class="zp-buy__highlights" role="list">
+            {%- for hl in hl_lines -%}
+              {%- assign h = hl | strip -%}
+              {%- if h != blank -%}
+                <li><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><use href="#zp-paw"/></svg><span>{{ h | escape }}</span></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+
+          {%- unless p.has_only_default_variant -%}
+            {%- for option in p.options_with_values -%}
+              {%- assign opt_index = forloop.index0 -%}
+              {%- assign opt_name = option.name | downcase -%}
+              {%- if opt_name == 'color' or opt_name == 'colour' or opt_name == 'modelo' -%}
+                {%- assign is_swatch = true -%}
+              {%- else -%}
+                {%- assign is_swatch = false -%}
+              {%- endif -%}
+              <fieldset class="zp-opt{% if is_swatch %} zp-opt--swatch{% endif %}">
+                <legend class="zp-opt__legend">
+                  {{ option.name | escape }}<span aria-hidden="true">:</span>
+                  <strong data-zp-option-current="{{ opt_index }}">{{ option.selected_value | escape }}</strong>
+                </legend>
+                <div class="zp-opt__list">
+                  {%- for value in option.values -%}
+                    {%- liquid
+                      assign val = value | append: ''
+                      assign input_id = form_id | append: '-' | append: opt_index | append: '-' | append: forloop.index
+                      assign sw_img = nil
+                      if is_swatch
+                        for vt in p.variants
+                          if vt.options[opt_index] == val and vt.featured_media != blank
+                            assign sw_img = vt.featured_media.preview_image
+                            break
+                          endif
+                        endfor
+                      endif
+                    -%}
+                    <input class="zp-opt__input" type="radio" id="{{ input_id }}" name="{{ form_id }}-option-{{ opt_index }}" value="{{ val | escape }}" data-zp-option="{{ opt_index }}" {% if option.selected_value == val %}checked{% endif %}>
+                    <label class="zp-opt__btn" for="{{ input_id }}" title="{{ val | escape }}">
+                      {%- if is_swatch and sw_img != blank -%}
+                        {{- sw_img | image_url: width: 160 | image_tag: loading: 'lazy', alt: '', width: 64, height: 64, class: 'zp-opt__img' -}}
+                        <span class="zp-visually-hidden">{{ val | escape }}</span>
+                      {%- else -%}
+                        <span>{{ val | escape }}</span>
+                      {%- endif -%}
+                    </label>
+                  {%- endfor -%}
+                </div>
+                {%- if is_swatch == false and section.settings.size_tip != blank and opt_index == 1 -%}
+                  <p class="zp-opt__tip"><span aria-hidden="true">📏</span> {{ section.settings.size_tip | escape }}</p>
+                {%- endif -%}
+              </fieldset>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <p class="zp-buy__stock" data-zp-stock data-state="{% if current.available %}in{% else %}out{% endif %}">
+            <span class="zp-buy__stock-dot" aria-hidden="true"></span>
+            <span data-zp-stock-text>{% if current.available %}{{ section.settings.stock_text | default: 'Disponible' | escape }}{% else %}Agotado en esta combinación{% endif %}</span>
+          </p>
+
+          <div class="zp-buy__row">
+            <div class="zp-qty">
+              <button type="button" class="zp-qty__btn" data-zp-qty-step="-1" aria-label="Quitar una unidad"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6"/></svg></button>
+              <label class="zp-visually-hidden" for="{{ form_id }}-qty">Cantidad</label>
+              <input class="zp-qty__input" id="{{ form_id }}-qty" type="number" name="quantity" value="1" min="1" max="10" inputmode="numeric" data-zp-qty>
+              <button type="button" class="zp-qty__btn" data-zp-qty-step="1" aria-label="Añadir una unidad"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="1.6"/></svg></button>
+            </div>
+            <button class="zp-btn zp-btn--primary zp-btn--add" type="submit" name="add" data-zp-add {% unless current.available %}disabled{% endunless %}>
+              <span class="zp-btn__label" data-zp-add-label>{% if current.available %}{{ section.settings.button_label | escape }}{% else %}Agotado{% endif %}</span>
+              <span class="zp-btn__spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+          <p class="zp-buy__error" role="alert" data-zp-error hidden></p>
+
+          {%- if section.settings.xmas_note != blank -%}
+            <div class="zp-buy__xmas">
+              <span class="zp-buy__xmas-icon" aria-hidden="true">🎁</span>
+              <p>{{ section.settings.xmas_note | escape }}</p>
+            </div>
+          {%- endif -%}
+
+          <ul class="zp-buy__trust" role="list">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="6.5" cy="17" r="1.8" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="17" r="1.8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span><strong>Envío gratis</strong> con seguimiento</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v3.5h3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>14 días</strong> para devolverlo</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3 5 6v5c0 4.4 3 8.3 7 9.5 4-1.2 7-5.1 7-9.5V6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span><strong>Garantía</strong> legal de 3 años</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="10.5" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span><strong>Pago seguro</strong> y cifrado</span></li>
+          </ul>
+          {%- if shop.enabled_payment_types.size > 0 -%}
+            <ul class="zp-payments zp-buy__payments" role="list" aria-label="Métodos de pago aceptados">
+              {%- for type in shop.enabled_payment_types -%}
+                <li>{{ type | payment_type_svg_tag: class: 'zp-payments__icon' }}</li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          {%- if section.settings.show_description and p.description != blank -%}
+            <details class="zp-buy__details">
+              <summary>Todos los detalles</summary>
+              <div class="zp-rte">{{ p.description }}</div>
+            </details>
+          {%- endif -%}
+        </form>
+
+        <script type="application/json" data-zp-variants>
+          [
+            {%- for variant in p.variants -%}
+              {%- liquid
+                assign vimg = variant.featured_media.preview_image
+                if vimg
+                  assign s540 = vimg | image_url: width: 540
+                  assign s900 = vimg | image_url: width: 900
+                  assign s1200 = vimg | image_url: width: 1200
+                  assign vsrcset = s540 | append: ' 540w, ' | append: s900 | append: ' 900w, ' | append: s1200 | append: ' 1200w'
+                endif
+              -%}
+              {
+                "id": {{ variant.id | json }},
+                "options": {{ variant.options | json }},
+                "available": {{ variant.available | json }},
+                "price": {{ variant.price | money | json }},
+                "compare": {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | json }}{% else %}null{% endif %},
+                "pct": {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}{% else %}0{% endif %},
+                "image": {% if vimg %}{ "src": {{ s1200 | json }}, "srcset": {{ vsrcset | json }}, "alt": {{ vimg.alt | json }} }{% else %}null{% endif %}
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          ]
+        </script>
+      </div>
+
+      <div class="zp-bar" data-zp-bar aria-hidden="true" inert>
+        <div class="zp-bar__info">
+          <p class="zp-bar__name">{{ name | escape }}</p>
+          <p class="zp-bar__price" data-zp-bar-price>{{ current.price | money }}</p>
+        </div>
+        <a class="zp-btn zp-btn--primary zp-bar__btn" href="#comprar">{{ section.settings.bar_label | escape }}</a>
+      </div>
+    {%- else -%}
+      <p class="zp-empty">Elige un producto en los ajustes de esta sección.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zarpa · Compra",
+  "tag": "div",
+  "class": "zp-section zp-section--compra",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (vacío = el de la página)" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Edición Navidad" },
+    { "type": "textarea", "id": "highlights", "label": "Ventajas", "info": "Una por línea", "default": "Dejan huellas de gatito al pisar mojado\n5 capas de calidez y forro lavable\nImpermeables y antideslizantes" },
+    { "type": "text", "id": "size_tip", "label": "Consejo de talla", "default": "Tallan un poco pequeño: si dudas entre dos, elige la siguiente." },
+    { "type": "text", "id": "stock_text", "label": "Texto de disponible", "default": "Disponible · pocas unidades para Navidad" },
+    { "type": "text", "id": "button_label", "label": "Texto del botón", "default": "Añadir al carrito" },
+    { "type": "text", "id": "xmas_note", "label": "Nota de Navidad", "default": "Pide antes del 10 de diciembre y recíbelo a tiempo para Navidad." },
+    { "type": "checkbox", "id": "show_description", "label": "Mostrar la descripción del producto", "default": true },
+    { "type": "text", "id": "bar_label", "label": "Botón de la barra fija (móvil)", "default": "Elegir mis Zarpa" },
+    { "type": "checkbox", "id": "eager", "label": "Cargar la foto al instante (actívalo si es lo primero de la página)", "default": false },
+    { "type": "color", "id": "bg", "label": "Fondo", "default": "#FFF8EC" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 200, "step": 4, "default": 96, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 200, "step": 4, "default": 96, "unit": "px" }
+  ],
+  "presets": [ { "name": "Zarpa · Compra" } ]
+}
+{% endschema %}

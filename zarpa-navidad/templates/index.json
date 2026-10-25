@@ -1,0 +1,381 @@
+{
+  "layout": "zarpa",
+  "sections": {
+    "hero": {
+      "type": "zp-hero",
+      "settings": {
+        "eyebrow": "Edición Navidad · Zaldori",
+        "heading": "El regalo más tierno de estas Navidades",
+        "highlight": "deja huellas.",
+        "text": "<p>Conoce <strong>Zarpa</strong>: zapatillas de casa con carita de gatito y una suela de patita que, al pisar mojado, deja huellas de gato por toda la casa. Calentitas, impermeables y adorables a más no poder.</p>",
+        "button_label": "Quiero mis Zarpa",
+        "button2_label": "Ver las huellas",
+        "show_price": true,
+        "perks": "Envío gratis a España\n14 días para cambiar de opinión\nPago seguro",
+        "badge": "¡Miau!",
+        "media_index": 1,
+        "media_index_2": 7,
+        "bg": "#1A0912",
+        "fg": "#FFF8EC",
+        "accent": "#E8B65A",
+        "padding_top": 48,
+        "padding_bottom": 120,
+        "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables"
+      }
+    },
+    "huellas": {
+      "type": "zp-huellas",
+      "settings": {
+        "eyebrow": "Su superpoder",
+        "heading": "Cada paso,",
+        "highlight": "una huella de gatito.",
+        "text": "<p>La suela de Zarpa tiene la forma de una patita de verdad, con sus almohadillas y todo. Sal de la ducha, cruza la cocina recién fregada… y mira atrás: un caminito de huellas de gato te sigue. Es imposible no sonreír.</p>",
+        "sticker": "Huellas reales",
+        "media_index": 6,
+        "bg": "#FBF4E8",
+        "padding_top": 112,
+        "padding_bottom": 112,
+        "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables"
+      },
+      "blocks": {
+        "step-1": {
+          "type": "step",
+          "settings": {
+            "title": "Pisa un suelo húmedo",
+            "text": "Al salir de la ducha, en la terraza o en la cocina recién fregada."
+          }
+        },
+        "step-2": {
+          "type": "step",
+          "settings": {
+            "title": "Camina con normalidad",
+            "text": "La suela de patita marca cada paso con sus almohadillas."
+          }
+        },
+        "step-3": {
+          "type": "step",
+          "settings": {
+            "title": "Mira hacia atrás",
+            "text": "Un caminito de huellas de gato te sigue por toda la casa."
+          }
+        }
+      },
+      "block_order": [
+        "step-1",
+        "step-2",
+        "step-3"
+      ]
+    },
+    "capas": {
+      "type": "zp-capas",
+      "settings": {
+        "eyebrow": "Por dentro",
+        "heading": "Cinco capas de",
+        "highlight": "pura nube.",
+        "text": "<p>Ligeras por fuera, calentitas por dentro. Cada capa tiene su trabajo para que tus pies estén a gusto de la mañana a la noche, todo el invierno.</p>",
+        "bg": "#2A0F1C",
+        "fg": "#FFF8EC",
+        "padding_top": 112,
+        "padding_bottom": 112
+      },
+      "blocks": {
+        "layer-1": {
+          "type": "layer",
+          "settings": {
+            "name": "Exterior de EVA",
+            "measure": "5 mm",
+            "text": "Impermeable, ligero y se limpia con una pasada de paño.",
+            "color": "#F6E7A8"
+          }
+        },
+        "layer-2": {
+          "type": "layer",
+          "settings": {
+            "name": "Tejido acolchado",
+            "measure": "alta densidad",
+            "text": "Suave al tacto, abraza el pie sin apretar.",
+            "color": "#FFF3DC"
+          }
+        },
+        "layer-3": {
+          "type": "layer",
+          "settings": {
+            "name": "Capa térmica 3D",
+            "measure": "5 mm",
+            "text": "Atrapa el calor para que no se escape.",
+            "color": "#F2C2B5"
+          }
+        },
+        "layer-4": {
+          "type": "layer",
+          "settings": {
+            "name": "Estabilidad de tobillo",
+            "measure": "",
+            "text": "Sujeta y da firmeza a cada paso.",
+            "color": "#E8B65A"
+          }
+        },
+        "layer-5": {
+          "type": "layer",
+          "settings": {
+            "name": "Suela blanda",
+            "measure": "3 cm",
+            "text": "Amortigua, no resbala y deja huellas de patita.",
+            "color": "#C8243B"
+          }
+        }
+      },
+      "block_order": [
+        "layer-1",
+        "layer-2",
+        "layer-3",
+        "layer-4",
+        "layer-5"
+      ]
+    },
+    "ventajas": {
+      "type": "zp-ventajas",
+      "settings": {
+        "eyebrow": "Pensadas para el día a día",
+        "heading": "Monísimas, sí.",
+        "highlight": "Y muy prácticas.",
+        "bg": "#FBF4E8",
+        "padding_top": 104,
+        "padding_bottom": 104,
+        "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables"
+      },
+      "blocks": {
+        "card-1": {
+          "type": "card",
+          "settings": {
+            "icon": "💧",
+            "title": "Impermeables",
+            "text": "Punta cerrada y exterior de EVA: resisten salpicaduras y manchas. Una pasada de paño y como nuevas. Perfectas para cocina, baño o salir un momento al balcón.",
+            "size": "tall",
+            "color": "#FFFFFF",
+            "media_index": 5
+          }
+        },
+        "card-2": {
+          "type": "card",
+          "settings": {
+            "icon": "🧺",
+            "title": "Forro lavable",
+            "text": "El forro de peluche se saca en un segundo para lavarlo y vuelve esponjoso.",
+            "size": "wide",
+            "color": "#F6E7A8",
+            "media_index": 3
+          }
+        },
+        "card-3": {
+          "type": "card",
+          "settings": {
+            "icon": "🛡️",
+            "title": "Antideslizantes",
+            "text": "Su relieve agarra en baldosa, parqué y alfombra.",
+            "size": "sm",
+            "color": "#FFFFFF",
+            "media_index": 0
+          }
+        },
+        "card-4": {
+          "type": "card",
+          "settings": {
+            "icon": "🪶",
+            "title": "Ligeras",
+            "text": "Como andar sobre una nube. Literalmente.",
+            "size": "sm",
+            "color": "#F2C2B5",
+            "media_index": 0
+          }
+        }
+      },
+      "block_order": [
+        "card-1",
+        "card-2",
+        "card-3",
+        "card-4"
+      ]
+    },
+    "compra": {
+      "type": "zp-compra",
+      "settings": {
+        "eyebrow": "Edición Navidad",
+        "highlights": "Dejan huellas de gatito al pisar mojado\n5 capas de calidez y forro lavable\nImpermeables y antideslizantes",
+        "size_tip": "Tallan un poco pequeño: si dudas entre dos, elige la siguiente.",
+        "stock_text": "Disponible · pocas unidades para Navidad",
+        "button_label": "Añadir al carrito",
+        "xmas_note": "Pide antes del 10 de diciembre y recíbelo a tiempo para Navidad.",
+        "show_description": true,
+        "bar_label": "Elegir mis Zarpa",
+        "eager": false,
+        "bg": "#FFF8EC",
+        "padding_top": 96,
+        "padding_bottom": 96,
+        "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables"
+      }
+    },
+    "galeria": {
+      "type": "zp-galeria",
+      "settings": {
+        "eyebrow": "7 caritas, 2 tonos",
+        "heading": "Elige tu",
+        "highlight": "Zarpa favorita.",
+        "from": 8,
+        "speed": 40,
+        "bg": "#FFF8EC",
+        "padding_top": 96,
+        "padding_bottom": 104,
+        "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables"
+      }
+    },
+    "regalo": {
+      "type": "zp-regalo",
+      "settings": {
+        "eyebrow": "Navidad 2026",
+        "heading": "¿Para quién son",
+        "highlight": "tus Zarpa?",
+        "text": "<p>Un regalo que se abre con un «¡ay, qué monada!» y se usa todos los días del invierno. Para el amigo invisible, para tu pareja… o para ti.</p>",
+        "show_countdown": true,
+        "countdown_label": "Faltan para Navidad",
+        "date": "2026-12-25",
+        "button_label": "Regalar Zarpa",
+        "bg": "#5B1427",
+        "fg": "#FFF8EC",
+        "padding_top": 112,
+        "padding_bottom": 112
+      },
+      "blocks": {
+        "gift-1": {
+          "type": "gift",
+          "settings": {
+            "icon": "🐈",
+            "title": "Para la amante de los gatos",
+            "text": "Por fin unas zapatillas a la altura de su amor gatuno."
+          }
+        },
+        "gift-2": {
+          "type": "gift",
+          "settings": {
+            "icon": "🎁",
+            "title": "Para el amigo invisible",
+            "text": "Acierto seguro por menos de 35 €. Y nadie más las llevará."
+          }
+        },
+        "gift-3": {
+          "type": "gift",
+          "settings": {
+            "icon": "💞",
+            "title": "Para tu pareja",
+            "text": "Para las mañanas de domingo, sofá y manta."
+          }
+        },
+        "gift-4": {
+          "type": "gift",
+          "settings": {
+            "icon": "✨",
+            "title": "Para ti",
+            "text": "Porque tú también te mereces un regalo bajo el árbol."
+          }
+        }
+      },
+      "block_order": [
+        "gift-1",
+        "gift-2",
+        "gift-3",
+        "gift-4"
+      ]
+    },
+    "faq": {
+      "type": "zp-faq",
+      "settings": {
+        "eyebrow": "Preguntas frecuentes",
+        "heading": "Todo lo que",
+        "highlight": "quieres saber.",
+        "email": "support@zaldori.com",
+        "open_first": true,
+        "bg": "#FBF4E8",
+        "padding_top": 104,
+        "padding_bottom": 120
+      },
+      "blocks": {
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Llegará antes de Navidad?",
+            "answer": "<p>Sí, si pides antes del <strong>10 de diciembre</strong>. El envío tarda unos 10-12 días laborables y siempre va con número de seguimiento para que sepas dónde está tu pedido.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Qué talla elijo?",
+            "answer": "<p>Hay tres tallas: <strong>36-37, 38-39 y 40-41</strong>. Tallan un poco pequeño, así que si estás entre dos tallas o te gustan holgadas, elige la siguiente.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "question": "¿De verdad dejan huellas de gato?",
+            "answer": "<p>¡Sí! La suela tiene forma de patita con sus almohadillas. Cuando pisas una superficie húmeda (al salir de la ducha, en la terraza o con el suelo recién fregado) deja huellas de gato a cada paso.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cómo se lavan?",
+            "answer": "<p>El forro de peluche se saca para lavarlo. El exterior de EVA es impermeable: basta con pasarle un paño húmedo para dejarlo como nuevo.</p>"
+          }
+        },
+        "faq-5": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Puedo usarlas fuera de casa?",
+            "answer": "<p>Están pensadas para casa, pero al ser impermeables y antideslizantes puedes salir con ellas un momento: al balcón, a recoger un paquete o a bajar la basura.</p>"
+          }
+        },
+        "faq-6": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Y si no le quedan bien o no le gustan?",
+            "answer": "<p>Tienes 14 días desde que lo recibes para devolverlo. Escríbenos a <a href=\"mailto:support@zaldori.com\">support@zaldori.com</a> y te explicamos cómo hacerlo, paso a paso.</p>"
+          }
+        },
+        "faq-7": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Cuánto cuesta el envío?",
+            "answer": "<p>Nada: el envío es gratis a toda España.</p>"
+          }
+        },
+        "faq-8": {
+          "type": "faq",
+          "settings": {
+            "question": "¿Es seguro pagar aquí?",
+            "answer": "<p>Sí. El pago es 100 % seguro: tus datos viajan cifrados y nunca vemos ni guardamos tu tarjeta.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5",
+        "faq-6",
+        "faq-7",
+        "faq-8"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "huellas",
+    "capas",
+    "ventajas",
+    "compra",
+    "galeria",
+    "regalo",
+    "faq"
+  ]
+}

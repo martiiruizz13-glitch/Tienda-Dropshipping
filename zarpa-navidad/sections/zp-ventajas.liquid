@@ -1,0 +1,79 @@
+{%- assign p = section.settings.product | default: product -%}
+<section class="zp-ventajas zp-tone-cream" id="ventajas" style="--zp-pt: {{ section.settings.padding_top }}px; --zp-pb: {{ section.settings.padding_bottom }}px; --zp-sec-bg: {{ section.settings.bg }};" aria-labelledby="zp-ventajas-title-{{ section.id }}">
+  <div class="zp-wrap">
+    <header class="zp-sec-head">
+      {%- if section.settings.eyebrow != blank -%}<p class="zp-eyebrow zp-reveal">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="zp-h2 zp-reveal" id="zp-ventajas-title-{{ section.id }}">
+        {{- section.settings.heading | escape -}}
+        {%- if section.settings.highlight != blank %} <em>{{ section.settings.highlight | escape }}</em>{% endif -%}
+      </h2>
+    </header>
+
+    <div class="zp-bento">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign img = block.settings.image
+          if img == blank and p != blank and block.settings.media_index > 0
+            assign idx = block.settings.media_index | minus: 1
+            assign img = p.media[idx].preview_image
+          endif
+        -%}
+        <article class="zp-bento__card zp-bento__card--{{ block.settings.size }} zp-reveal{% if img != blank %} has-img{% endif %}" style="--d: {{ forloop.index0 }}; --card: {{ block.settings.color }};" {{ block.shopify_attributes }}>
+          <div class="zp-bento__body">
+            {%- if block.settings.icon != blank -%}<span class="zp-bento__icon" aria-hidden="true">{{ block.settings.icon }}</span>{%- endif -%}
+            <h3 class="zp-bento__title">{{ block.settings.title | escape }}</h3>
+            <p class="zp-bento__text">{{ block.settings.text | escape }}</p>
+          </div>
+          {%- if img != blank -%}
+            <div class="zp-bento__media">
+              {%- render 'zp-img', image: img, sizes: '(min-width: 990px) 30vw, 92vw', class_name: 'zp-bento__img' -%}
+            </div>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zarpa · Ventajas",
+  "tag": "div",
+  "class": "zp-section zp-section--ventajas",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (vacío = el de la página)" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Pensadas para el día a día" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Monísimas, sí." },
+    { "type": "text", "id": "highlight", "label": "Final destacado", "default": "Y muy prácticas." },
+    { "type": "color", "id": "bg", "label": "Fondo", "default": "#FBF4E8" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 200, "step": 4, "default": 104, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 200, "step": 4, "default": 104, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Tarjeta",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icono (emoji)", "default": "💧" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Impermeables" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Resisten salpicaduras y manchas." },
+        { "type": "select", "id": "size", "label": "Tamaño", "options": [ { "value": "sm", "label": "Pequeña" }, { "value": "wide", "label": "Ancha" }, { "value": "tall", "label": "Alta" } ], "default": "sm" },
+        { "type": "color", "id": "color", "label": "Color de la tarjeta", "default": "#FFFFFF" },
+        { "type": "image_picker", "id": "image", "label": "Foto" },
+        { "type": "range", "id": "media_index", "label": "o foto del producto (nº, 0 = ninguna)", "min": 0, "max": 13, "step": 1, "default": 0 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zarpa · Ventajas",
+      "blocks": [
+        { "type": "card", "settings": { "icon": "💧", "title": "Impermeables", "text": "Punta cerrada y exterior de EVA: resisten salpicaduras y manchas. Una pasada de paño y como nuevas. Perfectas para cocina, baño o salir un momento al balcón.", "size": "tall", "color": "#FFFFFF", "media_index": 5 } },
+        { "type": "card", "settings": { "icon": "🧺", "title": "Forro lavable", "text": "El forro de peluche se saca en un segundo para lavarlo y vuelve esponjoso.", "size": "wide", "color": "#F6E7A8", "media_index": 3 } },
+        { "type": "card", "settings": { "icon": "🛡️", "title": "Antideslizantes", "text": "Su relieve agarra en baldosa, parqué y alfombra.", "size": "sm", "color": "#FFFFFF", "media_index": 0 } },
+        { "type": "card", "settings": { "icon": "🪶", "title": "Ligeras", "text": "Como andar sobre una nube. Literalmente.", "size": "sm", "color": "#F2C2B5", "media_index": 0 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,88 @@
+<section class="zp-regalo" id="regalo" style="--zp-pt: {{ section.settings.padding_top }}px; --zp-pb: {{ section.settings.padding_bottom }}px; --zp-sec-bg: {{ section.settings.bg }}; --zp-sec-fg: {{ section.settings.fg }};" aria-labelledby="zp-regalo-title-{{ section.id }}">
+  <div class="zp-regalo__lights" aria-hidden="true">
+    {%- for i in (1..22) -%}<span style="--i: {{ i }};"></span>{%- endfor -%}
+  </div>
+  <div class="zp-wrap">
+    <header class="zp-sec-head zp-sec-head--center">
+      {%- if section.settings.eyebrow != blank -%}<p class="zp-eyebrow zp-reveal">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="zp-h2 zp-reveal" id="zp-regalo-title-{{ section.id }}">
+        {{- section.settings.heading | escape -}}
+        {%- if section.settings.highlight != blank %} <em>{{ section.settings.highlight | escape }}</em>{% endif -%}
+      </h2>
+      {%- if section.settings.text != blank -%}<div class="zp-lede zp-reveal">{{ section.settings.text }}</div>{%- endif -%}
+    </header>
+
+    <div class="zp-gifts">
+      {%- for block in section.blocks -%}
+        <article class="zp-gift zp-reveal" style="--d: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          <span class="zp-gift__tag" aria-hidden="true">{{ block.settings.icon }}</span>
+          <h3 class="zp-gift__title">{{ block.settings.title | escape }}</h3>
+          <p class="zp-gift__text">{{ block.settings.text | escape }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_countdown -%}
+      <div class="zp-count zp-reveal" data-zp-countdown="{{ section.settings.date }}">
+        <p class="zp-count__label">{{ section.settings.countdown_label | escape }}</p>
+        <div class="zp-count__grid" role="timer" aria-live="off">
+          <div><span data-zp-cd="d">--</span><small>días</small></div>
+          <div><span data-zp-cd="h">--</span><small>horas</small></div>
+          <div><span data-zp-cd="m">--</span><small>min</small></div>
+          <div><span data-zp-cd="s">--</span><small>seg</small></div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <p class="zp-regalo__cta zp-reveal">
+        <a class="zp-btn zp-btn--gold zp-btn--lg" href="{{ section.settings.button_link | default: '#comprar' }}">{{ section.settings.button_label | escape }}</a>
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zarpa · Para regalar",
+  "tag": "div",
+  "class": "zp-section zp-section--regalo",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Navidad 2026" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "¿Para quién son" },
+    { "type": "text", "id": "highlight", "label": "Final destacado", "default": "tus Zarpa?" },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Un regalo que se abre con un «¡ay, qué monada!» y se usa todos los días del invierno. Para el amigo invisible, para tu pareja… o para ti.</p>" },
+    { "type": "checkbox", "id": "show_countdown", "label": "Mostrar cuenta atrás", "default": true },
+    { "type": "text", "id": "countdown_label", "label": "Texto de la cuenta atrás", "default": "Faltan para Navidad" },
+    { "type": "text", "id": "date", "label": "Fecha objetivo", "info": "Formato AAAA-MM-DD", "default": "2026-12-25" },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "Regalar Zarpa" },
+    { "type": "url", "id": "button_link", "label": "Enlace del botón" },
+    { "type": "color", "id": "bg", "label": "Fondo", "default": "#5B1427" },
+    { "type": "color", "id": "fg", "label": "Texto", "default": "#FFF8EC" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 200, "step": 4, "default": 112, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 200, "step": 4, "default": 112, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "gift",
+      "name": "Destinatario",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icono (emoji)", "default": "🐈" },
+        { "type": "text", "id": "title", "label": "Título", "default": "La loca de los gatos" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Por fin unas zapatillas a la altura de su amor gatuno." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zarpa · Para regalar",
+      "blocks": [
+        { "type": "gift", "settings": { "icon": "🐈", "title": "Para la amante de los gatos", "text": "Por fin unas zapatillas a la altura de su amor gatuno." } },
+        { "type": "gift", "settings": { "icon": "🎁", "title": "Para el amigo invisible", "text": "Acierto seguro por menos de 35 €. Y nadie más las llevará." } },
+        { "type": "gift", "settings": { "icon": "💞", "title": "Para tu pareja", "text": "Para las mañanas de domingo, sofá y manta." } },
+        { "type": "gift", "settings": { "icon": "✨", "title": "Para ti", "text": "Porque tú también te mereces un regalo bajo el árbol." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

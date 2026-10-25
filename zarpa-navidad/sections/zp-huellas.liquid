@@ -1,0 +1,86 @@
+{%- liquid
+  assign p = section.settings.product | default: product
+  assign img = section.settings.image
+  if img == blank and p != blank
+    assign idx = section.settings.media_index | minus: 1
+    assign img = p.media[idx].preview_image
+  endif
+-%}
+<section class="zp-huellas zp-tone-cream" id="huellas" data-zp-trail style="--zp-pt: {{ section.settings.padding_top }}px; --zp-pb: {{ section.settings.padding_bottom }}px; --zp-sec-bg: {{ section.settings.bg }};" aria-labelledby="zp-huellas-title-{{ section.id }}">
+  <div class="zp-huellas__path" aria-hidden="true">
+    {%- for i in (1..14) -%}
+      <svg class="zp-paw" style="--i: {{ i }};" viewBox="0 0 64 64"><use href="#zp-paw"/></svg>
+    {%- endfor -%}
+  </div>
+
+  <div class="zp-wrap zp-huellas__grid">
+    <figure class="zp-huellas__media zp-reveal">
+      {%- render 'zp-img', image: img, sizes: '(min-width: 990px) 44vw, 92vw', class_name: 'zp-huellas__img' -%}
+      {%- if section.settings.sticker != blank -%}
+        <figcaption class="zp-sticker"><span>{{ section.settings.sticker | escape }}</span></figcaption>
+      {%- endif -%}
+    </figure>
+
+    <div class="zp-huellas__copy">
+      {%- if section.settings.eyebrow != blank -%}<p class="zp-eyebrow zp-reveal">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="zp-h2 zp-reveal" id="zp-huellas-title-{{ section.id }}">
+        {{- section.settings.heading | escape -}}
+        {%- if section.settings.highlight != blank %} <em>{{ section.settings.highlight | escape }}</em>{% endif -%}
+      </h2>
+      {%- if section.settings.text != blank -%}<div class="zp-lede zp-reveal">{{ section.settings.text }}</div>{%- endif -%}
+
+      <ol class="zp-steps" role="list">
+        {%- for block in section.blocks -%}
+          <li class="zp-steps__item zp-reveal" style="--d: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+            <span class="zp-steps__num" aria-hidden="true">{{ forloop.index }}</span>
+            <div>
+              <h3 class="zp-steps__title">{{ block.settings.title | escape }}</h3>
+              <p class="zp-steps__text">{{ block.settings.text | escape }}</p>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zarpa · Huellas",
+  "tag": "div",
+  "class": "zp-section zp-section--huellas",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (vacío = el de la página)" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Su superpoder" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Cada paso," },
+    { "type": "text", "id": "highlight", "label": "Final destacado", "default": "una huella de gatito." },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>La suela de Zarpa tiene la forma de una patita de verdad, con sus almohadillas y todo. Sal de la ducha, cruza la cocina recién fregada… y mira atrás: un caminito de huellas de gato te sigue. Es imposible no sonreír.</p>" },
+    { "type": "text", "id": "sticker", "label": "Pegatina sobre la foto", "default": "Huellas reales" },
+    { "type": "image_picker", "id": "image", "label": "Foto", "info": "Vacía = foto del producto indicada abajo" },
+    { "type": "range", "id": "media_index", "label": "Foto del producto a usar (nº)", "min": 1, "max": 13, "step": 1, "default": 6 },
+    { "type": "color", "id": "bg", "label": "Fondo", "default": "#FBF4E8" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 200, "step": 4, "default": 112, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 200, "step": 4, "default": 112, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Paso",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Pisa un suelo húmedo" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Al salir de la ducha o en la cocina recién fregada." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zarpa · Huellas",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Pisa un suelo húmedo", "text": "Al salir de la ducha, en la terraza o en la cocina recién fregada." } },
+        { "type": "step", "settings": { "title": "Camina con normalidad", "text": "La suela de patita marca cada paso con sus almohadillas." } },
+        { "type": "step", "settings": { "title": "Mira hacia atrás", "text": "Un caminito de huellas de gato te sigue por toda la casa." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

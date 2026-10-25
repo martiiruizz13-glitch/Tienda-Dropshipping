@@ -1,0 +1,18 @@
+{%- comment -%}
+  Responsive image. Params: image, sizes, class_name, alt, eager (true = above the fold)
+{%- endcomment -%}
+{%- if image != blank -%}
+  {%- liquid
+    assign img_alt = alt | default: image.alt | escape
+    if eager
+      assign loading = 'eager'
+      assign priority = 'high'
+    else
+      assign loading = 'lazy'
+      assign priority = 'auto'
+    endif
+  -%}
+  {{ image | image_url: width: 1600 | image_tag: class: class_name, alt: img_alt, sizes: sizes, widths: '360, 540, 720, 900, 1200, 1600', loading: loading, fetchpriority: priority }}
+{%- else -%}
+  {{ 'product-1' | placeholder_svg_tag: class_name }}
+{%- endif -%}

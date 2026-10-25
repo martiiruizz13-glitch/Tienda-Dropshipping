@@ -1,0 +1,79 @@
+<section class="zp-capas" id="capas" data-zp-layers style="--zp-pt: {{ section.settings.padding_top }}px; --zp-pb: {{ section.settings.padding_bottom }}px; --zp-sec-bg: {{ section.settings.bg }}; --zp-sec-fg: {{ section.settings.fg }}; --n: {{ section.blocks.size }};" aria-labelledby="zp-capas-title-{{ section.id }}">
+  <div class="zp-wrap zp-capas__grid">
+    <div class="zp-capas__copy">
+      {%- if section.settings.eyebrow != blank -%}<p class="zp-eyebrow zp-reveal">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="zp-h2 zp-reveal" id="zp-capas-title-{{ section.id }}">
+        {{- section.settings.heading | escape -}}
+        {%- if section.settings.highlight != blank %} <em>{{ section.settings.highlight | escape }}</em>{% endif -%}
+      </h2>
+      {%- if section.settings.text != blank -%}<div class="zp-lede zp-reveal">{{ section.settings.text }}</div>{%- endif -%}
+
+      <ol class="zp-capas__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="zp-capas__item" data-zp-layer-item="{{ forloop.index0 }}" style="--c: {{ block.settings.color }};" {{ block.shopify_attributes }}>
+            <span class="zp-capas__dot" aria-hidden="true"></span>
+            <div>
+              <h3 class="zp-capas__name">{{ block.settings.name | escape }}{% if block.settings.measure != blank %} <span>{{ block.settings.measure | escape }}</span>{% endif %}</h3>
+              <p class="zp-capas__text">{{ block.settings.text | escape }}</p>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+
+    <div class="zp-capas__stage" aria-hidden="true">
+      <div class="zp-capas__stack">
+        {%- for block in section.blocks reversed -%}
+          {%- assign i = section.blocks.size | minus: forloop.index -%}
+          <div class="zp-capas__slab" data-zp-layer="{{ i }}" style="--i: {{ i }}; --c: {{ block.settings.color }};">
+            <span class="zp-capas__label">{{ block.settings.name | escape }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="zp-capas__shadow"></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zarpa · 5 capas",
+  "tag": "div",
+  "class": "zp-section zp-section--capas",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Por dentro" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Cinco capas de" },
+    { "type": "text", "id": "highlight", "label": "Final destacado", "default": "pura nube." },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Ligeras por fuera, calentitas por dentro. Cada capa tiene su trabajo para que tus pies estén a gusto de la mañana a la noche, todo el invierno.</p>" },
+    { "type": "color", "id": "bg", "label": "Fondo", "default": "#2A0F1C" },
+    { "type": "color", "id": "fg", "label": "Texto", "default": "#FFF8EC" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 200, "step": 4, "default": 112, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 200, "step": 4, "default": 112, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "layer",
+      "name": "Capa",
+      "limit": 7,
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nombre", "default": "Exterior de EVA" },
+        { "type": "text", "id": "measure", "label": "Medida", "default": "5 mm" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Impermeable y fácil de limpiar." },
+        { "type": "color", "id": "color", "label": "Color de la capa", "default": "#F6E7A8" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zarpa · 5 capas",
+      "blocks": [
+        { "type": "layer", "settings": { "name": "Exterior de EVA", "measure": "5 mm", "text": "Impermeable, ligero y se limpia con una pasada de paño.", "color": "#F6E7A8" } },
+        { "type": "layer", "settings": { "name": "Tejido acolchado", "measure": "alta densidad", "text": "Suave al tacto, abraza el pie sin apretar.", "color": "#FFF3DC" } },
+        { "type": "layer", "settings": { "name": "Capa térmica 3D", "measure": "5 mm", "text": "Atrapa el calor para que no se escape.", "color": "#F2C2B5" } },
+        { "type": "layer", "settings": { "name": "Estabilidad de tobillo", "measure": "", "text": "Sujeta y da firmeza a cada paso.", "color": "#E8B65A" } },
+        { "type": "layer", "settings": { "name": "Suela blanda", "measure": "3 cm", "text": "Amortigua, no resbala y deja huellas de patita.", "color": "#C8243B" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,68 @@
+<section class="zp-faq zp-tone-cream" id="faq" style="--zp-pt: {{ section.settings.padding_top }}px; --zp-pb: {{ section.settings.padding_bottom }}px; --zp-sec-bg: {{ section.settings.bg }};" aria-labelledby="zp-faq-title-{{ section.id }}">
+  <div class="zp-wrap zp-faq__grid">
+    <header class="zp-faq__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="zp-eyebrow zp-reveal">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="zp-h2 zp-reveal" id="zp-faq-title-{{ section.id }}">
+        {{- section.settings.heading | escape -}}
+        {%- if section.settings.highlight != blank %} <em>{{ section.settings.highlight | escape }}</em>{% endif -%}
+      </h2>
+      {%- if section.settings.email != blank -%}
+        <p class="zp-faq__mail zp-reveal">¿Otra duda? Escríbenos a <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></p>
+      {%- endif -%}
+    </header>
+    <div class="zp-faq__list">
+      {%- for block in section.blocks -%}
+        <details class="zp-faq__item zp-reveal" style="--d: {{ forloop.index0 | times: 0.5 }};" {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first %} open{% endif %}>
+          <summary>
+            <span>{{ block.settings.question | escape }}</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </summary>
+          <div class="zp-rte">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zarpa · Preguntas",
+  "tag": "div",
+  "class": "zp-section zp-section--faq",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Preguntas frecuentes" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Todo lo que" },
+    { "type": "text", "id": "highlight", "label": "Final destacado", "default": "quieres saber." },
+    { "type": "text", "id": "email", "label": "Email de contacto", "default": "support@zaldori.com" },
+    { "type": "checkbox", "id": "open_first", "label": "Primera pregunta abierta", "default": true },
+    { "type": "color", "id": "bg", "label": "Fondo", "default": "#FBF4E8" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 200, "step": 4, "default": 104, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 200, "step": 4, "default": 120, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "¿Cuánto tarda en llegar?" },
+        { "type": "richtext", "id": "answer", "label": "Respuesta", "default": "<p>Te enviamos el número de seguimiento por correo en cuanto sale tu pedido.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zarpa · Preguntas",
+      "blocks": [
+        { "type": "faq", "settings": { "question": "¿Llegará antes de Navidad?", "answer": "<p>Sí, si pides antes del <strong>10 de diciembre</strong>. El envío tarda unos 10-12 días laborables y siempre va con número de seguimiento para que sepas dónde está tu pedido.</p>" } },
+        { "type": "faq", "settings": { "question": "¿Qué talla elijo?", "answer": "<p>Hay tres tallas: <strong>36-37, 38-39 y 40-41</strong>. Tallan un poco pequeño, así que si estás entre dos tallas o te gustan holgadas, elige la siguiente.</p>" } },
+        { "type": "faq", "settings": { "question": "¿De verdad dejan huellas de gato?", "answer": "<p>¡Sí! La suela tiene forma de patita con sus almohadillas. Cuando pisas una superficie húmeda (al salir de la ducha, en la terraza o con el suelo recién fregado) deja huellas de gato a cada paso.</p>" } },
+        { "type": "faq", "settings": { "question": "¿Cómo se lavan?", "answer": "<p>El forro de peluche se saca para lavarlo. El exterior de EVA es impermeable: basta con pasarle un paño húmedo para dejarlo como nuevo.</p>" } },
+        { "type": "faq", "settings": { "question": "¿Puedo usarlas fuera de casa?", "answer": "<p>Están pensadas para casa, pero al ser impermeables y antideslizantes puedes salir con ellas un momento: al balcón, a recoger un paquete o a bajar la basura.</p>" } },
+        { "type": "faq", "settings": { "question": "¿Y si no le quedan bien o no le gustan?", "answer": "<p>Tienes 14 días desde que lo recibes para devolverlo. Escríbenos a <a href=\"mailto:support@zaldori.com\">support@zaldori.com</a> y te explicamos cómo hacerlo, paso a paso.</p>" } },
+        { "type": "faq", "settings": { "question": "¿Cuánto cuesta el envío?", "answer": "<p>Nada: el envío es gratis a toda España.</p>" } },
+        { "type": "faq", "settings": { "question": "¿Es seguro pagar aquí?", "answer": "<p>Sí. El pago es 100 % seguro: tus datos viajan cifrados y nunca vemos ni guardamos tu tarjeta.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

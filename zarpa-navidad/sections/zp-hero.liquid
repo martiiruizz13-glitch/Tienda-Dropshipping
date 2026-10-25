@@ -1,0 +1,127 @@
+{%- liquid
+  assign p = section.settings.product | default: product
+  assign idx = section.settings.media_index | minus: 1
+  assign img = section.settings.image
+  if img == blank and p != blank
+    assign img = p.media[idx].preview_image | default: p.featured_media.preview_image
+  endif
+  assign img2 = section.settings.image_2
+  if img2 == blank and p != blank
+    assign idx2 = section.settings.media_index_2 | minus: 1
+    assign img2 = p.media[idx2].preview_image
+  endif
+  if p != blank
+    assign v = p.selected_or_first_available_variant
+  endif
+-%}
+<section class="zp-hero" id="inicio" style="--zp-pt: {{ section.settings.padding_top }}px; --zp-pb: {{ section.settings.padding_bottom }}px; --zp-hero-bg: {{ section.settings.bg }}; --zp-hero-fg: {{ section.settings.fg }}; --zp-accent: {{ section.settings.accent }};" aria-labelledby="zp-hero-title-{{ section.id }}">
+  <div class="zp-hero__glow" aria-hidden="true"></div>
+  <div class="zp-wrap zp-hero__grid">
+    <div class="zp-hero__copy">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="zp-eyebrow zp-reveal">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="zp-hero__title zp-reveal" id="zp-hero-title-{{ section.id }}">
+        {{- section.settings.heading | escape -}}
+        {%- if section.settings.highlight != blank %} <em>{{ section.settings.highlight | escape }}</em>{% endif -%}
+      </h1>
+      {%- if section.settings.text != blank -%}
+        <div class="zp-hero__text zp-reveal">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      <div class="zp-hero__ctas zp-reveal">
+        {%- if section.settings.button_label != blank -%}
+          <a class="zp-btn zp-btn--primary zp-btn--lg" href="{{ section.settings.button_link | default: '#comprar' }}">
+            <span>{{ section.settings.button_label | escape }}</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.button2_label != blank -%}
+          <a class="zp-btn zp-btn--ghost zp-btn--lg" href="{{ section.settings.button2_link | default: '#huellas' }}">{{ section.settings.button2_label | escape }}</a>
+        {%- endif -%}
+      </div>
+
+      {%- if p != blank and section.settings.show_price -%}
+        <p class="zp-hero__price zp-reveal">
+          <span class="zp-hero__price-now">{{ v.price | money }}</span>
+          {%- if v.compare_at_price > v.price -%}
+            <s>{{ v.compare_at_price | money }}</s>
+            <span class="zp-chip zp-chip--gold">Ahorras {{ v.compare_at_price | minus: v.price | money_without_trailing_zeros }}</span>
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+
+      {%- assign perks = section.settings.perks | newline_to_br | split: '<br />' -%}
+      <ul class="zp-hero__perks zp-reveal" role="list">
+        {%- for perk in perks -%}
+          {%- assign pk = perk | strip -%}
+          {%- if pk != blank -%}
+            <li><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>{{ pk | escape }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="zp-hero__visual" data-zp-tilt>
+      <div class="zp-hero__card zp-hero__card--back" aria-hidden="true">
+        {%- if img2 != blank -%}{%- render 'zp-img', image: img2, sizes: '(min-width: 990px) 22vw, 50vw', class_name: 'zp-hero__img', alt: '' -%}{%- endif -%}
+      </div>
+      <figure class="zp-hero__card zp-hero__card--front">
+        <svg class="zp-bow" viewBox="0 0 120 90" aria-hidden="true" focusable="false">
+          <path d="M60 46c-14-20-40-30-46-18-6 13 22 22 46 18Z" fill="#C8243B"/>
+          <path d="M60 46c14-20 40-30 46-18 6 13-22 22-46 18Z" fill="#A81C31"/>
+          <path d="M57 46 40 86l10-3 7 7 3-44Zm6 0 17 40-10-3-7 7-3-44Z" fill="#C8243B"/>
+          <circle cx="60" cy="45" r="8" fill="#E8B65A"/>
+        </svg>
+        {%- render 'zp-img', image: img, sizes: '(min-width: 990px) 38vw, 86vw', class_name: 'zp-hero__img', eager: true -%}
+        {%- if section.settings.badge != blank -%}
+          <figcaption class="zp-hero__badge"><span>{{ section.settings.badge | escape }}</span></figcaption>
+        {%- endif -%}
+      </figure>
+      <span class="zp-hero__orn zp-hero__orn--a" aria-hidden="true"></span>
+      <span class="zp-hero__orn zp-hero__orn--b" aria-hidden="true"></span>
+      <span class="zp-hero__orn zp-hero__orn--c" aria-hidden="true"></span>
+    </div>
+  </div>
+
+  <div class="zp-hero__trail" aria-hidden="true">
+    {%- for i in (1..12) -%}
+      <svg class="zp-paw" style="--i: {{ i }};" viewBox="0 0 64 64"><use href="#zp-paw"/></svg>
+    {%- endfor -%}
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Zarpa · Portada",
+  "tag": "div",
+  "class": "zp-section zp-section--hero",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Producto (vacío = el de la página)" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Edición Navidad · Zaldori" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "El regalo más tierno de estas Navidades" },
+    { "type": "text", "id": "highlight", "label": "Palabra destacada (en dorado)", "default": "deja huellas." },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Conoce <strong>Zarpa</strong>: zapatillas de casa con carita de gatito y una suela de patita que, al pisar mojado, deja huellas de gato por toda la casa. Calentitas, impermeables y adorables a más no poder.</p>" },
+    { "type": "text", "id": "button_label", "label": "Botón principal", "default": "Quiero mis Zarpa" },
+    { "type": "url", "id": "button_link", "label": "Enlace del botón principal" },
+    { "type": "text", "id": "button2_label", "label": "Botón secundario", "default": "Ver las huellas" },
+    { "type": "url", "id": "button2_link", "label": "Enlace del botón secundario" },
+    { "type": "checkbox", "id": "show_price", "label": "Mostrar precio", "default": true },
+    { "type": "textarea", "id": "perks", "label": "Ventajas", "info": "Una por línea", "default": "Envío gratis a España\n14 días para cambiar de opinión\nPago seguro" },
+    { "type": "text", "id": "badge", "label": "Sello sobre la foto", "default": "¡Miau!" },
+    { "type": "header", "content": "Imágenes" },
+    { "type": "image_picker", "id": "image", "label": "Foto principal", "info": "Si la dejas vacía se usa la foto del producto indicada abajo" },
+    { "type": "range", "id": "media_index", "label": "Foto del producto a usar (nº)", "min": 1, "max": 13, "step": 1, "default": 1 },
+    { "type": "image_picker", "id": "image_2", "label": "Foto de detrás" },
+    { "type": "range", "id": "media_index_2", "label": "Foto de detrás (nº del producto)", "min": 1, "max": 13, "step": 1, "default": 7 },
+    { "type": "header", "content": "Colores y espacio" },
+    { "type": "color", "id": "bg", "label": "Fondo", "default": "#1A0912" },
+    { "type": "color", "id": "fg", "label": "Texto", "default": "#FFF8EC" },
+    { "type": "color", "id": "accent", "label": "Dorado", "default": "#E8B65A" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 160, "step": 4, "default": 48, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 200, "step": 4, "default": 120, "unit": "px" }
+  ],
+  "presets": [ { "name": "Zarpa · Portada" } ]
+}
+{% endschema %}
