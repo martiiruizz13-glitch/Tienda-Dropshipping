@@ -5,7 +5,11 @@
     assign title_parts = p.title | split: ' · '
     assign name = title_parts.first
     assign subtitle = title_parts | slice: 1, 9 | join: ' · '
-    assign main_image = current.featured_media.preview_image | default: p.featured_media.preview_image
+    if section.settings.start_with_variant and p.selected_variant != blank
+      assign main_image = current.featured_media.preview_image | default: p.featured_media.preview_image
+    else
+      assign main_image = p.featured_media.preview_image
+    endif
     assign form_id = 'zp-buy-' | append: section.id
   endif
 -%}
@@ -223,6 +227,7 @@
     { "type": "text", "id": "xmas_note", "label": "Nota de Navidad", "default": "Pide antes del 10 de diciembre y recíbelo a tiempo para Navidad." },
     { "type": "checkbox", "id": "show_description", "label": "Mostrar la descripción del producto", "default": true },
     { "type": "text", "id": "bar_label", "label": "Botón de la barra fija (móvil)", "default": "Elegir mis Zarpa" },
+    { "type": "checkbox", "id": "start_with_variant", "label": "Si llegan con un color elegido en el enlace, mostrar su foto primero", "default": true },
     { "type": "checkbox", "id": "eager", "label": "Cargar la foto al instante (actívalo si es lo primero de la página)", "default": false },
     { "type": "color", "id": "bg", "label": "Fondo", "default": "#FFF8EC" },
     { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 200, "step": 4, "default": 96, "unit": "px" },

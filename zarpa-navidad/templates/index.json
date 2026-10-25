@@ -20,7 +20,9 @@
         "accent": "#E8B65A",
         "padding_top": 48,
         "padding_bottom": 120,
-        "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables"
+        "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables",
+        "image": "shopify://shop_images/zarpa-navidad-chimenea.jpg",
+        "image_2": "shopify://shop_images/zarpa-collage-mojado.jpg"
       }
     },
     "huellas": {
@@ -35,7 +37,8 @@
         "bg": "#FBF4E8",
         "padding_top": 112,
         "padding_bottom": 112,
-        "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables"
+        "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables",
+        "image": "shopify://shop_images/zarpa-suelo-mojado.jpg"
       },
       "blocks": {
         "step-1": {
@@ -153,7 +156,8 @@
             "text": "Punta cerrada y exterior de EVA: resisten salpicaduras y manchas. Una pasada de paño y como nuevas. Perfectas para cocina, baño o salir un momento al balcón.",
             "size": "tall",
             "color": "#FFFFFF",
-            "media_index": 5
+            "media_index": 0,
+            "image": "shopify://shop_images/zarpa-orejitas.jpg"
           }
         },
         "card-2": {
@@ -164,7 +168,8 @@
             "text": "El forro de peluche se saca en un segundo para lavarlo y vuelve esponjoso.",
             "size": "wide",
             "color": "#F6E7A8",
-            "media_index": 3
+            "media_index": 0,
+            "image": "shopify://shop_images/zarpa-forro.jpg"
           }
         },
         "card-3": {
@@ -175,7 +180,8 @@
             "text": "Su relieve agarra en baldosa, parqué y alfombra.",
             "size": "sm",
             "color": "#FFFFFF",
-            "media_index": 0
+            "media_index": 0,
+            "image": "shopify://shop_images/zarpa-detras.jpg"
           }
         },
         "card-4": {
@@ -186,7 +192,8 @@
             "text": "Como andar sobre una nube. Literalmente.",
             "size": "sm",
             "color": "#F2C2B5",
-            "media_index": 0
+            "media_index": 0,
+            "image": "shopify://shop_images/zarpa-en-la-mano.jpg"
           }
         }
       },
@@ -208,6 +215,7 @@
         "xmas_note": "Pide antes del 10 de diciembre y recíbelo a tiempo para Navidad.",
         "show_description": true,
         "bar_label": "Elegir mis Zarpa",
+        "start_with_variant": true,
         "eager": false,
         "bg": "#FFF8EC",
         "padding_top": 96,
@@ -221,7 +229,7 @@
         "eyebrow": "7 caritas, 2 tonos",
         "heading": "Elige tu",
         "highlight": "Zarpa favorita.",
-        "from": 8,
+        "from": 10,
         "speed": 40,
         "bg": "#FFF8EC",
         "padding_top": 96,

@@ -400,7 +400,7 @@
         stockText.textContent = v.available ? inStockText : 'Agotado en esta combinación';
         addBtn.disabled = !v.available;
         addLabel.textContent = v.available ? okLabel : 'Agotado';
-        if (v.image) swapImage(v.image.src, v.image.srcset, v.image.alt);
+        if (v.image && fromUser) swapImage(v.image.src, v.image.srcset, v.image.alt);
         if (fromUser && window.history.replaceState && document.body.contains(box) && /\/products\//.test(location.pathname)) {
           var url = new URL(location.href);
           url.searchParams.set('variant', v.id);
