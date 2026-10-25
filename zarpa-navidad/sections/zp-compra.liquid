@@ -68,6 +68,23 @@
             <span class="zp-chip zp-chip--red" data-zp-save {% unless current.compare_at_price > current.price %}hidden{% endunless %}>Precio especial Navidad</span>
           </p>
 
+          {%- if section.settings.material != blank -%}
+            {%- assign mat_lines = section.settings.material | newline_to_br | split: '<br />' -%}
+            <div class="zp-buy__material">
+              {%- if section.settings.material_title != blank -%}<p class="zp-buy__material-title">{{ section.settings.material_title | escape }}</p>{%- endif -%}
+              <dl class="zp-buy__material-list">
+                {%- for ml in mat_lines -%}
+                  {%- assign m = ml | strip -%}
+                  {%- if m != blank -%}
+                    {%- assign m_label = m | split: ':' | first -%}
+                    {%- assign m_text = m | remove_first: m_label | remove_first: ':' | strip -%}
+                    <div><dt>{{ m_label | escape }}</dt><dd>{{ m_text | escape }}</dd></div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </dl>
+            </div>
+          {%- endif -%}
+
           {%- assign hl_lines = section.settings.highlights | newline_to_br | split: '<br />' -%}
           <ul class="zp-buy__highlights" role="list">
             {%- for hl in hl_lines -%}
@@ -220,7 +237,9 @@
   "settings": [
     { "type": "product", "id": "product", "label": "Producto (vacío = el de la página)" },
     { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Edición Navidad" },
-    { "type": "textarea", "id": "highlights", "label": "Ventajas", "info": "Una por línea", "default": "Dejan huellas de gatito al pisar mojado\n5 capas de calidez y forro lavable\nImpermeables y antideslizantes" },
+    { "type": "text", "id": "material_title", "label": "Título del cuadro de materiales", "default": "¿De qué están hechas?" },
+    { "type": "textarea", "id": "material", "label": "Materiales", "info": "Uno por línea, con el formato Parte: material", "default": "Por fuera: EVA, una goma ligera, lisa e impermeable. No son de peluche por fuera.\nPor dentro: forro de peluche suave, extraíble y lavable.\nSuela: EVA de 3 cm, antideslizante, con forma de patita." },
+    { "type": "textarea", "id": "highlights", "label": "Ventajas", "info": "Una por línea", "default": "Dejan huellas de gatito al pisar mojado\nCalentitas por dentro gracias al forro de peluche\nImpermeables por fuera y antideslizantes" },
     { "type": "text", "id": "size_tip", "label": "Consejo de talla", "default": "Tallan un poco pequeño: si dudas entre dos, elige la siguiente." },
     { "type": "text", "id": "stock_text", "label": "Texto de disponible", "default": "Disponible · pocas unidades para Navidad" },
     { "type": "text", "id": "button_label", "label": "Texto del botón", "default": "Añadir al carrito" },

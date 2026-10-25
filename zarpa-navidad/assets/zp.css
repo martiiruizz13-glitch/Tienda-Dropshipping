@@ -301,6 +301,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .zp-buy__price { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 18px; }
 .zp-buy__now { font: 800 34px/1 var(--zp-head); color: var(--zp-ink); }
 .zp-buy__compare { color: var(--zp-muted); font-size: 19px; }
+.zp-buy__material { margin: 0 0 20px; padding: 16px 18px; border-radius: var(--zp-radius-sm); background: #fff; box-shadow: inset 0 0 0 1.5px var(--zp-gold); }
+.zp-buy__material-title { margin: 0 0 10px; font: 800 15px/1.2 var(--zp-head); }
+.zp-buy__material-title::before { content: '🧵 '; }
+.zp-buy__material-list { display: grid; gap: 8px; margin: 0; }
+.zp-buy__material-list div { display: grid; grid-template-columns: 92px 1fr; gap: 10px; font-size: 15px; line-height: 1.45; }
+.zp-buy__material-list dt { font: 700 14px/1.45 var(--zp-head); color: var(--zp-red); }
+.zp-buy__material-list dd { margin: 0; }
 .zp-buy__highlights { display: grid; gap: 8px; margin: 0 0 22px; padding: 0; list-style: none; }
 .zp-buy__highlights li { display: flex; align-items: center; gap: 10px; font-weight: 500; }
 .zp-buy__highlights svg { width: 18px; height: 18px; flex: 0 0 auto; color: var(--zp-red); }

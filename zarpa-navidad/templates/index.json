@@ -7,11 +7,11 @@
         "eyebrow": "Edición Navidad · Zaldori",
         "heading": "El regalo más tierno de estas Navidades",
         "highlight": "deja huellas.",
-        "text": "<p>Conoce <strong>Zarpa</strong>: zapatillas de casa con carita de gatito y una suela de patita que, al pisar mojado, deja huellas de gato por toda la casa. Calentitas, impermeables y adorables a más no poder.</p>",
+        "text": "<p>Conoce <strong>Zarpa</strong>: zapatillas de casa con carita de gatito y una suela de patita que, al pisar mojado, deja huellas de gato por toda la casa. Por fuera, EVA lisa e impermeable; por dentro, un forro de peluche calentito y lavable.</p>",
         "button_label": "Quiero mis Zarpa",
         "button2_label": "Ver las huellas",
         "show_price": true,
-        "perks": "Envío gratis a España\n14 días para cambiar de opinión\nPago seguro",
+        "perks": "Exterior de EVA impermeable · forro de peluche\nEnvío gratis a España\n14 días para cambiar de opinión",
         "badge": "¡Miau!",
         "media_index": 1,
         "media_index_2": 7,
@@ -21,8 +21,8 @@
         "padding_top": 48,
         "padding_bottom": 120,
         "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables",
-        "image": "shopify://shop_images/zarpa-navidad-chimenea.jpg",
-        "image_2": "shopify://shop_images/zarpa-collage-mojado.jpg"
+        "image": "shopify://shop_images/zarpa-suelo-mojado.jpg",
+        "image_2": "shopify://shop_images/zarpa-suela-patita.jpg"
       }
     },
     "huellas": {
@@ -38,7 +38,7 @@
         "padding_top": 112,
         "padding_bottom": 112,
         "product": "zarpa-zapatillas-de-casa-pata-de-gato-impermeables",
-        "image": "shopify://shop_images/zarpa-suelo-mojado.jpg"
+        "image": "shopify://shop_images/zarpa-collage-mojado.jpg"
       },
       "blocks": {
         "step-1": {
@@ -189,7 +189,7 @@
           "settings": {
             "icon": "🪶",
             "title": "Ligeras",
-            "text": "Como andar sobre una nube. Literalmente.",
+            "text": "La EVA pesa poquísimo: casi ni las notarás.",
             "size": "sm",
             "color": "#F2C2B5",
             "media_index": 0,
@@ -208,7 +208,9 @@
       "type": "zp-compra",
       "settings": {
         "eyebrow": "Edición Navidad",
-        "highlights": "Dejan huellas de gatito al pisar mojado\n5 capas de calidez y forro lavable\nImpermeables y antideslizantes",
+        "material_title": "¿De qué están hechas?",
+        "material": "Por fuera: EVA, una goma ligera, lisa e impermeable. No son de peluche por fuera.\nPor dentro: forro de peluche suave, extraíble y lavable.\nSuela: EVA de 3 cm, antideslizante, con forma de patita.",
+        "highlights": "Dejan huellas de gatito al pisar mojado\nCalentitas por dentro gracias al forro de peluche\nImpermeables por fuera y antideslizantes",
         "size_tip": "Tallan un poco pequeño: si dudas entre dos, elige la siguiente.",
         "stock_text": "Disponible · pocas unidades para Navidad",
         "button_label": "Añadir al carrito",
@@ -310,53 +312,60 @@
         "faq-1": {
           "type": "faq",
           "settings": {
+            "question": "¿Son de peluche por fuera?",
+            "answer": "<p><strong>No.</strong> Por fuera son de <strong>EVA</strong>, una goma ligera, lisa e impermeable (por eso no se manchan y se limpian con un paño). El peluche está <strong>por dentro</strong>: un forro suave y calentito que se saca para lavarlo.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
             "question": "¿Llegará antes de Navidad?",
             "answer": "<p>Sí, si pides antes del <strong>10 de diciembre</strong>. El envío tarda unos 10-12 días laborables y siempre va con número de seguimiento para que sepas dónde está tu pedido.</p>"
           }
         },
-        "faq-2": {
+        "faq-3": {
           "type": "faq",
           "settings": {
             "question": "¿Qué talla elijo?",
             "answer": "<p>Hay tres tallas: <strong>36-37, 38-39 y 40-41</strong>. Tallan un poco pequeño, así que si estás entre dos tallas o te gustan holgadas, elige la siguiente.</p>"
           }
         },
-        "faq-3": {
+        "faq-4": {
           "type": "faq",
           "settings": {
             "question": "¿De verdad dejan huellas de gato?",
             "answer": "<p>¡Sí! La suela tiene forma de patita con sus almohadillas. Cuando pisas una superficie húmeda (al salir de la ducha, en la terraza o con el suelo recién fregado) deja huellas de gato a cada paso.</p>"
           }
         },
-        "faq-4": {
+        "faq-5": {
           "type": "faq",
           "settings": {
             "question": "¿Cómo se lavan?",
             "answer": "<p>El forro de peluche se saca para lavarlo. El exterior de EVA es impermeable: basta con pasarle un paño húmedo para dejarlo como nuevo.</p>"
           }
         },
-        "faq-5": {
+        "faq-6": {
           "type": "faq",
           "settings": {
             "question": "¿Puedo usarlas fuera de casa?",
             "answer": "<p>Están pensadas para casa, pero al ser impermeables y antideslizantes puedes salir con ellas un momento: al balcón, a recoger un paquete o a bajar la basura.</p>"
           }
         },
-        "faq-6": {
+        "faq-7": {
           "type": "faq",
           "settings": {
             "question": "¿Y si no le quedan bien o no le gustan?",
             "answer": "<p>Tienes 14 días desde que lo recibes para devolverlo. Escríbenos a <a href=\"mailto:support@zaldori.com\">support@zaldori.com</a> y te explicamos cómo hacerlo, paso a paso.</p>"
           }
         },
-        "faq-7": {
+        "faq-8": {
           "type": "faq",
           "settings": {
             "question": "¿Cuánto cuesta el envío?",
             "answer": "<p>Nada: el envío es gratis a toda España.</p>"
           }
         },
-        "faq-8": {
+        "faq-9": {
           "type": "faq",
           "settings": {
             "question": "¿Es seguro pagar aquí?",
@@ -372,7 +381,8 @@
         "faq-5",
         "faq-6",
         "faq-7",
-        "faq-8"
+        "faq-8",
+        "faq-9"
       ]
     }
   },
