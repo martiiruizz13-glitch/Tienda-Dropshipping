@@ -18,8 +18,8 @@
 layout `zarpa` · zp-header (avisos + cuenta atrás) · zp-hero · zp-huellas · zp-capas · zp-ventajas · zp-compra (+ barra fija móvil) · zp-galeria · zp-regalo (cuenta atrás) · zp-faq · zp-footer · snippets zp-img, zp-cart-drawer · assets zp.css, zp.js
 
 ## Fotos del usuario (carpeta fotos/)
-- zarpa-navidad-chimenea.jpg → portada (foto principal) y 1ª foto del producto
-- zarpa-collage-mojado.jpg → portada (foto de detrás) y 2ª foto del producto
-- zarpa-suelo-mojado.jpg → sección Huellas
+- zarpa-navidad-chimenea.jpg → NO se usa (ver nota)
+- zarpa-collage-mojado.jpg → 1ª foto del producto y sección Huellas
+- zarpa-suelo-mojado.jpg → portada (foto principal); zarpa-suela-patita.jpg → portada (foto de detrás)
 - zarpa-orejitas / forro / detras / en-la-mano.jpg → tarjetas de Ventajas
-- Ojo: la foto de la chimenea muestra exterior de peluche; el producto real tiene exterior de EVA liso.
+- La foto de la chimenea (peluche por fuera) se RETIRÓ del producto y de la web por no reflejar el material real (EVA liso por fuera, peluche solo por dentro). Portada: zarpa-suelo-mojado + zarpa-suela-patita. Huellas: zarpa-collage-mojado.
