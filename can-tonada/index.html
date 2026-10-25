@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Can Tonada · Restaurante en Sant Cugat del Vallès</title>
+  <meta name="description" content="Can Tonada by Templo Cafés: esmorzars, menú diario, tapas y cenas en el Centro Comercial de Sant Cugat del Vallès. Cocina tradicional, producto de mercado y café de especialidad.">
+  <meta name="theme-color" content="#1f2a21">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <meta property="og:type" content="restaurant">
+  <meta property="og:title" content="Can Tonada · Del primer café al último brindis">
+  <meta property="og:description" content="Esmorzars, menú diario, tapas y cenas en el Centro Comercial de Sant Cugat del Vallès.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:locale:alternate" content="ca_ES">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js')</script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Can Tonada by Templo Cafés",
+    "servesCuisine": ["Española", "Catalana", "Tapas", "Mediterránea"],
+    "telephone": "+34936671273",
+    "email": "restaurant@cantonada.cat",
+    "priceRange": "€€",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. Via Augusta, 141 · Sant Cugat Centre Comercial",
+      "addressLocality": "Sant Cugat del Vallès",
+      "addressRegion": "Barcelona",
+      "addressCountry": "ES"
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "09:00", "closes": "23:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "20:00" }
+    ],
+    "acceptsReservations": "True",
+    "hasMenu": "#carta"
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#carta" data-t>Saltar a la carta</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="Can Tonada, inicio">
+        <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M17 13v9a3 3 0 0 0 3 3h0v11M20 13v8M23 13v9a3 3 0 0 1-3 3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M29 36V13c3.5 1.5 5 5 5 9.5 0 2.5-1.6 4-5 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="brand-word">Can Tonada<small>by Templo Cafés</small></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Principal">
+        <a href="#momentos" data-t>Momentos</a>
+        <a href="#especialidades" data-t>De la casa</a>
+        <a href="#carta" data-t>Carta</a>
+        <a href="#espacio" data-t>El espacio</a>
+        <a href="#visita" data-t>Visítanos</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="lang" role="group" aria-label="Idioma / Idioma">
+          <button type="button" data-lang="es" aria-pressed="true">ES</button>
+          <button type="button" data-lang="ca" aria-pressed="false">CA</button>
+        </div>
+        <a class="btn btn-small btn-brass nav-cta" href="#reservar" data-t>Reservar</a>
+        <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="menu-overlay" id="menu" hidden>
+    <nav aria-label="Móvil">
+      <a href="#momentos" data-t>Momentos</a>
+      <a href="#especialidades" data-t>De la casa</a>
+      <a href="#carta" data-t>Carta</a>
+      <a href="#espacio" data-t>El espacio</a>
+      <a href="#visita" data-t>Visítanos</a>
+      <a href="#reservar" data-t>Reservar</a>
+    </nav>
+    <div class="menu-foot">
+      <a href="tel:+34936671273">936 67 12 73</a>
+      <a href="mailto:restaurant@cantonada.cat">restaurant@cantonada.cat</a>
+    </div>
+  </div>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top">
+      <figure class="hero-media media">
+        <img
+          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=2000&q=80"
+          srcset="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=75 900w,
+                  https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=80 1600w,
+                  https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=2400&q=80 2400w"
+          sizes="100vw" width="2400" height="1600" alt="" fetchpriority="high"
+          onerror="this.parentNode.classList.add('noimg')">
+      </figure>
+
+      <div class="hero-inner wrap">
+        <p class="eyebrow hero-eyebrow"><span class="dot"></span><span data-t>Sant Cugat del Vallès · Centro Comercial</span></p>
+        <h1 class="hero-title" aria-label="Del primer café al último brindis.">
+          <span class="line" aria-hidden="true"><span data-t>Del primer café</span></span>
+          <span class="line" aria-hidden="true"><span data-t>al <em>último brindis.</em></span></span>
+        </h1>
+        <p class="hero-lead" data-t>Esmorzars, menú diario, tapas y cenas. Cocina tradicional, producto de mercado y el café de Templo Cafés, en el corazón de Sant Cugat.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-brass" href="#reservar"><span data-t>Reservar mesa</span> <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="btn btn-ghost" href="#carta" data-t>Ver la carta</a>
+        </div>
+      </div>
+
+      <div class="hero-foot wrap">
+        <p class="status" id="status" aria-live="polite">
+          <span class="status-dot"></span>
+          <span class="status-text">Lunes a sábado 9:00–23:00 · Domingo 12:00–20:00</span>
+        </p>
+        <ul class="hero-moments" aria-label="Servicios del día">
+          <li><span class="hm-n">I</span><span data-t>Esmorzars</span></li>
+          <li><span class="hm-n">II</span><span data-t>Menú diario</span></li>
+          <li><span class="hm-n">III</span><span data-t>Tapas y cenas</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Esmorzars</span><i>✦</i><span>Menú diari</span><i>✦</i><span>Tapes</span><i>✦</i><span>Sopars</span><i>✦</i><span>Cafè d'especialitat</span><i>✦</i><span>Cuina de mercat</span><i>✦</i>
+        <span>Esmorzars</span><i>✦</i><span>Menú diari</span><i>✦</i><span>Tapes</span><i>✦</i><span>Sopars</span><i>✦</i><span>Cafè d'especialitat</span><i>✦</i><span>Cuina de mercat</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- ============ MANIFESTO ============ -->
+    <section class="manifesto wrap" aria-labelledby="manifesto-title">
+      <p class="eyebrow reveal"><span class="num">01</span><span data-t>La casa</span></p>
+      <h2 class="manifesto-text reveal" id="manifesto-title" data-t>Un rincón cálido en pleno centro comercial: madera, verde y sobremesa. Cocinamos las recetas de siempre <em>—bravas, calamares, carnes a la piedra—</em> con el cuidado de casa.</h2>
+      <dl class="facts">
+        <div class="reveal" style="--i:0"><dt data-t>7 días</dt><dd data-t>abiertos toda la semana</dd></div>
+        <div class="reveal" style="--i:1"><dt data-t>De 9 a 23 h</dt><dd data-t>del desayuno a la cena</dd></div>
+        <div class="reveal" style="--i:2"><dt data-t>Para todos</dt><dd data-t>opciones sin gluten, veganas e infantiles</dd></div>
+      </dl>
+    </section>
+
+    <!-- ============ MOMENTOS (signature) ============ -->
+    <section class="moments" id="momentos" data-moment="0" aria-labelledby="moments-title">
+      <div class="wrap moments-head">
+        <p class="eyebrow"><span class="num">02</span><span data-t>Momentos</span></p>
+        <h2 class="h2" id="moments-title" data-t>Tres maneras de <em>quedarse.</em></h2>
+      </div>
+
+      <div class="wrap moments-grid">
+        <div class="moments-visual" aria-hidden="true">
+          <figure class="mv-img media is-active" data-step="0"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80" width="1200" height="1500" alt="" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+          <figure class="mv-img media" data-step="1"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80" width="1200" height="1500" alt="" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+          <figure class="mv-img media" data-step="2"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80" width="1200" height="1500" alt="" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+          <div class="mv-counter"><span class="mv-current">01</span> / 03</div>
+          <div class="mv-sun"><span></span></div>
+        </div>
+
+        <div class="moments-steps">
+          <article class="step" data-step="0">
+            <figure class="step-img media"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=75" width="900" height="700" alt="Café recién hecho sobre la mesa" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+            <p class="step-time"><span data-t>Por la mañana</span> · 09:00</p>
+            <h3 class="step-title">Esmorzars</h3>
+            <p class="step-text" data-t>Empieza el día como toca: café de Templo Cafés, bocadillos en pan de coca, tostadas y bollería. El esmorzar de toda la vida, bien hecho y sin prisas.</p>
+            <ul class="step-list">
+              <li data-t>Café de especialidad</li>
+              <li data-t>Bocadillos y tostadas</li>
+              <li data-t>Zumos y bollería</li>
+            </ul>
+          </article>
+
+          <article class="step" data-step="1">
+            <figure class="step-img media"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=75" width="900" height="700" alt="Plato del menú del día" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+            <p class="step-time"><span data-t>Al mediodía</span> · 13:00</p>
+            <h3 class="step-title">Menú diari</h3>
+            <p class="step-text" data-t>Cada día, un menú distinto con cocina de mercado: primero, segundo y postre. Rápido si tienes prisa; para alargarlo si puedes quedarte.</p>
+            <a class="link-arrow" href="tel:+34936671273"><span data-t>Pregunta por el menú de hoy</span> <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </article>
+
+          <article class="step" data-step="2">
+            <figure class="step-img media"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=900&q=75" width="900" height="700" alt="Copas de vino para brindar en la cena" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+            <p class="step-time"><span data-t>Por la noche</span> · 20:00</p>
+            <h3 class="step-title">Tapes &amp; Sopars</h3>
+            <p class="step-text" data-t>Bravas de la casa, calamares a la andaluza, carnes a la piedra y una buena copa. Para compartir al centro y no mirar el reloj.</p>
+            <a class="link-arrow" href="#carta"><span data-t>Descubre la carta</span> <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ESPECIALIDADES ============ -->
+    <section class="signature wrap" id="especialidades" aria-labelledby="sig-title">
+      <div class="section-head">
+        <p class="eyebrow reveal"><span class="num">03</span><span data-t>De la casa</span></p>
+        <h2 class="h2 reveal" id="sig-title" data-t>Los platos que <em>nos piden</em> una y otra vez.</h2>
+      </div>
+
+      <div class="bento">
+        <article class="card card-calamars reveal" style="--i:0">
+          <svg class="card-illu" viewBox="0 0 320 240" aria-hidden="true">
+            <g fill="none" stroke="currentColor" stroke-width="1.4">
+              <ellipse cx="110" cy="120" rx="58" ry="52"/><ellipse cx="110" cy="120" rx="30" ry="26"/>
+              <ellipse cx="190" cy="92" rx="50" ry="46" transform="rotate(-14 190 92)"/><ellipse cx="190" cy="92" rx="25" ry="22" transform="rotate(-14 190 92)"/>
+              <ellipse cx="205" cy="168" rx="46" ry="40" transform="rotate(10 205 168)"/><ellipse cx="205" cy="168" rx="22" ry="19" transform="rotate(10 205 168)"/>
+              <g stroke-dasharray="1 7" stroke-linecap="round" stroke-width="2.2"><ellipse cx="110" cy="120" rx="44" ry="39"/><ellipse cx="190" cy="92" rx="37" ry="34" transform="rotate(-14 190 92)"/><ellipse cx="205" cy="168" rx="34" ry="29" transform="rotate(10 205 168)"/></g>
+              <path d="M262 46a34 34 0 0 1 48 48z"/><path d="M262 46l24 24M270 40l16 30M306 86l-20-16M310 74l-24-4"/>
+            </g>
+          </svg>
+          <div class="card-body">
+            <p class="card-tag" data-t>Especialidad Can Tonada</p>
+            <h3 class="card-title" data-t>Calamares a la andaluza</h3>
+            <p class="card-text" data-t>Anillas tiernas, rebozado fino y crujiente, limón. El plato que define la casa.</p>
+          </div>
+          <p class="card-price">14,95 €</p>
+        </article>
+
+        <article class="card card-photo card-entrecot reveal" style="--i:1">
+          <figure class="media"><img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=1100&q=80" width="1100" height="900" alt="Entrecot de ternera a la piedra" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+          <div class="card-body">
+            <p class="card-tag" data-t>A la piedra</p>
+            <h3 class="card-title" data-t>Entrecot de ternera 300 g</h3>
+            <p class="card-text" data-t>Con patata al rescoldo y alioli.</p>
+          </div>
+          <p class="card-price">19,95 €</p>
+        </article>
+
+        <article class="card card-bravas reveal" style="--i:2">
+          <svg class="card-illu" viewBox="0 0 240 160" aria-hidden="true">
+            <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+              <path d="M40 80l30-15 30 15-30 15zM40 80v32l30 15V95M100 80v32l-30 15"/>
+              <path d="M110 60l28-14 28 14-28 14zM110 60v30l28 14V74M166 60v30l-28 14"/>
+              <path d="M150 106l26-13 26 13-26 13zM150 106v28l26 13v-28M202 106v28l-26 13"/>
+              <path d="M52 76c10-8 24 6 36-2M120 57c10-6 22 5 34-1M160 103c9-6 22 4 32-1" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+          <div class="card-body">
+            <p class="card-tag" data-t>La receta de la casa</p>
+            <h3 class="card-title">Braves Can Tonada</h3>
+          </div>
+          <p class="card-price">7,50 €</p>
+        </article>
+
+        <article class="card card-musclos reveal" style="--i:3">
+          <svg class="card-illu" viewBox="0 0 240 160" aria-hidden="true">
+            <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <path d="M60 130C40 100 48 50 92 28c20 22 28 70 4 104-12 6-28 6-36-2z"/>
+              <path d="M66 120c-10-24-4-56 24-80M76 124c-4-26 2-56 16-82M86 126c4-26 6-54 6-82"/>
+              <path d="M150 132c-14-34 0-80 46-96 14 26 12 72-14 100-12 4-24 2-32-4z"/>
+              <path d="M158 124c-6-26 4-58 32-80M168 128c0-26 10-54 22-80M178 130c6-24 12-52 14-80"/>
+            </g>
+          </svg>
+          <div class="card-body">
+            <p class="card-tag" data-t>Del mar</p>
+            <h3 class="card-title">Musclos Can Tonada</h3>
+            <p class="card-text" data-t>Con leche de coco y jengibre.</p>
+          </div>
+          <p class="card-price">12,95 €</p>
+        </article>
+
+        <article class="card card-photo card-burger reveal" style="--i:4">
+          <figure class="media"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80" width="900" height="900" alt="Hamburguesa Can Tonada" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+          <div class="card-body">
+            <p class="card-tag" data-t>180 g de ternera</p>
+            <h3 class="card-title">Burguer Can Tonada</h3>
+            <p class="card-text" data-t>Cebolla, queso, bacon y huevo frito.</p>
+          </div>
+          <p class="card-price">14,95 €</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ CARTA ============ -->
+    <section class="carta" id="carta" aria-labelledby="carta-title">
+      <div class="wrap">
+        <div class="carta-head">
+          <div>
+            <p class="eyebrow reveal"><span class="num">04</span><span data-t>La carta</span></p>
+            <h2 class="h2 reveal" id="carta-title" data-t>Para picar, compartir <em>o no compartir.</em></h2>
+          </div>
+          <ul class="legend reveal" aria-label="Leyenda">
+            <li><span class="tag tag-star">★</span><span data-t>Especialidad de la casa</span></li>
+            <li><span class="tag tag-veg">V</span><span data-t>Vegetariano</span></li>
+            <li><span class="tag tag-vegan">VG</span><span data-t>Vegano</span></li>
+          </ul>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Secciones de la carta">
+          <button role="tab" id="t-tapas" aria-controls="p-tapas" aria-selected="true" data-t>Tapas</button>
+          <button role="tab" id="t-peix" aria-controls="p-peix" aria-selected="false" tabindex="-1" data-t>Pescados</button>
+          <button role="tab" id="t-carn" aria-controls="p-carn" aria-selected="false" tabindex="-1" data-t>Carnes</button>
+          <button role="tab" id="t-veg" aria-controls="p-veg" aria-selected="false" tabindex="-1" data-t>Vegetarianos</button>
+          <button role="tab" id="t-amanides" aria-controls="p-amanides" aria-selected="false" tabindex="-1" data-t>Ensaladas</button>
+          <button role="tab" id="t-burg" aria-controls="p-burg" aria-selected="false" tabindex="-1" data-t>Burgers</button>
+          <button role="tab" id="t-kids" aria-controls="p-kids" aria-selected="false" tabindex="-1" data-t>Infantil</button>
+          <span class="tabs-ink" aria-hidden="true"></span>
+        </div>
+
+        <div class="panels">
+          <!-- TAPAS -->
+          <div class="panel" role="tabpanel" id="p-tapas" aria-labelledby="t-tapas" tabindex="0">
+            <h3 class="panel-title" data-t>Tapas</h3>
+            <ul class="dishes">
+              <li class="dish"><div class="dish-head"><h4><span data-t>Bravas Can Tonada</span> <span class="tag tag-star" title="Especialidad">★</span></h4><span class="dots"></span><span class="price">7,50 €</span></div></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Ensaladilla rusa</h4><span class="dots"></span><span class="price">7,95 €</span></div></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Sardina ahumada</h4><span class="dots"></span><span class="price">2,95 € <small data-t>/ ud.</small></span></div><p data-t>Con alioli de membrillo y pan de coca.</p></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Gilda de anchoas o boquerones</h4><span class="dots"></span><span class="price">1,50 € <small data-t>/ ud.</small></span></div></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Nachos Can Tonada</h4><span class="dots"></span><span class="price">11,95 €</span></div></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Ración de ibérico</h4><span class="dots"></span><span class="price">16,95 €</span></div><p data-t>Con pan de coca y tomate.</p></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Huevos estrellados con foie</h4><span class="dots"></span><span class="price">17,95 €</span></div><p data-t>Con virutas de ibérico.</p></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Tiras de pollo</h4><span class="dots"></span><span class="price">9,50 €</span></div><p data-t>Con tres salsitas.</p></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Torreznos de Soria</h4><span class="dots"></span><span class="price">8,95 €</span></div><p data-t>Con pimientos del Padrón.</p></li>
+            </ul>
+          </div>
+
+          <!-- PESCADOS -->
+          <div class="panel" role="tabpanel" id="p-peix" aria-labelledby="t-peix" tabindex="0">
+            <h3 class="panel-title" data-t>Pescados</h3>
+            <ul class="dishes">
+              <li class="dish"><div class="dish-head"><h4><span data-t>Calamares a la andaluza</span> <span class="tag tag-star" title="Especialidad">★</span></h4><span class="dots"></span><span class="price">14,95 €</span></div><p data-t>Especialidad Can Tonada.</p></li>
+              <li class="dish"><div class="dish-head"><h4><span data-t>Mejillones Can Tonada</span> <span class="tag tag-star" title="Especialidad">★</span></h4><span class="dots"></span><span class="price">12,95 €</span></div><p data-t>Con leche de coco y jengibre.</p></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Atún en escabeche</h4><span class="dots"></span><span class="price">9,95 €</span></div><p data-t>Con mermelada de tomate.</p></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Gambitas saladas</h4><span class="dots"></span><span class="price">9,95 €</span></div></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Chipirones a la andaluza</h4><span class="dots"></span><span class="price">9,95 €</span></div></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Sepia a la plancha</h4><span class="dots"></span><span class="price">15,95 €</span></div><p data-t>Con verduritas y romesco.</p></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Cazón en adobo al estilo andaluz</h4><span class="dots"></span><span class="price">9,95 €</span></div><p data-t>Bienmesabe.</p></li>
+            </ul>
+          </div>
+
+          <!-- CARNES -->
+          <div class="panel" role="tabpanel" id="p-carn" aria-labelledby="t-carn" tabindex="0">
+            <h3 class="panel-title" data-t>Carnes</h3>
+            <ul class="dishes">
+              <li class="dish"><div class="dish-head"><h4 data-t>Entrecot de ternera 300 g</h4><span class="dots"></span><span class="price">19,95 €</span></div><p data-t>A la piedra, con guarnición de patata al rescoldo y alioli.</p></li>
+              <li class="dish"><div class="dish-head"><h4><span data-t>Secreto ibérico adobado</span> <span class="tag tag-star" title="Especialidad">★</span></h4><span class="dots"></span><span class="price">9,95 €</span></div><p data-t>Especialidad Can Tonada.</p></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Carne con salsita</h4><span class="dots"></span><span class="price">9,95 €</span></div></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Entraña de ternera con chimichurri</h4><span class="dots"></span><span class="price">12,95 €</span></div><p data-t>A la piedra, con brasa y verduritas a la plancha.</p></li>
+            </ul>
+          </div>
+
+          <!-- VEGETARIANOS -->
+          <div class="panel" role="tabpanel" id="p-veg" aria-labelledby="t-veg" tabindex="0">
+            <h3 class="panel-title" data-t>Vegetarianos</h3>
+            <ul class="dishes">
+              <li class="dish"><div class="dish-head"><h4><span data-t>Coca de berenjena</span> <span class="tag tag-veg" title="Vegetariano">V</span></h4><span class="dots"></span><span class="price">9,95 €</span></div><p data-t>Con queso de cabra, cebolla y romesco.</p></li>
+              <li class="dish"><div class="dish-head"><h4><span data-t>Coca de calabacín</span> <span class="tag tag-veg" title="Vegetariano">V</span></h4><span class="dots"></span><span class="price">9,95 €</span></div><p data-t>Con queso brie, rúcula y tomate.</p></li>
+              <li class="dish"><div class="dish-head"><h4><span data-t>Burger vegana</span> <span class="tag tag-vegan" title="Vegano">VG</span></h4><span class="dots"></span><span class="price">14,95 €</span></div><p data-t>Hamburguesa 100% vegetal, lechuga, tomate, pimiento y cebolla confitada.</p></li>
+            </ul>
+          </div>
+
+          <!-- ENSALADAS -->
+          <div class="panel" role="tabpanel" id="p-amanides" aria-labelledby="t-amanides" tabindex="0">
+            <h3 class="panel-title" data-t>Ensaladas</h3>
+            <ul class="dishes">
+              <li class="dish"><div class="dish-head"><h4><span data-t>Ensalada Can Tonada</span> <span class="tag tag-veg" title="Vegetariano">V</span></h4><span class="dots"></span><span class="price">12,00 €</span></div><p data-t>Mezclum, nueces, queso de cabra, tomate y reducción de Módena.</p></li>
+              <li class="dish"><div class="dish-head"><h4 data-t>Ensalada César</h4><span class="dots"></span><span class="price">12,00 €</span></div><p data-t>Mezclum, pollo, picatostes, bacon, queso y salsa César.</p></li>
+            </ul>
+          </div>
+
+          <!-- BURGERS -->
+          <div class="panel" role="tabpanel" id="p-burg" aria-labelledby="t-burg" tabindex="0">
+            <h3 class="panel-title" data-t>Burgers</h3>
+            <p class="panel-note" data-t>180 g de ternera, servidas con patatas fritas.</p>
+            <ul class="dishes">
+              <li class="dish"><div class="dish-head"><h4><span>Can Tonada</span> <span class="tag tag-star" title="Especialidad">★</span></h4><span class="dots"></span><span class="price">14,95 €</span></div><p data-t>Cebolla, queso, bacon y huevo frito.</p></li>
+              <li class="dish"><div class="dish-head"><h4>Gourmet</h4><span class="dots"></span><span class="price">15,95 €</span></div><p data-t>Mezclum, queso de cabra, cebolla y mermelada de tomate.</p></li>
+              <li class="dish"><div class="dish-head"><h4><span data-t>Burger vegana</span> <span class="tag tag-vegan" title="Vegano">VG</span></h4><span class="dots"></span><span class="price">14,95 €</span></div><p data-t>Hamburguesa 100% vegetal, lechuga, tomate, pimiento y cebolla confitada.</p></li>
+            </ul>
+          </div>
+
+          <!-- INFANTIL -->
+          <div class="panel" role="tabpanel" id="p-kids" aria-labelledby="t-kids" tabindex="0">
+            <h3 class="panel-title" data-t>Infantil</h3>
+            <div class="kids">
+              <div>
+                <p class="kids-kicker" data-t>¡Menú infantil!</p>
+                <p class="kids-text" data-t>Un plato de pasta boloñesa, pollo rebozado con patatas fritas, bebida y postre.</p>
+              </div>
+              <p class="kids-price">12,95 €</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="carta-foot reveal">
+          <p data-t>Pregunta por las <strong>sugerencias fuera de carta</strong> del día.</p>
+          <p data-t>¿Alergias o intolerancias? Avísanos: tenemos opciones sin gluten y veganas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ESPACIO ============ -->
+    <section class="space wrap" id="espacio" aria-labelledby="space-title">
+      <div class="space-copy">
+        <p class="eyebrow reveal"><span class="num">05</span><span data-t>El espacio</span></p>
+        <h2 class="h2 reveal" id="space-title" data-t>Madera, verde salvia <em>y luz cálida.</em></h2>
+        <p class="lead reveal" data-t>Mesas para el café rápido, la comida de trabajo o la cena en familia. Un lugar tranquilo dentro del Centro Comercial de Sant Cugat, pensado para quedarse un rato más.</p>
+
+        <ul class="services">
+          <li class="reveal" style="--i:0">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="4.5" r="1.8"/><path d="M11 7.5v6h5l2.5 5.5M11 10.5h5M8 11.5a5.5 5.5 0 1 0 8.4 6"/></svg>
+            <span data-t>Accesible para movilidad reducida</span>
+          </li>
+          <li class="reveal" style="--i:1">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg>
+            <span data-t>Tarjetas, incluida American Express</span>
+          </li>
+          <li class="reveal" style="--i:2">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21V9M12 9c0-3 2-5 5-5 0 3-2 5-5 5zM12 13c0-3-2-5-5-5 0 3 2 5 5 5zM12 17c0-2.5 1.8-4 4-4 0 2.5-1.8 4-4 4z"/><path d="M4 4l16 16"/></svg>
+            <span data-t>Opciones sin gluten</span>
+          </li>
+          <li class="reveal" style="--i:3">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15M5 19l7-7"/></svg>
+            <span data-t>Platos vegetarianos y veganos</span>
+          </li>
+          <li class="reveal" style="--i:4">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21c.5-4 3.4-6.5 7-6.5s6.5 2.5 7 6.5"/></svg>
+            <span data-t>Menú infantil</span>
+          </li>
+          <li class="reveal" style="--i:5">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3c-.8 1 .8 2 0 3M12 3c-.8 1 .8 2 0 3"/></svg>
+            <span data-t>Café de Templo Cafés</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mosaic">
+        <figure class="media m-a reveal" style="--i:0"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1100&q=80" width="1100" height="1400" alt="Ambiente del comedor con luz cálida" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+        <figure class="media m-b reveal" style="--i:1"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80" width="800" height="800" alt="Café con leche" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+        <figure class="media m-c reveal" style="--i:2"><img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" width="800" height="800" alt="Plato fresco de temporada" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></figure>
+      </div>
+    </section>
+
+    <!-- ============ VISITA ============ -->
+    <section class="visit" id="visita" aria-labelledby="visit-title">
+      <div class="wrap visit-grid">
+        <div class="visit-info">
+          <p class="eyebrow reveal"><span class="num">06</span><span data-t>Visítanos</span></p>
+          <h2 class="h2 reveal" id="visit-title" data-t>Te esperamos <em>en Sant Cugat.</em></h2>
+
+          <table class="hours reveal" aria-label="Horario">
+            <tbody>
+              <tr data-days="1,2,3,4,5,6"><th scope="row" data-t>Lunes a sábado</th><td>09:00 – 23:00</td></tr>
+              <tr data-days="0"><th scope="row" data-t>Domingo</th><td>12:00 – 20:00</td></tr>
+            </tbody>
+          </table>
+
+          <ul class="contact reveal">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+              <span>Av. Via Augusta, 141<br><span data-t>Sant Cugat Centre Comercial · Sant Cugat del Vallès</span></span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+              <a href="tel:+34936671273">+34 936 67 12 73</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+              <a href="mailto:restaurant@cantonada.cat">restaurant@cantonada.cat</a>
+            </li>
+          </ul>
+
+          <div class="visit-ctas reveal">
+            <a class="btn btn-forest" href="https://www.google.com/maps/dir/?api=1&destination=Can+Tonada+Sant+Cugat+Centre+Comercial" target="_blank" rel="noopener"><span data-t>Cómo llegar</span> <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 14 14 6M7 6h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn btn-line" href="https://www.google.com/maps/search/?api=1&query=Can+Tonada+Sant+Cugat" target="_blank" rel="noopener" data-t>Opiniones en Google</a>
+          </div>
+        </div>
+
+        <div class="map reveal">
+          <iframe title="Mapa: Can Tonada en Sant Cugat Centre Comercial" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://maps.google.com/maps?q=Can%20Tonada%20Sant%20Cugat%20Centre%20Comercial&z=16&output=embed"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RESERVAR ============ -->
+    <section class="reserve" id="reservar" aria-labelledby="reserve-title">
+      <div class="wrap reserve-grid">
+        <div class="reserve-copy">
+          <p class="eyebrow eyebrow-light reveal"><span class="num">07</span><span data-t>Reservas</span></p>
+          <h2 class="h2 reveal" id="reserve-title" data-t>Te guardamos <em>una mesa.</em></h2>
+          <p class="lead reveal" data-t>Cuéntanos cuándo venís y os confirmamos la reserva. Para grupos, celebraciones o comidas de empresa, llámanos y lo preparamos juntos.</p>
+          <a class="phone-big reveal" href="tel:+34936671273">936 67 12 73</a>
+        </div>
+
+        <form class="form reveal" id="reserve-form" novalidate>
+          <div class="field">
+            <label for="f-name" data-t>Nombre</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="f-phone" data-t>Teléfono</label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-date" data-t>Día</label>
+              <input id="f-date" name="date" type="date" required>
+            </div>
+            <div class="field">
+              <label for="f-time" data-t>Hora</label>
+              <select id="f-time" name="time" required>
+                <option value="" data-t>Elige</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-people" data-t>Personas</label>
+              <select id="f-people" name="people" required>
+                <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option value="9+">9+</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-notes" data-t>Comentarios (alergias, trona, celebración…)</label>
+            <textarea id="f-notes" name="notes" rows="3"></textarea>
+          </div>
+          <button class="btn btn-brass btn-block" type="submit"><span data-t>Solicitar reserva</span> <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+          <p class="form-note" data-t>Se abrirá tu correo con la solicitud lista para enviar. La reserva queda confirmada cuando te respondemos.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="wrap footer-top">
+      <div>
+        <p class="footer-claim" data-t>Del primer café al <em>último brindis.</em></p>
+      </div>
+      <nav class="footer-links" aria-label="Pie de página">
+        <a href="#momentos" data-t>Momentos</a>
+        <a href="#carta" data-t>Carta</a>
+        <a href="#espacio" data-t>El espacio</a>
+        <a href="#visita" data-t>Visítanos</a>
+        <a href="#reservar" data-t>Reservar</a>
+      </nav>
+      <div class="footer-contact">
+        <a href="tel:+34936671273">+34 936 67 12 73</a>
+        <a href="mailto:restaurant@cantonada.cat">restaurant@cantonada.cat</a>
+        <span>Av. Via Augusta, 141 · Sant Cugat del Vallès</span>
+      </div>
+    </div>
+    <p class="wordmark" aria-hidden="true"><span>Can Tonada</span></p>
+    <div class="wrap footer-bottom">
+      <span>© <span id="year">2026</span> Can Tonada by Templo Cafés</span>
+      <span data-t>Cocina tradicional en Sant Cugat del Vallès</span>
+    </div>
+  </footer>
+
+  <!-- Mobile action bar -->
+  <div class="actionbar" aria-label="Acciones rápidas">
+    <a href="tel:+34936671273"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span data-t>Llamar</span></a>
+    <a href="#carta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5zM9 8h6M9 12h6M9 16h4"/></svg><span data-t>Carta</span></a>
+    <a href="#reservar" class="ab-primary"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span data-t>Reservar</span></a>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
