@@ -17,5 +17,9 @@
 ## Secciones (prefijo zp-, todas editables)
 layout `zarpa` · zp-header (avisos + cuenta atrás) · zp-hero · zp-huellas · zp-capas · zp-ventajas · zp-compra (+ barra fija móvil) · zp-galeria · zp-regalo (cuenta atrás) · zp-faq · zp-footer · snippets zp-img, zp-cart-drawer · assets zp.css, zp.js
 
-## Pendiente
-- Fotos de mejor calidad que enviará el usuario → subir a Archivos y ponerlas en portada/huellas/ventajas y en el producto.
+## Fotos del usuario (carpeta fotos/)
+- zarpa-navidad-chimenea.jpg → portada (foto principal) y 1ª foto del producto
+- zarpa-collage-mojado.jpg → portada (foto de detrás) y 2ª foto del producto
+- zarpa-suelo-mojado.jpg → sección Huellas
+- zarpa-orejitas / forro / detras / en-la-mano.jpg → tarjetas de Ventajas
+- Ojo: la foto de la chimenea muestra exterior de peluche; el producto real tiene exterior de EVA liso.
